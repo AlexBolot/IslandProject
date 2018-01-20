@@ -7,7 +7,10 @@ import static eu.ace_design.island.runner.Runner.run;
 
 public class Runner {
 
-    // To run the code:  mvn -q exec:java -Dexec.args="../championships/week03/_map.json"
+    /**
+     * Run with IDE : args list : ressources/map_test_week03_2017.json
+     * Run with maven : mvn -q exec:java -Dexec.args="path/to/map_test_week03_2017.json"
+     */
     public static void main(String[] args) throws Exception {
 
         if (args.length != 1) {
