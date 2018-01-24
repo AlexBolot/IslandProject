@@ -26,7 +26,7 @@ public class Drone {
         if (parameterAndValue.length % 2 != 0)
             throw new IllegalArgumentException("The parameters name and value must be in same number");
         JSONObject jsonReturn = new JSONObject();
-        jsonReturn.put("action", "fly");
+        jsonReturn.put("action", functionName);
         if (parameterAndValue.length > 0) {
             JSONObject params = new JSONObject();
             for (int i = 0; i < parameterAndValue.length - 1; i += 2) {
