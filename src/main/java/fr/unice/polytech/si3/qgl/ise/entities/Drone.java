@@ -6,6 +6,7 @@ import org.json.JSONObject;
 public class Drone {
     private Coordinates coords;
     private boolean isFlying;
+    private String orientation;
 
     private String lastAction;
 
@@ -50,11 +51,7 @@ public class Drone {
         return "";
     }
 
-    //region ===== Getters & setters =====
-
-    public Coordinates getCoords() {
-        return coords;
-    }
+    //region ===== Getters =====
 
     public boolean isFlying() {
         return isFlying;
