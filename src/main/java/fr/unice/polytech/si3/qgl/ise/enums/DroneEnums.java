@@ -52,7 +52,7 @@ public class DroneEnums
         INIT_ECHO_RIGHT,
         INIT_ECHO_LEFT,
 
-        SERACH_CHOSE_DIR,
+        SEARCH_CHOSE_DIR,
         SEARCH_ECHO_SIDE,
         SEARCH_FLY,
 
