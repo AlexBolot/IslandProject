@@ -28,4 +28,9 @@ public class DroneMap implements IslandMap {
     public Tile getTile(Coordinates coordinates) {
         return droneTiles.get(coordinates).makeCopy();
     }
+
+    public Map<Coordinates, DroneTile> getDroneTiles()
+    {
+        return droneTiles;
+    }
 }

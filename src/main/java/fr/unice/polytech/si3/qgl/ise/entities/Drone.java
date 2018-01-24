@@ -9,6 +9,7 @@ import fr.unice.polytech.si3.qgl.ise.maps.Coordinates;
 import fr.unice.polytech.si3.qgl.ise.maps.DroneMap;
 import fr.unice.polytech.si3.qgl.ise.maps.DroneTile;
 import fr.unice.polytech.si3.qgl.ise.parsing.Echo;
+import fr.unice.polytech.si3.qgl.ise.parsing.Scan;
 import org.json.JSONObject;
 import scala.Tuple2;
 
@@ -31,6 +32,8 @@ public class Drone
     private DroneMap    map;
     private Coordinates coords;
     private SubState    subState;
+
+    private static final int movementUnit = 3;
 
     private HashMap<ZQSD, Tuple2<Obstacle, Integer>> margins;
 
@@ -69,11 +72,102 @@ public class Drone
 
     private String fly ()
     {
+        //region --> switch (orientation) // to change coordinates
+        switch (orientation)
+        {
+            case EAST:
+                coords = new Coordinates(coords.getX() + movementUnit, coords.getY());
+                break;
+
+            case WEST:
+                coords = new Coordinates(coords.getX() - movementUnit, coords.getY());
+                break;
+
+            case NORTH:
+                coords = new Coordinates(coords.getX(), coords.getY() + movementUnit);
+                break;
+
+            case SOUTH:
+                coords = new Coordinates(coords.getX(), coords.getY() - movementUnit);
+                break;
+        }
+        //endregion
+
         return createFunctionWithParams("fly");
     }
 
+    @SuppressWarnings ("Duplicates")
     private String heading (NSEW direction)
     {
+        //region --> switch (orientation) // to change coordinates
+        int newX;
+        int newY;
+
+        switch (orientation)
+        {
+            case EAST:
+                newX = coords.getX() + movementUnit;
+
+                switch (direction)
+                {
+                    case NORTH:
+                        coords = new Coordinates(newX, coords.getY() + movementUnit);
+                        break;
+
+                    case SOUTH:
+                        coords = new Coordinates(newX, coords.getY() - movementUnit);
+                        break;
+                }
+
+                break;
+
+            case WEST:
+                newX = coords.getX() - movementUnit;
+
+                switch (direction)
+                {
+                    case NORTH:
+                        coords = new Coordinates(newX, coords.getY() + movementUnit);
+                        break;
+
+                    case SOUTH:
+                        coords = new Coordinates(newX, coords.getY() - movementUnit);
+                        break;
+                }
+                break;
+
+            case NORTH:
+                newY = coords.getY() + movementUnit;
+
+                switch (direction)
+                {
+                    case EAST:
+                        coords = new Coordinates(coords.getX() + movementUnit, newY);
+                        break;
+
+                    case WEST:
+                        coords = new Coordinates(coords.getX() - movementUnit, newY);
+                        break;
+                }
+                break;
+
+            case SOUTH:
+                newY = coords.getY() - movementUnit;
+
+                switch (direction)
+                {
+                    case EAST:
+                        coords = new Coordinates(coords.getX() + movementUnit, newY);
+                        break;
+
+                    case WEST:
+                        coords = new Coordinates(coords.getX() - movementUnit, newY);
+                        break;
+                }
+                break;
+        }
+        //endregion
+
         return createFunctionWithParams("heading", "direction", direction.getValue());
     }
 
@@ -247,12 +341,22 @@ public class Drone
         return stop();
     }
 
-    public void acknowledgeResults (Echo echo)
+    public void acknowledgeEcho (Echo echo)
     {
         Obstacle obstacle = echo.getObstacle();
         Integer range = echo.getRange();
 
         margins.put(lastEcho, new Tuple2<>(obstacle, range));
+    }
+
+    public void acknowledgeScan (Scan scan)
+    {
+        DroneTile droneTile = new DroneTile();
+
+        if (!scan.getCreeks().isEmpty()) droneTile.setPossibleCreek(scan.getCreeks().get(0));
+        if (!scan.getEmergencySites().isEmpty()) droneTile.setPossibleSite(scan.getEmergencySites().get(0));
+
+        map.addTile(coords, droneTile);
     }
 
     //region ===== Getters =====
@@ -341,6 +445,5 @@ public class Drone
 
         throw new IllegalArgumentException("Wrong params");
     }
-
     //endregion
 }
