@@ -15,35 +15,45 @@ public class Drone {
         isFlying = true;
     }
 
-    private String fly() {
+    /**
+     * Create a JSON formatted string doing action with parameters
+     *
+     * @param functionName      action name
+     * @param parameterAndValue name of parameter then value
+     * @return String matching the action requested
+     */
+    private String createFunctionWithParams(String functionName, String... parameterAndValue) {
+        if (parameterAndValue.length % 2 != 0)
+            throw new IllegalArgumentException("The parameters name and value must be in same number");
         JSONObject jsonReturn = new JSONObject();
         jsonReturn.put("action", "fly");
-        lastAction = "fly";
+        if (parameterAndValue.length > 0) {
+            JSONObject params = new JSONObject();
+            for (int i = 0; i < parameterAndValue.length - 1; i += 2) {
+                params.put(parameterAndValue[i], parameterAndValue[i + 1]);
+            }
+            jsonReturn.put("parameters", parameterAndValue);
+        }
         return jsonReturn.toString();
+    }
+
+    private String fly() {
+        return createFunctionWithParams("fly");
     }
 
     private String heading(String direction) {
-        JSONObject jsonReturn = new JSONObject();
-        jsonReturn.put("action", "heading");
-        jsonReturn.put("parameters", new JSONObject().put("direction", direction));
         lastAction = "heading";
-        return jsonReturn.toString();
+        return createFunctionWithParams("heading", "direction", direction);
     }
 
     private String echo(String direction) {
-        JSONObject jsonReturn = new JSONObject();
-        jsonReturn.put("action", "echo");
-        jsonReturn.put("parameters", new JSONObject().put("direction", direction));
         lastAction = "echo";
-        return jsonReturn.toString();
+        return createFunctionWithParams("echo", "direction", direction);
     }
 
     private String scan(String direction) {
-        JSONObject jsonReturn = new JSONObject();
-        jsonReturn.put("action", "scan");
-        jsonReturn.put("parameters", new JSONObject().put("direction", direction));
         lastAction = "scan";
-        return jsonReturn.toString();
+        return createFunctionWithParams("scan");
     }
 
     public String takeDecision() {
