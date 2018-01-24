@@ -2,16 +2,18 @@ package fr.unice.polytech.si3.qgl.ise;
 
 import eu.ace_design.island.bot.IExplorerRaid;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
-import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums;
 import fr.unice.polytech.si3.qgl.ise.maps.DroneMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
+import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
+
 public class Explorer implements IExplorerRaid {
 
     private static Logger logger = LogManager.getLogger(Explorer.class);
     private Drone drone;
+    private DroneMap droneMap;
 
     @Override
     public void initialize(String contract) {
@@ -20,8 +22,8 @@ public class Explorer implements IExplorerRaid {
         JSONObject data = new JSONObject(contract);
         // process data here ...
 
-        DroneEnums.NSEW orientation =DroneEnums.NSEW.valueOf(data.getString("heading"));
-        drone = new Drone(new DroneMap(),orientation);
+        NSEW orientation = NSEW.valueOf(data.getString("heading"));
+        drone = new Drone(droneMap,orientation);
     }
 
     @Override
