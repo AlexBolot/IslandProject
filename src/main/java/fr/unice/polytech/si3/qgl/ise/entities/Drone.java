@@ -1,16 +1,21 @@
 package fr.unice.polytech.si3.qgl.ise.entities;
 
+import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums;
 import fr.unice.polytech.si3.qgl.ise.maps.Coordinates;
+import fr.unice.polytech.si3.qgl.ise.maps.DroneMap;
 import org.json.JSONObject;
 
 public class Drone {
     private Coordinates coords;
     private boolean isFlying;
-    private String orientation;
+    private DroneEnums.NSEW orientation;
+    private DroneMap map;
 
     private String lastAction;
 
-    public Drone() {
+    public Drone (DroneMap map, DroneEnums.NSEW orientation) {
+        this.map = map;
+        this.orientation = orientation;
         coords = new Coordinates(0, 0);
         isFlying = true;
     }

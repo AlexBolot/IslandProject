@@ -86,7 +86,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<mainClass>fr.unice.polytech.si3.qgl.isx.Runner</mainClass>
+					<mainClass>fr.unice.polytech.si3.qgl.ise.Runner</mainClass>
 					<cleanupDaemonThreads>false</cleanupDaemonThreads>
 				</configuration>
 			</plugin>
