@@ -8,6 +8,7 @@ import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
 import fr.unice.polytech.si3.qgl.ise.maps.Coordinates;
 import fr.unice.polytech.si3.qgl.ise.maps.DroneMap;
 import fr.unice.polytech.si3.qgl.ise.maps.DroneTile;
+import fr.unice.polytech.si3.qgl.ise.parsing.Echo;
 import org.json.JSONObject;
 import scala.Tuple2;
 
@@ -43,20 +44,22 @@ public class Drone
     }
 
     /**
-     * Create a JSON formatted string doing action with parameters
-     *
-     * @param functionName      action name
-     * @param parameterAndValue name of parameter then value
-     * @return String matching the action requested
+     Create a JSON formatted string doing action with parameters
+
+     @param functionName      action name
+     @param parameterAndValue name of parameter then value
+     @return String matching the action requested
      */
-    private String createFunctionWithParams(String functionName, String... parameterAndValue) {
-        if (parameterAndValue.length % 2 != 0)
-            throw new IllegalArgumentException("The parameters name and value must be in same number");
+    private String createFunctionWithParams (String functionName, String... parameterAndValue)
+    {
+        if (parameterAndValue.length % 2 != 0) throw new IllegalArgumentException("The parameters name and value must be in same number");
         JSONObject jsonReturn = new JSONObject();
         jsonReturn.put("action", functionName);
-        if (parameterAndValue.length > 0) {
+        if (parameterAndValue.length > 0)
+        {
             JSONObject params = new JSONObject();
-            for (int i = 0; i < parameterAndValue.length - 1; i += 2) {
+            for (int i = 0; i < parameterAndValue.length - 1; i += 2)
+            {
                 params.put(parameterAndValue[i], parameterAndValue[i + 1]);
             }
             jsonReturn.put("parameters", parameterAndValue);
@@ -96,15 +99,21 @@ public class Drone
             //region -> INITIAL
             case INIT_ECHO_FRONT:
                 subState = INIT_ECHO_RIGHT;
-                return echo(getOri(FRONT));
+
+                lastEcho = FRONT;
+                return echo(getOri(lastEcho));
 
             case INIT_ECHO_RIGHT:
                 subState = INIT_ECHO_LEFT;
-                return echo(getOri(RIGHT));
+
+                lastEcho = RIGHT;
+                return echo(getOri(lastEcho));
 
             case INIT_ECHO_LEFT:
                 subState = SEARCH_CHOSE_DIR;
-                return echo(getOri(LEFT));
+
+                lastEcho = LEFT;
+                return echo(getOri(lastEcho));
             //endregion
 
             //region -> SEARCH
@@ -117,14 +126,15 @@ public class Drone
                 else dir = (margins.get(RIGHT)._2 > margins.get(LEFT)._2) ? RIGHT : LEFT;
 
                 margins.put(FRONT, new Tuple2<>(BORDER, margins.get(dir)._2 - 1));
-                lastTurn = dir;
 
+                lastTurn = dir;
                 return heading(getOri(lastTurn));
 
             case SEARCH_ECHO_SIDE:
                 subState = SEARCH_FLY;
 
-                return echo(getOri(getOpposite(lastTurn)));
+                lastEcho = getOpposite(lastTurn);
+                return echo(getOri(lastEcho));
 
             case SEARCH_FLY:
 
@@ -148,25 +158,28 @@ public class Drone
             //region -> REACH ISLAND
             case REACH_ISLAND_TURN1:
                 subState = REACH_ISLAND_TURN2;
-                lastTurn = getOpposite(lastTurn);
 
+                lastTurn = getOpposite(lastTurn);
                 return heading(getOri(lastTurn));
 
             case REACH_ISLAND_TURN2:
                 subState = REACH_ISLAND_TURN3;
+
                 return heading(getOri(lastTurn));
 
             case REACH_ISLAND_TURN3:
                 subState = REACH_ISLAND_ECHO_FRONT;
-                lastTurn = getOpposite(lastTurn);
 
+                lastTurn = getOpposite(lastTurn);
                 return heading(getOri(lastTurn));
 
             case REACH_ISLAND_ECHO_FRONT:
                 subState = REACH_ISLAND_MOVE;
+
                 return echo(getOri(FRONT));
 
             case REACH_ISLAND_MOVE:
+
                 if (margins.get(getOpposite(lastTurn))._1 == GROUND)
                 {
                     Integer frontDist = margins.get(FRONT)._2;
@@ -207,8 +220,8 @@ public class Drone
 
             case CHANGELINE_TURN1:
                 subState = CHANGELINE_TURN2;
-                lastTurn = getOpposite(lastTurn);
 
+                lastTurn = getOpposite(lastTurn);
                 return heading(getOri(lastTurn));
 
             case CHANGELINE_TURN2:
@@ -219,7 +232,8 @@ public class Drone
             case CHANGELINE_ECHO_FRONT:
                 subState = CHANGELINE_DONE;
 
-                return echo(getOri(FRONT));
+                lastEcho = FRONT;
+                return echo(getOri(lastEcho));
 
             case CHANGELINE_DONE:
 
@@ -231,6 +245,31 @@ public class Drone
                 break;
         }
         return stop();
+    }
+
+    public void acknowledgeResults (Echo echo)
+    {
+        Obstacle obstacle = echo.getObstacle();
+        Integer range = echo.getRange();
+
+        margins.put(lastEcho, new Tuple2<>(obstacle, range));
+    }
+
+    //region ===== Getters =====
+
+    public boolean isFlying ()
+    {
+        return isFlying;
+    }
+
+    public HashMap<ZQSD, Tuple2<Obstacle, Integer>> getMargins ()
+    {
+        return margins;
+    }
+
+    public void setLastEcho (ZQSD lastEcho)
+    {
+        this.lastEcho = lastEcho;
     }
 
     @SuppressWarnings ("Duplicates")
@@ -301,22 +340,6 @@ public class Drone
         }
 
         throw new IllegalArgumentException("Wrong params");
-    }
-
-    //region ===== Getters =====
-
-    public boolean isFlying() {
-        return isFlying;
-    }
-
-    public HashMap<ZQSD, Tuple2<Obstacle, Integer>> getMargins ()
-    {
-        return margins;
-    }
-
-    public void setLastEcho (ZQSD lastEcho)
-    {
-        this.lastEcho = lastEcho;
     }
 
     //endregion

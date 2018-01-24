@@ -1,19 +1,19 @@
 package fr.unice.polytech.si3.qgl.ise.parsing;
 
-import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums;
+import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle;
 import org.json.JSONObject;
 
 public class Echo {
     private int cost;
     private int range;
-    private DroneEnums.Obstacle obstacle;
+    private Obstacle obstacle;
 
     public Echo(String echoResult) {
         JSONObject data = new JSONObject(echoResult);
         cost = data.getInt("cost");
         JSONObject extras = data.getJSONObject("extras");
         range = extras.getInt("range");
-        obstacle = DroneEnums.Obstacle.valueOf(extras.getString("found"));
+        obstacle = Obstacle.valueOf(extras.getString("found"));
     }
 
     public int getCost() {
@@ -24,7 +24,7 @@ public class Echo {
         return range;
     }
 
-    public DroneEnums.Obstacle getObstacle() {
+    public Obstacle getObstacle() {
         return obstacle;
     }
 }
