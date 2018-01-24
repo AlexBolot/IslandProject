@@ -32,8 +32,18 @@ public class DroneEnums
 
     public enum Obstacle
     {
-        GROUND,
-        BORDER
+        GROUND("GROUND"),
+        BORDER("OUT_OF_RANGE");
+
+        private String value;
+
+        Obstacle(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
     }
 
     public enum SubState
