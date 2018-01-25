@@ -15,16 +15,14 @@ import java.util.Map;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
 import static org.apache.logging.log4j.LogManager.getLogger;
 
-public class Explorer implements IExplorerRaid
-{
+public class Explorer implements IExplorerRaid {
 
     private static Logger logger = getLogger(Explorer.class);
-    private Drone    drone;
+    private Drone drone;
     private DroneMap droneMap;
 
     @Override
-    public void initialize (String contract)
-    {
+    public void initialize(String contract) {
         logger.debug("Initializing the Explorer");
         logger.trace("Contract: " + contract);
         JSONObject data = new JSONObject(contract);
@@ -34,16 +32,14 @@ public class Explorer implements IExplorerRaid
     }
 
     @Override
-    public String takeDecision ()
-    {
+    public String takeDecision() {
         logger.info("Taking a decision now");
 
         return drone.takeDecision();
     }
 
     @Override
-    public void acknowledgeResults (String results)
-    {
+    public void acknowledgeResults(String results) {
         logger.info("Acknowledging results");
         JSONObject data = new JSONObject(results);
 
@@ -52,17 +48,17 @@ public class Explorer implements IExplorerRaid
     }
 
     @Override
-    public String deliverFinalReport ()
-    {
+    public String deliverFinalReport() {
 
         StringBuilder str = new StringBuilder();
 
         Map<Coordinates, DroneTile> droneTiles = droneMap.getDroneTiles();
 
-        for (Map.Entry<Coordinates, DroneTile> tile : droneTiles.entrySet())
-        {
-            if (!tile.getValue().getPossibleCreek().isEmpty()) str.append("CREEKS = ").append(tile.getValue().getPossibleCreek());
-            if (!tile.getValue().getPossibleSite().isEmpty()) str.append("SITE = ").append(tile.getValue().getPossibleSite());
+        for (Map.Entry<Coordinates, DroneTile> tile : droneTiles.entrySet()) {
+            if (!tile.getValue().getPossibleCreek().isEmpty())
+                str.append("CREEKS = ").append(tile.getValue().getPossibleCreek());
+            if (!tile.getValue().getPossibleSite().isEmpty())
+                str.append("SITE = ").append(tile.getValue().getPossibleSite());
         }
 
         return str.toString();

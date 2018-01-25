@@ -47,7 +47,7 @@ public class IslandMapTest {
         tiles.get(3).setBiomesPercentage(biomesPercentage);
         tiles.get(3).setResourcesStats(resourcesStats);
     }
-    
+
     @Test
     public void addTileTest() {
         islandMap.addTile(new Coordinates(0, 0), tiles.get(0));

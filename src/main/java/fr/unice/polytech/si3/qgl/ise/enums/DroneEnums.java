@@ -1,17 +1,14 @@
 package fr.unice.polytech.si3.qgl.ise.enums;
 
-public class DroneEnums
-{
-    public enum ZQSD
-    {
+public class DroneEnums {
+    public enum ZQSD {
         LEFT,
         RIGHT,
         FRONT,
         BACK
     }
 
-    public enum NSEW
-    {
+    public enum NSEW {
         EAST("E"),
         WEST("W"),
         NORTH("N"),
@@ -19,19 +16,16 @@ public class DroneEnums
 
         private String value;
 
-        NSEW (String value)
-        {
+        NSEW(String value) {
             this.value = value;
         }
 
-        public String getValue ()
-        {
+        public String getValue() {
             return value;
         }
     }
 
-    public enum Obstacle
-    {
+    public enum Obstacle {
         GROUND("GROUND"),
         BORDER("OUT_OF_RANGE");
 
@@ -46,8 +40,7 @@ public class DroneEnums
         }
     }
 
-    public enum SubState
-    {
+    public enum SubState {
         INIT_ECHO_FRONT,
         INIT_ECHO_RIGHT,
         INIT_ECHO_LEFT,
