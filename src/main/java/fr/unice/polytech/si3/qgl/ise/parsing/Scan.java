@@ -6,6 +6,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * Parses the data obtained through the scan command
+ */
 public class Scan {
     private int cost;
     private ArrayList<String> creeks = new ArrayList<>();
