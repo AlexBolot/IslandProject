@@ -61,6 +61,24 @@ public class DroneEnums {
         CHANGELINE_TURN1,
         CHANGELINE_TURN2,
         CHANGELINE_ECHO_FRONT,
-        CHANGELINE_DONE
+        CHANGELINE_DONE,
+
+        PASS_ISLAND_STEP_1,
+        PASS_ISLAND_STEP_2,
+
+        ABOUT_TURN_L_1,
+        ABOUT_TURN_L_2,
+        ABOUT_TURN_L_3,
+        ABOUT_TURN_L_4,
+        ABOUT_TURN_L_5,
+        ABOUT_TURN_L_6,
+        ABOUT_TURN_L_7,
+        ABOUT_TURN_R_1,
+        ABOUT_TURN_R_2,
+        ABOUT_TURN_R_3,
+        ABOUT_TURN_R_4,
+        ABOUT_TURN_R_5,
+        ABOUT_TURN_R_6,
+        ABOUT_TURN_R_7,
     }
 }

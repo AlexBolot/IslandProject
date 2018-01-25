@@ -3,6 +3,9 @@ package fr.unice.polytech.si3.qgl.ise.parsing;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle;
 import org.json.JSONObject;
 
+/**
+ * Parses the data obtained through the echo command
+ */
 public class Echo {
     private int cost;
     private int range;

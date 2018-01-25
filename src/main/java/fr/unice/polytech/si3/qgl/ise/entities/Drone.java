@@ -312,7 +312,110 @@ public class Drone {
                     subState = REACH_ISLAND_MOVE;
                     return takeDecision();
                 }
+                //A rajouter avec la condition dans le else if une fois qu'on aura stocké les criques et emergencySites
+                //else if(){
+                //    subState = PASS_ISLAND_STEP_1;
+                //    return takeDecision();
+                //}
                 break;
+
+            //region -> ABOUT-TURN
+            case PASS_ISLAND_STEP_1:
+                if (margins.get(lastTurn)._1 == BORDER) {
+                    if (lastTurn == LEFT) {
+                        subState = ABOUT_TURN_L_1;
+                    } else subState = ABOUT_TURN_R_1;
+                    return takeDecision();
+                } else {
+                    Integer frontDist = margins.get(FRONT)._2;
+                    margins.put(FRONT, new Tuple2<>(BORDER, frontDist - 1));
+                    subState = PASS_ISLAND_STEP_2;
+
+                    return fly();
+                }
+
+            case PASS_ISLAND_STEP_2:
+                subState = PASS_ISLAND_STEP_1;
+
+                return echo(getOri(lastTurn));
+
+            case ABOUT_TURN_L_1:
+                subState = ABOUT_TURN_L_2;
+
+                return heading(getOri(RIGHT));
+
+            case ABOUT_TURN_L_2:
+                subState = ABOUT_TURN_L_3;
+                Integer frontDist = margins.get(FRONT)._2;
+                Obstacle obst = margins.get(FRONT)._1;
+                margins.put(FRONT, new Tuple2<>(obst, frontDist - 1));
+
+                return fly();
+
+            case ABOUT_TURN_L_3:
+                subState = ABOUT_TURN_L_4;
+
+                return heading(getOri(LEFT));
+
+            case ABOUT_TURN_L_4:
+                subState = ABOUT_TURN_L_5;
+
+                return heading(getOri(LEFT));
+
+            case ABOUT_TURN_L_5:
+                subState = ABOUT_TURN_L_6;
+
+                return heading(getOri(LEFT));
+
+            case ABOUT_TURN_L_6:
+                subState = ABOUT_TURN_L_7;
+
+                return heading(getOri(RIGHT));
+
+            case ABOUT_TURN_L_7:
+                subState = REACH_ISLAND_ECHO_FRONT;
+
+                return heading(getOri(LEFT));
+
+            case ABOUT_TURN_R_1:
+                subState = ABOUT_TURN_R_2;
+
+                return heading(getOri(RIGHT));
+
+            case ABOUT_TURN_R_2:
+                subState = ABOUT_TURN_R_3;
+
+                return heading(getOri(LEFT));
+
+            case ABOUT_TURN_R_3:
+                subState = ABOUT_TURN_R_4;
+
+                return heading(getOri(LEFT));
+
+            case ABOUT_TURN_R_4:
+                subState = ABOUT_TURN_R_5;
+                Integer frontDist2 = margins.get(FRONT)._2;
+                Obstacle obst2 = margins.get(FRONT)._1;
+                margins.put(FRONT, new Tuple2<>(obst2, frontDist2 - 1));
+
+                return fly();
+
+            case ABOUT_TURN_R_5:
+                subState = ABOUT_TURN_R_6;
+
+                return heading(getOri(LEFT));
+
+            case ABOUT_TURN_R_6:
+                subState = ABOUT_TURN_R_7;
+
+                return heading(getOri(LEFT));
+
+            case ABOUT_TURN_R_7:
+                subState = REACH_ISLAND_ECHO_FRONT;
+
+                return heading(getOri(RIGHT));
+            //endregion
+
         }
         return stop();
     }
