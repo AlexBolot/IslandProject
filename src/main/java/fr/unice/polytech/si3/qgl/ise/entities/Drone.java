@@ -5,9 +5,9 @@ import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.SubState;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
-import fr.unice.polytech.si3.qgl.ise.maps.Coordinates;
-import fr.unice.polytech.si3.qgl.ise.maps.DroneMap;
-import fr.unice.polytech.si3.qgl.ise.maps.DroneTile;
+import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
+import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
+import fr.unice.polytech.si3.qgl.ise.map.Tile;
 import fr.unice.polytech.si3.qgl.ise.parsing.Echo;
 import fr.unice.polytech.si3.qgl.ise.parsing.Scan;
 import org.json.JSONObject;
@@ -23,22 +23,18 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.SubState.*;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 
-public class Drone
-{
-    private NSEW        orientation;
-    private ZQSD        lastTurn;
-    private ZQSD        lastEcho;
-    private boolean     isFlying;
-    private DroneMap    map;
-    private Coordinates coords;
-    private SubState    subState;
-
+public class Drone {
     private static final int movementUnit = 3;
-
+    private NSEW orientation;
+    private ZQSD lastTurn;
+    private ZQSD lastEcho;
+    private boolean isFlying;
+    private IslandMap map;
+    private Coordinates coords;
+    private SubState subState;
     private HashMap<ZQSD, Tuple2<Obstacle, Integer>> margins;
 
-    public Drone (DroneMap map, NSEW orientation)
-    {
+    public Drone(IslandMap map, NSEW orientation) {
         this.map = map;
         this.coords = new Coordinates(0, 0);
         this.isFlying = true;
@@ -47,22 +43,20 @@ public class Drone
     }
 
     /**
-     Create a JSON formatted string doing action with parameters
-
-     @param functionName      action name
-     @param parameterAndValue name of parameter then value
-     @return String matching the action requested
+     * Create a JSON formatted string doing action with parameters
+     *
+     * @param functionName      action name
+     * @param parameterAndValue name of parameter then value
+     * @return String matching the action requested
      */
-    private String createFunctionWithParams (String functionName, String... parameterAndValue)
-    {
-        if (parameterAndValue.length % 2 != 0) throw new IllegalArgumentException("The parameters name and value must be in same number");
+    private String createFunctionWithParams(String functionName, String... parameterAndValue) {
+        if (parameterAndValue.length % 2 != 0)
+            throw new IllegalArgumentException("The parameters name and value must be in same number");
         JSONObject jsonReturn = new JSONObject();
         jsonReturn.put("action", functionName);
-        if (parameterAndValue.length > 0)
-        {
+        if (parameterAndValue.length > 0) {
             JSONObject params = new JSONObject();
-            for (int i = 0; i < parameterAndValue.length - 1; i += 2)
-            {
+            for (int i = 0; i < parameterAndValue.length - 1; i += 2) {
                 params.put(parameterAndValue[i], parameterAndValue[i + 1]);
             }
             jsonReturn.put("parameters", parameterAndValue);
@@ -70,11 +64,9 @@ public class Drone
         return jsonReturn.toString();
     }
 
-    private String fly ()
-    {
+    private String fly() {
         //region --> switch (orientation) // to change coordinates
-        switch (orientation)
-        {
+        switch (orientation) {
             case EAST:
                 coords = new Coordinates(coords.getX() + movementUnit, coords.getY());
                 break;
@@ -96,20 +88,17 @@ public class Drone
         return createFunctionWithParams("fly");
     }
 
-    @SuppressWarnings ("Duplicates")
-    private String heading (NSEW direction)
-    {
+    @SuppressWarnings("Duplicates")
+    private String heading(NSEW direction) {
         //region --> switch (orientation) // to change coordinates
         int newX;
         int newY;
 
-        switch (orientation)
-        {
+        switch (orientation) {
             case EAST:
                 newX = coords.getX() + movementUnit;
 
-                switch (direction)
-                {
+                switch (direction) {
                     case NORTH:
                         coords = new Coordinates(newX, coords.getY() + movementUnit);
                         break;
@@ -124,8 +113,7 @@ public class Drone
             case WEST:
                 newX = coords.getX() - movementUnit;
 
-                switch (direction)
-                {
+                switch (direction) {
                     case NORTH:
                         coords = new Coordinates(newX, coords.getY() + movementUnit);
                         break;
@@ -139,8 +127,7 @@ public class Drone
             case NORTH:
                 newY = coords.getY() + movementUnit;
 
-                switch (direction)
-                {
+                switch (direction) {
                     case EAST:
                         coords = new Coordinates(coords.getX() + movementUnit, newY);
                         break;
@@ -154,8 +141,7 @@ public class Drone
             case SOUTH:
                 newY = coords.getY() - movementUnit;
 
-                switch (direction)
-                {
+                switch (direction) {
                     case EAST:
                         coords = new Coordinates(coords.getX() + movementUnit, newY);
                         break;
@@ -171,25 +157,20 @@ public class Drone
         return createFunctionWithParams("heading", "direction", direction.getValue());
     }
 
-    private String echo (NSEW direction)
-    {
+    private String echo(NSEW direction) {
         return createFunctionWithParams("echo", "direction", direction.getValue());
     }
 
-    private String scan ()
-    {
+    private String scan() {
         return createFunctionWithParams("scan");
     }
 
-    private String stop ()
-    {
+    private String stop() {
         return createFunctionWithParams("action", "stop");
     }
 
-    public String takeDecision ()
-    {
-        switch (subState)
-        {
+    public String takeDecision() {
+        switch (subState) {
             //region -> INITIAL
             case INIT_ECHO_FRONT:
                 subState = INIT_ECHO_RIGHT;
@@ -216,7 +197,8 @@ public class Drone
 
                 ZQSD dir;
 
-                if (margins.get(FRONT)._1 == GROUND) dir = (margins.get(RIGHT)._2 < margins.get(LEFT)._2) ? RIGHT : LEFT;
+                if (margins.get(FRONT)._1 == GROUND)
+                    dir = (margins.get(RIGHT)._2 < margins.get(LEFT)._2) ? RIGHT : LEFT;
                 else dir = (margins.get(RIGHT)._2 > margins.get(LEFT)._2) ? RIGHT : LEFT;
 
                 margins.put(FRONT, new Tuple2<>(BORDER, margins.get(dir)._2 - 1));
@@ -232,12 +214,10 @@ public class Drone
 
             case SEARCH_FLY:
 
-                if (margins.get(getOpposite(lastTurn))._1 == GROUND)
-                {
+                if (margins.get(getOpposite(lastTurn))._1 == GROUND) {
                     Integer frontDist = margins.get(FRONT)._2;
 
-                    if (frontDist > 1)
-                    {
+                    if (frontDist > 1) {
                         margins.put(FRONT, new Tuple2<>(BORDER, frontDist - 1));
                         subState = SEARCH_ECHO_SIDE;
 
@@ -274,12 +254,10 @@ public class Drone
 
             case REACH_ISLAND_MOVE:
 
-                if (margins.get(getOpposite(lastTurn))._1 == GROUND)
-                {
+                if (margins.get(getOpposite(lastTurn))._1 == GROUND) {
                     Integer frontDist = margins.get(FRONT)._2;
 
-                    if (frontDist > 0)
-                    {
+                    if (frontDist > 0) {
                         margins.put(FRONT, new Tuple2<>(BORDER, frontDist - 1));
                         subState = REACH_ISLAND_MOVE;
 
@@ -299,10 +277,9 @@ public class Drone
 
             case SCAN_STEP_2:
 
-                List<Biome> biomes = ((DroneTile) map.getTile(coords)).getPossibleBiomes();
+                List<Biome> biomes = map.getTile(coords).getPossibleBiomes();
 
-                if (biomes.stream().anyMatch(biome -> biome != OCEAN))
-                {
+                if (biomes.stream().anyMatch(biome -> biome != OCEAN)) {
                     subState = SCAN_STEP_1;
                     margins.put(FRONT, new Tuple2<>(BORDER, margins.get(FRONT)._2 - 1));
 
@@ -331,8 +308,7 @@ public class Drone
 
             case CHANGELINE_DONE:
 
-                if (margins.get(FRONT)._1 == GROUND)
-                {
+                if (margins.get(FRONT)._1 == GROUND) {
                     subState = REACH_ISLAND_MOVE;
                     return takeDecision();
                 }
@@ -341,49 +317,41 @@ public class Drone
         return stop();
     }
 
-    public void acknowledgeEcho (Echo echo)
-    {
+    public void acknowledgeEcho(Echo echo) {
         Obstacle obstacle = echo.getObstacle();
         Integer range = echo.getRange();
 
         margins.put(lastEcho, new Tuple2<>(obstacle, range));
     }
 
-    public void acknowledgeScan (Scan scan)
-    {
-        DroneTile droneTile = new DroneTile();
+    public void acknowledgeScan(Scan scan) {
+        Tile tile = new Tile();
 
-        if (!scan.getCreeks().isEmpty()) droneTile.setPossibleCreek(scan.getCreeks().get(0));
-        if (!scan.getEmergencySites().isEmpty()) droneTile.setPossibleSite(scan.getEmergencySites().get(0));
+        if (!scan.getCreeks().isEmpty()) map.addCreek(coords, scan.getCreeks().get(0));
+        if (!scan.getEmergencySites().isEmpty()) map.addSite(coords, scan.getCreeks().get(0));
 
-        map.addTile(coords, droneTile);
+        map.addTile(coords, tile);
     }
 
     //region ===== Getters =====
 
-    public boolean isFlying ()
-    {
+    public boolean isFlying() {
         return isFlying;
     }
 
-    public HashMap<ZQSD, Tuple2<Obstacle, Integer>> getMargins ()
-    {
+    public HashMap<ZQSD, Tuple2<Obstacle, Integer>> getMargins() {
         return margins;
     }
 
-    public void setLastEcho (ZQSD lastEcho)
-    {
+    public void setLastEcho(ZQSD lastEcho) {
         this.lastEcho = lastEcho;
     }
 
-    @SuppressWarnings ("Duplicates")
-    private NSEW getOri (ZQSD direction)
-    {
-        switch (orientation)
-        {
+    @SuppressWarnings("Duplicates")
+    private NSEW getOri(ZQSD direction) {
+        switch (orientation) {
             case EAST:
-                switch (direction)
-                {
+                switch (direction) {
                     case LEFT:
                         return NORTH;
                     case RIGHT:
@@ -393,8 +361,7 @@ public class Drone
                 }
                 break;
             case WEST:
-                switch (direction)
-                {
+                switch (direction) {
                     case LEFT:
                         return SOUTH;
                     case RIGHT:
@@ -404,8 +371,7 @@ public class Drone
                 }
                 break;
             case NORTH:
-                switch (direction)
-                {
+                switch (direction) {
                     case LEFT:
                         return WEST;
                     case RIGHT:
@@ -415,8 +381,7 @@ public class Drone
                 }
                 break;
             case SOUTH:
-                switch (direction)
-                {
+                switch (direction) {
                     case LEFT:
                         return EAST;
                     case RIGHT:
@@ -429,10 +394,8 @@ public class Drone
         throw new IllegalArgumentException("Wrong direction given !");
     }
 
-    private ZQSD getOpposite (ZQSD dir)
-    {
-        switch (dir)
-        {
+    private ZQSD getOpposite(ZQSD dir) {
+        switch (dir) {
             case LEFT:
                 return RIGHT;
             case RIGHT:

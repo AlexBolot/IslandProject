@@ -1,10 +1,10 @@
 package fr.unice.polytech.si3.qgl.ise.parsing;
 
 import fr.unice.polytech.si3.qgl.ise.enums.Biome;
-import org.json.JSONObject;
 import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
-import java.util.List;
 
 public class Scan {
     private int cost;
@@ -12,32 +12,32 @@ public class Scan {
     private ArrayList<String> emergencySites = null;
     private ArrayList<Biome> biomes;
 
-    public Scan(String scanResult){
+    public Scan(String scanResult) {
         JSONObject data = new JSONObject(scanResult);
         cost = data.getInt("cost");
         JSONObject extras = data.getJSONObject("extras");
         JSONArray creeksJson = extras.getJSONArray("creeks");
-        for(int i=0;i<creeksJson.length();i++){
+        for (int i = 0; i < creeksJson.length(); i++) {
             creeks.add(creeksJson.getString(i));
         }
         JSONArray sitesJson = extras.getJSONArray("sites");
-        for(int i=0;i<sitesJson.length();i++){
+        for (int i = 0; i < sitesJson.length(); i++) {
             emergencySites.add(sitesJson.getString(i));
         }
         JSONArray biomesJson = extras.getJSONArray("biomes");
-        for(int i=0;i<biomesJson.length();i++){
-            if( sitesJson.getString(i).equals("OCEAN") ){
+        for (int i = 0; i < biomesJson.length(); i++) {
+            if (sitesJson.getString(i).equals("OCEAN")) {
                 biomes.add(Biome.OCEAN);
-            }
-            else{
+            } else {
                 biomes.add(Biome.BEACH);
             }
         }
     }
 
-    public ArrayList<String> getCreeks(){
+    public ArrayList<String> getCreeks() {
         return creeks;
     }
+
     public ArrayList<String> getEmergencySites() {
         return emergencySites;
     }
