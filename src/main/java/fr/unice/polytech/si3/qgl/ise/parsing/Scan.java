@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 public class Scan {
     private int cost;
-    private ArrayList<String> creeks = null;
-    private ArrayList<String> emergencySites = null;
-    private ArrayList<Biome> biomes;
+    private ArrayList<String> creeks = new ArrayList<>();
+    private ArrayList<String> emergencySites = new ArrayList<>();
+    private ArrayList<Biome> biomes = new ArrayList<>();
 
     public Scan(String scanResult) {
         JSONObject data = new JSONObject(scanResult);
@@ -26,11 +26,7 @@ public class Scan {
         }
         JSONArray biomesJson = extras.getJSONArray("biomes");
         for (int i = 0; i < biomesJson.length(); i++) {
-            if (sitesJson.getString(i).equals("OCEAN")) {
-                biomes.add(Biome.OCEAN);
-            } else {
-                biomes.add(Biome.BEACH);
-            }
+            biomes.add(Biome.valueOf(biomesJson.getString(i)));
         }
     }
 
@@ -40,5 +36,9 @@ public class Scan {
 
     public ArrayList<String> getEmergencySites() {
         return emergencySites;
+    }
+
+    public ArrayList<Biome> getBiomes() {
+        return biomes;
     }
 }
