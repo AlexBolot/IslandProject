@@ -1,4 +1,6 @@
-package fr.unice.polytech.si3.qgl.ise.maps;
+package fr.unice.polytech.si3.qgl.ise.map;
+
+import java.util.Objects;
 
 /**
  * A class that allows the identification the location of the tiles on the map
@@ -21,12 +23,16 @@ public class Coordinates {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return (obj instanceof Coordinates && ((Coordinates) obj).x == x && ((Coordinates) obj).y == y);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Coordinates that = (Coordinates) o;
+        return x == that.x &&
+                y == that.y;
     }
 
     @Override
     public int hashCode() {
-        return (String.valueOf(x) + String.valueOf(y) + getClass()).hashCode();
+        return Objects.hash(x, y);
     }
 }

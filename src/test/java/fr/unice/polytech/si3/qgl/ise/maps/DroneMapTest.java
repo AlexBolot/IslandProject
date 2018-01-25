@@ -1,6 +1,7 @@
 package fr.unice.polytech.si3.qgl.ise.maps;
 
 import fr.unice.polytech.si3.qgl.ise.enums.Biome;
+import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
 import org.junit.Before;
 import org.junit.Test;
 

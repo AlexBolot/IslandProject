@@ -2,7 +2,7 @@ package fr.unice.polytech.si3.qgl.ise;
 
 import eu.ace_design.island.bot.IExplorerRaid;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
-import fr.unice.polytech.si3.qgl.ise.maps.Coordinates;
+import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
 import fr.unice.polytech.si3.qgl.ise.maps.DroneMap;
 import fr.unice.polytech.si3.qgl.ise.maps.DroneTile;
 import fr.unice.polytech.si3.qgl.ise.parsing.Echo;

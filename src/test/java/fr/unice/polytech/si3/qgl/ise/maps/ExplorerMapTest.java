@@ -4,6 +4,7 @@ import fr.unice.polytech.si3.qgl.ise.enums.Biome;
 import fr.unice.polytech.si3.qgl.ise.enums.Exploitability;
 import fr.unice.polytech.si3.qgl.ise.enums.Abundance;
 import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
+import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
 import org.junit.Before;
 import org.junit.Test;
 import scala.Tuple2;

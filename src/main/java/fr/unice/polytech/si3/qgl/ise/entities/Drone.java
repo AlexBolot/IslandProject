@@ -5,7 +5,7 @@ import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.SubState;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
-import fr.unice.polytech.si3.qgl.ise.maps.Coordinates;
+import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
 import fr.unice.polytech.si3.qgl.ise.maps.DroneMap;
 import fr.unice.polytech.si3.qgl.ise.maps.DroneTile;
 import fr.unice.polytech.si3.qgl.ise.parsing.Echo;

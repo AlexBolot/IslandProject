@@ -1,5 +1,7 @@
 package fr.unice.polytech.si3.qgl.ise.maps;
 
+import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
+
 import java.util.HashMap;
 import java.util.Map;
 
