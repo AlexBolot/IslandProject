@@ -355,6 +355,7 @@ public class Drone
 
         if (!scan.getCreeks().isEmpty()) droneTile.setPossibleCreek(scan.getCreeks().get(0));
         if (!scan.getEmergencySites().isEmpty()) droneTile.setPossibleSite(scan.getEmergencySites().get(0));
+        if (!scan.getBiomes().isEmpty()) droneTile.setPossibleBiomes(scan.getBiomes());
 
         map.addTile(coords, droneTile);
     }
