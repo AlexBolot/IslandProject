@@ -12,6 +12,7 @@ import static org.junit.Assert.assertEquals;
 public class ScanTest {
 
     private String dataIn;
+    private Scan scan;
 
     @Before
     public void setup() {
@@ -20,12 +21,12 @@ public class ScanTest {
                 "\"MANGROVE\", \"TROPICAL_RAIN_FOREST\", \"TROPICAL_SEASONAL_FOREST\", " +
                 "\"TEMPERATE_DECIDUOUS_FOREST\", \"TEMPERATE_RAIN_FOREST\", \"TEMPERATE_DESERT\", " +
                 "\"TAIGA\", \"SNOW\", \"TUNDRA\", \"ALPINE\", \"GLACIER\", " +
-                "\"SHRUBLAND\", \"SUB_TROPICAL_DESERT\"], \"creeks\": [\"idC\"], \"sites\": [\"idS\"]}, \"status\": \"OK\"}";
+                "\"SHRUBLAND\", \"SUB_TROPICAL_DESERT\"], \"creeks\": [\"idC1\", \"idC2\"], \"sites\": [\"idS\"]}, \"status\": \"OK\"}";
+        scan = new Scan(dataIn);
     }
 
     @Test
     public void parsingTestForBiomes() {
-        Scan scan = new Scan(dataIn);
         assertEquals("Test OCEAN", Biome.OCEAN, scan.getBiomes().get(0));
         assertEquals("Test LAKE", Biome.LAKE, scan.getBiomes().get(1));
         assertEquals("Test BEACH", Biome.BEACH, scan.getBiomes().get(2));
@@ -47,5 +48,11 @@ public class ScanTest {
 
         assertEquals("Test SHRUBLAND", Biome.SHRUBLAND, scan.getBiomes().get(15));
         assertEquals("Test SUB_TROPICAL_DESERT", Biome.SUB_TROPICAL_DESERT, scan.getBiomes().get(16));
+    }
+
+    @Test
+    public void parsingTestForCreeks(){
+        assertEquals("The scan must fin creek with id \"idC1\"", "idC1", scan.getCreeks().get(0));
+        assertEquals("The scan must fin creek with id \"idC2\"", "idC2", scan.getCreeks().get(1));
     }
 }
