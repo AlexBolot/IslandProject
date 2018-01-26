@@ -52,7 +52,7 @@ public class ScanTest {
 
     @Test
     public void parsingTestForCreeks(){
-        assertEquals("Test creek 1", "idC1", scan.getCreeks().get(0));
-        assertEquals("Test creek 2", "idC2", scan.getCreeks().get(1));
+        assertEquals("The scan must fin creek with id \"idC1\"", "idC1", scan.getCreeks().get(0));
+        assertEquals("The scan must fin creek with id \"idC2\"", "idC2", scan.getCreeks().get(1));
     }
 }
