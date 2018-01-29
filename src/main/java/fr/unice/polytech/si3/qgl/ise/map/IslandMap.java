@@ -46,6 +46,12 @@ public class IslandMap {
         }
     }
 
+    /**
+     * Return all Tile to update with a layer accuracy system, the layer 1 is 100% sure, the 7th is almost unknown
+     * @param x center of the 3*3 drone map
+     * @param y center of the 3*3 drone map
+     * @return List of List of tile correspondings of layers to update
+     */
     public List<List<Tile>> getTileToUpdateFrom(int x, int y) {
         List<List<Tile>> layers = new ArrayList<>();
         //region layer 1
