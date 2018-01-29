@@ -1,5 +1,7 @@
 package fr.unice.polytech.si3.qgl.ise.enums;
 
+import java.util.Arrays;
+
 public class DroneEnums {
     public enum ZQSD {
         LEFT,
@@ -23,6 +25,14 @@ public class DroneEnums {
         public String getValue() {
             return value;
         }
+
+        public static NSEW getFromValue (String value)
+        {
+            return Arrays.stream(NSEW.values())
+                         .filter(nsew -> nsew.value.equals(value))
+                         .findFirst()
+                         .orElseThrow(() -> new IllegalArgumentException("This NSEW does not exist"));
+        }
     }
 
     public enum Obstacle {
@@ -38,6 +48,22 @@ public class DroneEnums {
         public String getValue() {
             return value;
         }
+
+        public static Obstacle getFromValue (String value)
+        {
+            return Arrays.stream(Obstacle.values())
+                         .filter(obs -> obs.value.equals(value))
+                         .findFirst()
+                         .orElseThrow(() -> new IllegalArgumentException("This Obstacle does not exist"));
+        }
+    }
+
+    public enum Action {
+        Scan,
+        Fly,
+        Echo,
+        Heading,
+        Stop
     }
 
     public enum SubState {

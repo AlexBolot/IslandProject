@@ -5,6 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 /**
  * Parses the data obtained through the scan command
@@ -19,21 +20,20 @@ public class Scan {
         creeks = new ArrayList<>();
         emergencySites = new ArrayList<>();
         biomes = new ArrayList<>();
+
         JSONObject data = new JSONObject(scanResult);
+
         cost = data.getInt("cost");
+
         JSONObject extras = data.getJSONObject("extras");
+
         JSONArray creeksJson = extras.getJSONArray("creeks");
-        for (int i = 0; i < creeksJson.length(); i++) {
-            creeks.add(creeksJson.getString(i));
-        }
         JSONArray sitesJson = extras.getJSONArray("sites");
-        for (int i = 0; i < sitesJson.length(); i++) {
-            emergencySites.add(sitesJson.getString(i));
-        }
         JSONArray biomesJson = extras.getJSONArray("biomes");
-        for (int i = 0; i < biomesJson.length(); i++) {
-            addBiome(biomesJson.getString(i));
-        }
+
+        IntStream.range(0, creeksJson.length()).forEach(i -> creeks.add(creeksJson.getString(i)));
+        IntStream.range(0, sitesJson.length()).forEach(i -> emergencySites.add(sitesJson.getString(i)));
+        IntStream.range(0, biomesJson.length()).mapToObj(biomesJson::getString).forEach(this::addBiome);
     }
 
     private void addBiome(String biome) {

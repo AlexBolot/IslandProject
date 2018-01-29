@@ -16,7 +16,7 @@ public class Echo {
         cost = data.getInt("cost");
         JSONObject extras = data.getJSONObject("extras");
         range = extras.getInt("range");
-        obstacle = Obstacle.valueOf(extras.getString("found"));
+        obstacle = Obstacle.getFromValue(extras.getString("found"));
     }
 
     public int getCost() {
