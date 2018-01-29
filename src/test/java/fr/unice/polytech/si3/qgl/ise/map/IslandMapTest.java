@@ -13,8 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 
 public class IslandMapTest {
 
@@ -95,5 +94,33 @@ public class IslandMapTest {
         assertEquals("id2", islandMap.getSites().get(new Coordinates(4986, -49876)));
         assertEquals("id3", islandMap.getSites().get(new Coordinates(4, 1)));
         assertEquals("id4", islandMap.getSites().get(new Coordinates(-11, -489)));
+    }
+
+    @Test
+    public void testGetTileWhenExists() {
+        Tile expected = new Tile();
+        islandMap.addTile(new Coordinates(50, 50), expected);
+        assertTrue("The returned Tile must be a reference, not a copy",
+                expected == islandMap.getTile(new Coordinates(50, 50)));
+    }
+
+    @Test
+    public void testGetTileWhenNotExists() {
+        Tile expected = islandMap.getTile(new Coordinates(1337, 1337));
+        assertTrue("If the tile has never been created, the getter must set it before returning it",
+                expected == islandMap.getTile(new Coordinates(1337, 1337)) && expected != null);
+    }
+
+    @Test
+    public void testTilesToUpdates() {
+        List<List<Tile>> expected = islandMap.getTileToUpdateFrom(0, 0);
+        assertEquals("It must be 7 layers of accuracy", 7, expected.size());
+        assertEquals("The layer 1 must have 9 tiles", 9, expected.get(0).size());
+        assertEquals("The layer 2 must have 12 tiles", 12, expected.get(1).size());
+        assertEquals("The layer 3 must have 16 tiles", 16, expected.get(2).size());
+        assertEquals("The layer 4 must have 20 tiles", 20, expected.get(3).size());
+        assertEquals("The layer 5 must have 12 tiles", 12, expected.get(4).size());
+        assertEquals("The layer 6 must have 8 tiles", 8, expected.get(5).size());
+        assertEquals("The layer 7 must have 4 tiles", 4, expected.get(6).size());
     }
 }
