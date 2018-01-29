@@ -48,6 +48,7 @@ public class IslandMap {
 
     /**
      * Return all Tile to update with a layer accuracy system, the layer 1 is 100% sure, the 7th is almost unknown
+     *
      * @param x center of the 3*3 drone map
      * @param y center of the 3*3 drone map
      * @return List of List of tile correspondings of layers to update
@@ -56,8 +57,8 @@ public class IslandMap {
         List<List<Tile>> layers = new ArrayList<>();
         //region layer 1
         List<Tile> layer1 = new ArrayList<>();
-        for (int i = x - 1; i < x + 1; ++i)
-            for (int j = y - 1; j < y + 1; ++j)
+        for (int i = x - 1; i <= x + 1; ++i)
+            for (int j = y - 1; j <= y + 1; ++j)
                 layer1.add(getTile(new Coordinates(i, j)));
         layers.add(layer1);
         //endregion
