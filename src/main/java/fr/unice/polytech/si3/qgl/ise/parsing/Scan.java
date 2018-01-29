@@ -37,71 +37,7 @@ public class Scan {
     }
 
     private void addBiome(String biome) {
-        switch (biome) {
-            //region Common biomes
-            case "OCEAN":
-                biomes.add(Biome.OCEAN);
-                break;
-            case "LAKE":
-                biomes.add(Biome.LAKE);
-                break;
-            case "BEACH":
-                biomes.add(Biome.BEACH);
-                break;
-            case "GRASSLAND":
-                biomes.add(Biome.GRASSLAND);
-                break;
-            //endregion
-            //region Tropical biomes
-            case "MANGROVE":
-                biomes.add(Biome.MANGROVE);
-                break;
-            case "TROPICAL_RAIN_FOREST":
-                biomes.add(Biome.TROPICAL_RAIN_FOREST);
-                break;
-            case "TROPICAL_SEASONAL_FOREST":
-                biomes.add(Biome.TROPICAL_SEASONAL_FOREST);
-                break;
-            //endregion
-            //region Temperate biomes
-            case "TEMPERATE_DECIDUOUS_FOREST":
-                biomes.add(Biome.TEMPERATE_DECIDUOUS_FOREST);
-                break;
-            case "TEMPERATE_RAIN_FOREST":
-                biomes.add(Biome.TEMPERATE_RAIN_FOREST);
-                break;
-            case "TEMPERATE_DESERT":
-                biomes.add(Biome.TEMPERATE_DESERT);
-                break;
-            //endregion
-            //region Nordic/montain biomes
-            case "TAIGA":
-                biomes.add(Biome.TAIGA);
-                break;
-            case "SNOW":
-                biomes.add(Biome.SNOW);
-                break;
-            case "TUNDRA":
-                biomes.add(Biome.TUNDRA);
-                break;
-            case "ALPINE":
-                biomes.add(Biome.ALPINE);
-                break;
-            case "GLACIER":
-                biomes.add(Biome.GLACIER);
-                break;
-            //endregion
-            //region Subtropical biomes
-            case "SHRUBLAND":
-                biomes.add(Biome.SHRUBLAND);
-                break;
-            case "SUB_TROPICAL_DESERT":
-                biomes.add(Biome.SUB_TROPICAL_DESERT);
-                break;
-            //endregion
-            default:
-                throw new IllegalArgumentException("This biome doesn't exist");
-        }
+        biomes.add(Biome.valueOf(biome));
     }
 
     public ArrayList<String> getCreeks() {
