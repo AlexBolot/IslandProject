@@ -1,6 +1,8 @@
 package fr.unice.polytech.si3.qgl.ise.map;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class IslandMap {
@@ -18,10 +20,6 @@ public class IslandMap {
         tiles.put(coordinates, tile);
     }
 
-    public Tile getTile(Coordinates coordinates) {
-        return new Tile(tiles.get(coordinates));
-    }
-
     public void addCreek(Coordinates coordinates, String creekId) {
         creeks.put(coordinates, creekId);
     }
@@ -36,5 +34,124 @@ public class IslandMap {
 
     public Map<Coordinates, String> getSites() {
         return new HashMap<>(sites);
+    }
+
+    public Tile getTile(Coordinates coord) {
+        if (tiles.containsKey(coord))
+            return tiles.get(coord);
+        else {
+            Tile tile = new Tile();
+            tiles.put(coord, tile);
+            return tile;
+        }
+    }
+
+    public List<List<Tile>> getTileToUpdateFrom(int x, int y) {
+        List<List<Tile>> layers = new ArrayList<>();
+        //region layer 1
+        List<Tile> layer1 = new ArrayList<>();
+        for (int i = x - 1; i < x + 1; ++i)
+            for (int j = y - 1; j < y + 1; ++j)
+                layer1.add(getTile(new Coordinates(i, j)));
+        layers.add(layer1);
+        //endregion
+        //region layer 2
+        List<Tile> layer2 = new ArrayList<>();
+        layer2.add(getTile(new Coordinates(x - 2, y - 1)));
+        layer2.add(getTile(new Coordinates(x - 2, y)));
+        layer2.add(getTile(new Coordinates(x - 2, y + 1)));
+        layer2.add(getTile(new Coordinates(x + 2, y - 1)));
+        layer2.add(getTile(new Coordinates(x + 2, y)));
+        layer2.add(getTile(new Coordinates(x + 2, y + 1)));
+        layer2.add(getTile(new Coordinates(x - 1, y - 2)));
+        layer2.add(getTile(new Coordinates(x, y - 2)));
+        layer2.add(getTile(new Coordinates(x + 1, y - 2)));
+        layer2.add(getTile(new Coordinates(x - 1, y + 2)));
+        layer2.add(getTile(new Coordinates(x, y + 2)));
+        layer2.add(getTile(new Coordinates(x + 1, y + 2)));
+        layers.add(layer2);
+        //endregion
+        //region layer 3
+        List<Tile> layer3 = new ArrayList<>();
+        layer3.add(getTile(new Coordinates(x - 3, y - 1)));
+        layer3.add(getTile(new Coordinates(x - 3, y)));
+        layer3.add(getTile(new Coordinates(x - 3, y + 1)));
+        layer3.add(getTile(new Coordinates(x + 3, y - 1)));
+        layer3.add(getTile(new Coordinates(x + 3, y)));
+        layer3.add(getTile(new Coordinates(x + 3, y + 1)));
+        layer3.add(getTile(new Coordinates(x - 1, y - 3)));
+        layer3.add(getTile(new Coordinates(x, y - 3)));
+        layer3.add(getTile(new Coordinates(x + 1, y - 3)));
+        layer3.add(getTile(new Coordinates(x - 1, y + 3)));
+        layer3.add(getTile(new Coordinates(x, y + 3)));
+        layer3.add(getTile(new Coordinates(x + 1, y + 3)));
+        layer3.add(getTile(new Coordinates(x - 2, y - 2)));
+        layer3.add(getTile(new Coordinates(x - 2, y + 2)));
+        layer3.add(getTile(new Coordinates(x + 2, y - 2)));
+        layer3.add(getTile(new Coordinates(x + 2, y + 2)));
+        layers.add(layer3);
+        //endregion
+        //region layer 4
+        List<Tile> layer4 = new ArrayList<>();
+        layer4.add(getTile(new Coordinates(x - 4, y - 1)));
+        layer4.add(getTile(new Coordinates(x - 4, y)));
+        layer4.add(getTile(new Coordinates(x - 4, y + 1)));
+        layer4.add(getTile(new Coordinates(x + 4, y - 1)));
+        layer4.add(getTile(new Coordinates(x + 4, y)));
+        layer4.add(getTile(new Coordinates(x + 4, y + 1)));
+        layer4.add(getTile(new Coordinates(x - 1, y - 4)));
+        layer4.add(getTile(new Coordinates(x, y - 4)));
+        layer4.add(getTile(new Coordinates(x + 1, y - 4)));
+        layer4.add(getTile(new Coordinates(x - 1, y + 4)));
+        layer4.add(getTile(new Coordinates(x, y + 4)));
+        layer4.add(getTile(new Coordinates(x + 1, y + 4)));
+        layer4.add(getTile(new Coordinates(x - 3, y + 2)));
+        layer4.add(getTile(new Coordinates(x - 2, y + 3)));
+        layer4.add(getTile(new Coordinates(x + 2, y + 3)));
+        layer4.add(getTile(new Coordinates(x + 3, y + 2)));
+        layer4.add(getTile(new Coordinates(x - 3, y - 2)));
+        layer4.add(getTile(new Coordinates(x - 2, y - 3)));
+        layer4.add(getTile(new Coordinates(x + 2, y - 3)));
+        layer4.add(getTile(new Coordinates(x + 3, y - 2)));
+        layers.add(layer4);
+        //endregion
+        //region layer 5
+        List<Tile> layer5 = new ArrayList<>();
+        layer5.add(getTile(new Coordinates(x - 4, y + 2)));
+        layer5.add(getTile(new Coordinates(x - 3, y + 3)));
+        layer5.add(getTile(new Coordinates(x - 2, y + 4)));
+        layer5.add(getTile(new Coordinates(x - 4, y - 2)));
+        layer5.add(getTile(new Coordinates(x - 3, y - 3)));
+        layer5.add(getTile(new Coordinates(x - 2, y - 4)));
+        layer5.add(getTile(new Coordinates(x + 2, y + 4)));
+        layer5.add(getTile(new Coordinates(x + 3, y + 3)));
+        layer5.add(getTile(new Coordinates(x + 4, y + 2)));
+        layer5.add(getTile(new Coordinates(x + 2, y - 4)));
+        layer5.add(getTile(new Coordinates(x + 3, y - 3)));
+        layer5.add(getTile(new Coordinates(x + 4, y - 2)));
+
+        layers.add(layer5);
+        //endregion
+        //region layer 6
+        List<Tile> layer6 = new ArrayList<>();
+        layer6.add(getTile(new Coordinates(x - 4, y + 3)));
+        layer6.add(getTile(new Coordinates(x - 3, y + 4)));
+        layer6.add(getTile(new Coordinates(x - 4, y - 3)));
+        layer6.add(getTile(new Coordinates(x - 3, y - 4)));
+        layer6.add(getTile(new Coordinates(x + 3, y + 4)));
+        layer6.add(getTile(new Coordinates(x + 4, y + 3)));
+        layer6.add(getTile(new Coordinates(x + 3, y - 4)));
+        layer6.add(getTile(new Coordinates(x + 4, y - 3)));
+        layers.add(layer6);
+        //endregion
+        //region layer 7
+        List<Tile> layer7 = new ArrayList<>();
+        layer7.add(getTile(new Coordinates(x - 4, y - 4)));
+        layer7.add(getTile(new Coordinates(x - 4, y + 4)));
+        layer7.add(getTile(new Coordinates(x + 4, y - 4)));
+        layer7.add(getTile(new Coordinates(x + 4, y + 4)));
+        layers.add(layer7);
+        //endregion
+        return layers;
     }
 }
