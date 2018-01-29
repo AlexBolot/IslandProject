@@ -432,6 +432,7 @@ public class Drone {
 
         if (!scan.getCreeks().isEmpty()) map.addCreek(coords, scan.getCreeks().get(0));
         if (!scan.getEmergencySites().isEmpty()) map.addSite(coords, scan.getCreeks().get(0));
+        if (!scan.getBiomes().isEmpty()) tile.setPossibleBiomes(scan.getBiomes());
 
         map.addTile(coords, tile);
     }

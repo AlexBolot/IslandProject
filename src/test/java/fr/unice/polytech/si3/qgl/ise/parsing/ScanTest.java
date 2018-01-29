@@ -1,18 +1,58 @@
 package fr.unice.polytech.si3.qgl.ise.parsing;
 
 import fr.unice.polytech.si3.qgl.ise.enums.Biome;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @author Lucas OMS
+ */
 public class ScanTest {
 
+    private String dataIn;
+    private Scan scan;
+
+    @Before
+    public void setup() {
+        dataIn = "{\"cost\": 2, \"extras\": { \"biomes\": " +
+                "[\"OCEAN\", \"LAKE\", \"BEACH\", \"GRASSLAND\", " +
+                "\"MANGROVE\", \"TROPICAL_RAIN_FOREST\", \"TROPICAL_SEASONAL_FOREST\", " +
+                "\"TEMPERATE_DECIDUOUS_FOREST\", \"TEMPERATE_RAIN_FOREST\", \"TEMPERATE_DESERT\", " +
+                "\"TAIGA\", \"SNOW\", \"TUNDRA\", \"ALPINE\", \"GLACIER\", " +
+                "\"SHRUBLAND\", \"SUB_TROPICAL_DESERT\"], \"creeks\": [\"idC1\", \"idC2\"], \"sites\": [\"idS\"]}, \"status\": \"OK\"}";
+        scan = new Scan(dataIn);
+    }
+
     @Test
-    public void parsingTest() {
-        String dataIn = "{\"cost\": 2, \"extras\": { \"biomes\": [\"BEACH\"], \"creeks\": [], \"sites\": [\"id\"]}, \"status\": \"OK\"}";
-        Scan parsedData = new Scan(dataIn);
-        assertEquals(0, parsedData.getCreeks().size());
-        assertEquals("id", parsedData.getEmergencySites().get(0));
-        assertEquals(Biome.BEACH, parsedData.getBiomes().get(0));
+    public void parsingTestForBiomes() {
+        assertEquals("Test OCEAN", Biome.OCEAN, scan.getBiomes().get(0));
+        assertEquals("Test LAKE", Biome.LAKE, scan.getBiomes().get(1));
+        assertEquals("Test BEACH", Biome.BEACH, scan.getBiomes().get(2));
+        assertEquals("Test GRASSLAND", Biome.GRASSLAND, scan.getBiomes().get(3));
+
+        assertEquals("Test MANGROVE", Biome.MANGROVE, scan.getBiomes().get(4));
+        assertEquals("Test TROPICAL_RAIN_FOREST", Biome.TROPICAL_RAIN_FOREST, scan.getBiomes().get(5));
+        assertEquals("Test TROPICAL_SEASONAL_FOREST", Biome.TROPICAL_SEASONAL_FOREST, scan.getBiomes().get(6));
+
+        assertEquals("Test TEMPERATE_DECIDUOUS_FOREST", Biome.TEMPERATE_DECIDUOUS_FOREST, scan.getBiomes().get(7));
+        assertEquals("Test TEMPERATE_RAIN_FOREST", Biome.TEMPERATE_RAIN_FOREST, scan.getBiomes().get(8));
+        assertEquals("Test TEMPERATE_DESERT", Biome.TEMPERATE_DESERT, scan.getBiomes().get(9));
+
+        assertEquals("Test TAIGA", Biome.TAIGA, scan.getBiomes().get(10));
+        assertEquals("Test SNOW", Biome.SNOW, scan.getBiomes().get(11));
+        assertEquals("Test TUNDRA", Biome.TUNDRA, scan.getBiomes().get(12));
+        assertEquals("Test ALPINE", Biome.ALPINE, scan.getBiomes().get(13));
+        assertEquals("Test GLACIER", Biome.GLACIER, scan.getBiomes().get(14));
+
+        assertEquals("Test SHRUBLAND", Biome.SHRUBLAND, scan.getBiomes().get(15));
+        assertEquals("Test SUB_TROPICAL_DESERT", Biome.SUB_TROPICAL_DESERT, scan.getBiomes().get(16));
+    }
+
+    @Test
+    public void parsingTestForCreeks(){
+        assertEquals("The scan must fin creek with id \"idC1\"", "idC1", scan.getCreeks().get(0));
+        assertEquals("The scan must fin creek with id \"idC2\"", "idC2", scan.getCreeks().get(1));
     }
 }
