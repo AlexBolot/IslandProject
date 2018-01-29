@@ -13,8 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 
 public class IslandMapTest {
 
@@ -95,5 +94,20 @@ public class IslandMapTest {
         assertEquals("id2", islandMap.getSites().get(new Coordinates(4986, -49876)));
         assertEquals("id3", islandMap.getSites().get(new Coordinates(4, 1)));
         assertEquals("id4", islandMap.getSites().get(new Coordinates(-11, -489)));
+    }
+
+    @Test
+    public void testGetTileWhenExists() {
+        Tile expected = new Tile();
+        islandMap.addTile(new Coordinates(50, 50), expected);
+        assertTrue("The returned Tile must be a reference, not a copy",
+                expected == islandMap.getTile(new Coordinates(50, 50)));
+    }
+
+    @Test
+    public void testGetTileWhenNotExists() {
+        Tile expected = islandMap.getTile(new Coordinates(1337, 1337));
+        assertTrue("If the tile has never been created, the getter must set it before returning it",
+                expected == islandMap.getTile(new Coordinates(1337, 1337)) && expected != null);
     }
 }
