@@ -24,6 +24,10 @@ public class IslandMap {
         creeks.put(coordinates, creekId);
     }
 
+    public void addCreeks(Coordinates coordinates, ArrayList<String> creekIds) {
+        creekIds.forEach(id -> addCreek(coordinates, id));
+    }
+
     public Map<Coordinates, String> getCreeks() {
         return new HashMap<>(creeks);
     }

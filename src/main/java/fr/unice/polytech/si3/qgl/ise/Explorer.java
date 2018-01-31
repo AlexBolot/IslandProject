@@ -64,11 +64,13 @@ public class Explorer implements IExplorerRaid
     {
         StringBuilder str = new StringBuilder();
 
-        str.append("CREEKS = \n");
-        map.getCreeks().forEach((key, value) -> str.append(value).append("\n"));
+        str.append("CREEKS = ");
+        map.getCreeks().forEach((key, value) -> str.append(value).append(", "));
 
-        str.append("SITE = \n");
-        map.getSites().forEach((key, value) -> str.append(value).append("\n"));
+        str.append("SITE = ");
+        map.getSites().forEach((key, value) -> str.append(value).append(", "));
+
+        logger.info(str.toString());
 
         return str.toString();
     }

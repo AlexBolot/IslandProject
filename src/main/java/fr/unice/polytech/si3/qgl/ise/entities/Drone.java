@@ -180,10 +180,12 @@ public class Drone
     }
 
     private String echo(NSEW direction) {
+        lastAction = Action.Echo;
         return createFunctionWithParams("echo", "direction", direction.getValue());
     }
 
     private String scan() {
+        lastAction = Action.Scan;
         return createFunctionWithParams("scan");
     }
 
