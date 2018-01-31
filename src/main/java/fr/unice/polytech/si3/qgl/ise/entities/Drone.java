@@ -382,12 +382,14 @@ public class Drone
             case PASS_ISLAND_STEP_2:
                 subState = PASS_ISLAND_STEP_1;
 
-                return echo(getOri(lastTurn));
+                lastEcho = lastTurn;
+                return echo(getOri(lastEcho));
 
             case ABOUT_TURN_L_1:
                 subState = ABOUT_TURN_L_2;
 
-                return heading(getOri(RIGHT));
+                lastTurn = RIGHT;
+                return heading(getOri(lastTurn));
 
             case ABOUT_TURN_L_2:
                 subState = ABOUT_TURN_L_3;
@@ -400,42 +402,50 @@ public class Drone
             case ABOUT_TURN_L_3:
                 subState = ABOUT_TURN_L_4;
 
-                return heading(getOri(LEFT));
+                lastTurn = LEFT;
+                return heading(getOri(lastTurn));
 
             case ABOUT_TURN_L_4:
                 subState = ABOUT_TURN_L_5;
 
-                return heading(getOri(LEFT));
+                lastTurn = LEFT;
+                return heading(getOri(lastTurn));
 
             case ABOUT_TURN_L_5:
                 subState = ABOUT_TURN_L_6;
 
-                return heading(getOri(LEFT));
+                lastTurn = LEFT;
+                return heading(getOri(lastTurn));
 
             case ABOUT_TURN_L_6:
                 subState = ABOUT_TURN_L_7;
 
-                return heading(getOri(RIGHT));
+                lastTurn = RIGHT;
+                return heading(getOri(lastTurn));
 
             case ABOUT_TURN_L_7:
                 subState = REACH_ISLAND_ECHO_FRONT;
 
-                return heading(getOri(LEFT));
+                lastTurn = LEFT;
+                return heading(getOri(lastTurn));
 
             case ABOUT_TURN_R_1:
                 subState = ABOUT_TURN_R_2;
 
-                return heading(getOri(RIGHT));
+                lastTurn = RIGHT;
+                return heading(getOri(lastTurn));
 
             case ABOUT_TURN_R_2:
                 subState = ABOUT_TURN_R_3;
 
-                return heading(getOri(LEFT));
+                lastTurn = LEFT;
+                return heading(getOri(lastTurn));
 
             case ABOUT_TURN_R_3:
                 subState = ABOUT_TURN_R_4;
 
-                return heading(getOri(LEFT));
+                lastTurn = LEFT;
+                return heading(getOri(lastTurn));
 
             case ABOUT_TURN_R_4:
                 subState = ABOUT_TURN_R_5;
@@ -448,17 +458,20 @@ public class Drone
             case ABOUT_TURN_R_5:
                 subState = ABOUT_TURN_R_6;
 
-                return heading(getOri(LEFT));
+                lastTurn = LEFT;
+                return heading(getOri(lastTurn));
 
             case ABOUT_TURN_R_6:
                 subState = ABOUT_TURN_R_7;
 
-                return heading(getOri(LEFT));
+                lastTurn = LEFT;
+                return heading(getOri(lastTurn));
 
             case ABOUT_TURN_R_7:
                 subState = REACH_ISLAND_ECHO_FRONT;
 
-                return heading(getOri(RIGHT));
+                lastTurn = RIGHT;
+                return heading(getOri(lastTurn));
             //endregion
         }
 
