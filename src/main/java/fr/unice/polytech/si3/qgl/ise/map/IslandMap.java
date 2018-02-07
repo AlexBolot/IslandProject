@@ -1,5 +1,7 @@
 package fr.unice.polytech.si3.qgl.ise.map;
 
+import scala.Tuple2;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,12 +10,12 @@ import java.util.Map;
 public class IslandMap {
     private Map<Coordinates, Tile> tiles;
     private Map<Coordinates, String> creeks;
-    private Map<Coordinates, String> sites;
+    private Tuple2<Coordinates, String> emergencySite;
 
     public IslandMap() {
         tiles = new HashMap<>();
         creeks = new HashMap<>();
-        sites = new HashMap<>();
+        emergencySite = null;
     }
 
     public void addTile(Coordinates coordinates, Tile tile) {
@@ -33,11 +35,11 @@ public class IslandMap {
     }
 
     public void addSite(Coordinates coordinates, String siteId) {
-        sites.put(coordinates, siteId);
+        emergencySite = new Tuple2<>(coordinates, siteId);
     }
 
-    public Map<Coordinates, String> getSites() {
-        return new HashMap<>(sites);
+    public Tuple2<Coordinates, String> getEmergencySite() {
+        return emergencySite;
     }
 
     public Tile getTile(Coordinates coord) {

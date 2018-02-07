@@ -5,6 +5,7 @@ import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
 import fr.unice.polytech.si3.qgl.ise.parsing.Echo;
 import fr.unice.polytech.si3.qgl.ise.parsing.Scan;
+import fr.unice.polytech.si3.qgl.ise.utilities.PathFinder;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
@@ -68,7 +69,14 @@ public class Explorer implements IExplorerRaid
         map.getCreeks().forEach((key, value) -> str.append(value).append(", "));
 
         str.append("SITE = ");
-        map.getSites().forEach((key, value) -> str.append(value).append(", "));
+        if (map.getEmergencySite() != null) str.append(map.getEmergencySite()._2);
+        else str.append("NOT FOUND");
+
+        str.append(System.getProperty("line.separator"));
+
+        if (map.getEmergencySite() != null)
+            str.append("Nearest creek to emergency site : ").append(PathFinder.findNearestCreek(map.getCreeks(), map.getEmergencySite()));
+        else str.append("Emergency site not found");
 
         logger.info(str.toString());
 

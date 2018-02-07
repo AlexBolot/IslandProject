@@ -355,11 +355,11 @@ public class Drone
                     subState = REACH_ISLAND_MOVE;
                     return takeDecision();
                 }
-                //A rajouter avec la condition dans le else if une fois qu'on aura stocké les criques et emergencySites
-                //else if(){
-                //    subState = PASS_ISLAND_STEP_1;
-                //    return takeDecision();
-                //}
+                //If no creek or site is found -> beginning of the about turn
+                else if (map.getCreeks().isEmpty() || map.getEmergencySite() == null) {
+                    subState = PASS_ISLAND_STEP_2;
+                    return takeDecision();
+                }
                 break;
             //endregion
 

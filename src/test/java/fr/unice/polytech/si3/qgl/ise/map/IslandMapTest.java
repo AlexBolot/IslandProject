@@ -83,17 +83,10 @@ public class IslandMapTest {
 
     @Test
     public void addSiteTest() {
-        islandMap.addSite(new Coordinates(0, 0), "id0");
-        islandMap.addSite(new Coordinates(0, 0), "id1");
-        islandMap.addSite(new Coordinates(4986, -49876), "id2");
-        islandMap.addSite(new Coordinates(4, 1), "id3");
-        islandMap.addSite(new Coordinates(-11, -489), "id4");
+        islandMap.addSite(new Coordinates(4986, -49876), "id");
 
-        assertEquals(4, islandMap.getSites().size());
-        assertEquals("id1", islandMap.getSites().get(new Coordinates(0, 0)));
-        assertEquals("id2", islandMap.getSites().get(new Coordinates(4986, -49876)));
-        assertEquals("id3", islandMap.getSites().get(new Coordinates(4, 1)));
-        assertEquals("id4", islandMap.getSites().get(new Coordinates(-11, -489)));
+        assertEquals("id", islandMap.getEmergencySite()._2);
+        assertEquals(new Coordinates(4986, -49876), islandMap.getEmergencySite()._1);
     }
 
     @Test
