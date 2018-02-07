@@ -357,7 +357,7 @@ public class Drone
                 }
                 //If no creek or site is found -> beginning of the about turn
                 else if (map.getCreeks().isEmpty() || map.getEmergencySite() == null) {
-                    subState = PASS_ISLAND_STEP_1;
+                    subState = PASS_ISLAND_STEP_2;
                     return takeDecision();
                 }
                 break;
