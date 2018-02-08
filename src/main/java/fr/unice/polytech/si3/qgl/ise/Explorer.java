@@ -17,6 +17,7 @@ public class Explorer implements IExplorerRaid
     private static Logger logger = getLogger(Explorer.class);
     private Drone     drone;
     private IslandMap map;
+    private int remainingBudget;
 
     @Override
     public void initialize (String contract)
@@ -26,6 +27,7 @@ public class Explorer implements IExplorerRaid
         JSONObject data = new JSONObject(contract);
 
         String heading = data.getString("heading");
+        remainingBudget = data.getInt("budget");
 
         NSEW orientation = NSEW.getFromValue(heading);
         map = new IslandMap();
@@ -35,11 +37,16 @@ public class Explorer implements IExplorerRaid
     @Override
     public String takeDecision ()
     {
-        String s = drone.takeDecision();
+        try {
+            String s = drone.takeDecision();
+            logger.info("Decision :\t" + s);
+            return s;
+        } catch (Exception e) {
+            JSONObject data = new JSONObject();
+            data.put("action", "stop");
+            return data.toString();
+        }
 
-        logger.info("Decision :\t" + s);
-
-        return s;
     }
 
     @Override
@@ -48,6 +55,8 @@ public class Explorer implements IExplorerRaid
         JSONObject data = new JSONObject(results);
 
         logger.info("Réponse :\t" + data);
+
+        remainingBudget -= data.getInt("cost");
 
         switch (drone.getLastAction())
         {
