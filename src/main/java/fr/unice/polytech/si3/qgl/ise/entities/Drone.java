@@ -5,13 +5,13 @@ import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.SubState;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
+import fr.unice.polytech.si3.qgl.ise.factories.JsonFactory;
 import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
 import fr.unice.polytech.si3.qgl.ise.map.Tile;
 import fr.unice.polytech.si3.qgl.ise.parsing.Echo;
 import fr.unice.polytech.si3.qgl.ise.parsing.Scan;
 import org.apache.logging.log4j.Logger;
-import org.json.JSONObject;
 import scala.Tuple2;
 
 import java.util.HashMap;
@@ -39,6 +39,7 @@ public class Drone
     private IslandMap                                map;
     private Coordinates                              coords;
     private HashMap<ZQSD, Tuple2<Obstacle, Integer>> margins;
+    private JsonFactory jsonFactory;
 
     private static Logger logger = getLogger(Drone.class);
 
@@ -50,35 +51,7 @@ public class Drone
         this.subState = INIT_ECHO_FRONT;
         this.orientation = orientation;
         this.margins = new HashMap<>();
-    }
-
-    /**
-     Create a JSON formatted string doing action with parameters
-
-     @param functionName      action name
-     @param parameterAndValue name of parameter then value
-     @return String matching the action requested
-     */
-    private String createFunctionWithParams (String functionName, String... parameterAndValue) {
-
-        if (parameterAndValue.length % 2 != 0) throw new IllegalArgumentException("The parameters name and value must be in same number");
-
-        JSONObject jsonReturn = new JSONObject();
-        jsonReturn.put("action", functionName);
-
-        if (parameterAndValue.length > 0) {
-
-            JSONObject params = new JSONObject();
-
-            for (int i = 0; i < parameterAndValue.length - 1; i += 2) {
-
-                params.put(parameterAndValue[i], parameterAndValue[i + 1]);
-            }
-
-            jsonReturn.put("parameters", params);
-        }
-
-        return jsonReturn.toString();
+        this.jsonFactory = new JsonFactory();
     }
 
     private String fly() {
@@ -104,7 +77,7 @@ public class Drone
         //endregion
 
         lastAction = Action.Fly;
-        return createFunctionWithParams("fly");
+        return jsonFactory.createJsonString("fly");
     }
 
     @SuppressWarnings("Duplicates")
@@ -176,23 +149,23 @@ public class Drone
 
         orientation = direction;
         lastAction = Action.Heading;
-        return createFunctionWithParams("heading", "direction", direction.getValue());
+        return jsonFactory.createJsonString("heading", "direction", direction.getValue());
     }
 
     private String echo(NSEW direction) {
         lastAction = Action.Echo;
-        return createFunctionWithParams("echo", "direction", direction.getValue());
+        return jsonFactory.createJsonString("echo", "direction", direction.getValue());
     }
 
     private String scan() {
         lastAction = Action.Scan;
-        return createFunctionWithParams("scan");
+        return jsonFactory.createJsonString("scan");
     }
 
     private String stop () {
 
         lastAction = Action.Stop;
-        return createFunctionWithParams("stop");
+        return jsonFactory.createJsonString("stop");
     }
 
     public String takeDecision () {
