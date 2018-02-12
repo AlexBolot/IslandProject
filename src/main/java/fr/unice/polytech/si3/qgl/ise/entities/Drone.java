@@ -465,17 +465,25 @@ public class Drone {
     }
 
     public void acknowledgeScan(Scan scan) {
-
         Tile tile = new Tile();
 
         if (!scan.getCreeks().isEmpty()) map.addCreek(coords, scan.getCreeks().get(0));
         if (!scan.getEmergencySites().isEmpty()) map.addSite(coords, scan.getEmergencySites().get(0));
         if (!scan.getBiomes().isEmpty()) {
-            Map<Biome, Double> biomes = new HashMap<>();
-            for (Biome biome : scan.getBiomes()) {
-                biomes.put(biome, 100d);
+            //For each layer
+            int numLayer = 0;
+            for (List<Tile> layer : map.getTileToUpdateFrom(coords.getX(), coords.getY())) {
+                //On each tile
+                for (Tile tileOfLayer : layer) {
+                    //With each biome
+                    Map<Biome, Double> toAdd = new HashMap<>();
+                    for (Biome biome : scan.getBiomes()) {
+                        toAdd.put(biome, IslandMap.percentageOfLayerForUpdate[numLayer]);
+                    }
+                    tileOfLayer.addBiomesPercentage(toAdd);
+                }
+                ++numLayer;
             }
-            tile.addBiomesPercentage(biomes);
         }
 
         map.addTile(coords, tile);

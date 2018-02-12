@@ -54,7 +54,7 @@ public class Tile {
     public void addBiomesPercentage(Map<Biome, Double> biomesPercentage) {
         for (Map.Entry<Biome, Double> biome : biomesPercentage.entrySet()) {
             if (this.biomesPercentage.containsKey(biome.getKey())) {
-                //TODO Calculate the new probability
+                //FIXME Define calculation of new probability
                 this.biomesPercentage.put(biome.getKey(), this.biomesPercentage.get(biome.getKey()) + biome.getValue());
             } else {
                 this.biomesPercentage.put(biome.getKey(), biome.getValue());
