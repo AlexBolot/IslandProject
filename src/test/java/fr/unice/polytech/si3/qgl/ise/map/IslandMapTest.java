@@ -24,10 +24,6 @@ public class IslandMapTest {
     public void init() {
         islandMap = new IslandMap();
 
-        List<Biome> possibleBiomes = new ArrayList<>();
-        possibleBiomes.add(Biome.ALPINE);
-        possibleBiomes.add(Biome.GLACIER);
-
         Map<Biome, Double> biomesPercentage = new HashMap<>();
         biomesPercentage.put(Biome.ALPINE, 30.8);
         biomesPercentage.put(Biome.GLACIER, 69.2);
@@ -39,11 +35,9 @@ public class IslandMapTest {
 
         tiles = new ArrayList<>();
         tiles.add(new Tile());
-        tiles.add(new Tile(possibleBiomes));
-        tiles.add(new Tile(possibleBiomes));
-        tiles.get(2).setBiomesPercentage(biomesPercentage);
-        tiles.add(new Tile(possibleBiomes));
-        tiles.get(3).setBiomesPercentage(biomesPercentage);
+        tiles.add(new Tile(biomesPercentage));
+        tiles.add(new Tile(biomesPercentage));
+        tiles.add(new Tile(biomesPercentage));
         tiles.get(3).setResourcesStats(resourcesStats);
     }
 
@@ -59,7 +53,6 @@ public class IslandMapTest {
 
         islandMap.addTile(new Coordinates(-4668, 489861), tiles.get(2));
         assertEquals(tiles.get(2), islandMap.getTile(new Coordinates(-4668, 489861)));
-        assertNotEquals(tiles.get(1), islandMap.getTile(new Coordinates(-4668, 489861)));
 
         islandMap.addTile(new Coordinates(0, 0), tiles.get(3));
         assertEquals(tiles.get(3), islandMap.getTile(new Coordinates(0, 0)));
