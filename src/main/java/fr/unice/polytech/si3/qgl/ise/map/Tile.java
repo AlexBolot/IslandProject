@@ -9,25 +9,21 @@ import scala.Tuple2;
 import java.util.*;
 
 public class Tile {
-    private List<Biome> possibleBiomes;
     private Map<Biome, Double> biomesPercentage;
     private Map<RawResource, Tuple2<Abundance, Exploitability>> resourcesStats;
 
     public Tile() {
-        possibleBiomes = new ArrayList<>();
-        biomesPercentage = new EnumMap<>(Biome.class);
+        biomesPercentage = new HashMap<>();
         resourcesStats = new EnumMap<>(RawResource.class);
     }
 
     public Tile(Tile tile) {
-        possibleBiomes = new ArrayList<>(tile.possibleBiomes);
-        biomesPercentage = new EnumMap<>(tile.biomesPercentage);
+        biomesPercentage = new HashMap<>();
         resourcesStats = new EnumMap<>(tile.resourcesStats);
     }
 
-    public Tile(List<Biome> possibleBiomes) {
-        this.possibleBiomes = new ArrayList<>(possibleBiomes);
-        biomesPercentage = new EnumMap<>(Biome.class);
+    Tile(Map<Biome, Double> possibleBiomes) {
+        biomesPercentage = possibleBiomes;
         resourcesStats = new EnumMap<>(RawResource.class);
     }
 
@@ -36,37 +32,41 @@ public class Tile {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tile tile = (Tile) o;
-        return Objects.equals(possibleBiomes, tile.possibleBiomes) &&
-                Objects.equals(biomesPercentage, tile.biomesPercentage) &&
+        return Objects.equals(biomesPercentage, tile.biomesPercentage) &&
                 Objects.equals(resourcesStats, tile.resourcesStats);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(possibleBiomes, biomesPercentage, resourcesStats);
+        return Objects.hash(biomesPercentage, resourcesStats);
     }
 
     public List<Biome> getPossibleBiomes() {
-        return possibleBiomes;
-    }
-
-    public void setPossibleBiomes(List<Biome> possibleBiomes) {
-        this.possibleBiomes = possibleBiomes;
+        List<Biome> list = new ArrayList<>();
+        list.addAll(biomesPercentage.keySet());
+        return list;
     }
 
     public Map<Biome, Double> getBiomesPercentage() {
         return biomesPercentage;
     }
 
-    public void setBiomesPercentage(Map<Biome, Double> biomesPercentage) {
-        this.biomesPercentage = biomesPercentage;
+    public void addBiomesPercentage(Map<Biome, Double> biomesPercentage) {
+        for (Map.Entry<Biome, Double> biome : biomesPercentage.entrySet()) {
+            if (this.biomesPercentage.containsKey(biome.getKey())) {
+                //FIXME Define calculation of new probability
+                this.biomesPercentage.put(biome.getKey(), this.biomesPercentage.get(biome.getKey()) + biome.getValue());
+            } else {
+                this.biomesPercentage.put(biome.getKey(), biome.getValue());
+            }
+        }
     }
 
     public Map<RawResource, Tuple2<Abundance, Exploitability>> getResourcesStats() {
         return resourcesStats;
     }
 
-    public void setResourcesStats(Map<RawResource, Tuple2<Abundance, Exploitability>> resourcesStats) {
+    void setResourcesStats(Map<RawResource, Tuple2<Abundance, Exploitability>> resourcesStats) {
         this.resourcesStats = resourcesStats;
     }
 }

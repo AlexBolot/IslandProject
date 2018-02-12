@@ -16,6 +16,7 @@ import scala.Tuple2;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static fr.unice.polytech.si3.qgl.ise.enums.Biome.OCEAN;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action;
@@ -26,25 +27,23 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.SubState.*;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 import static org.apache.logging.log4j.LogManager.getLogger;
 
-public class Drone
-{
+public class Drone {
     private static final int movementUnit = 3;
-    private NSEW                                     orientation;
-    private ZQSD                                     lastTurn;
-    private ZQSD                                     lastEcho;
-    private Action                                   lastAction;
-    private boolean                                  isFlying;
-    private boolean                                  hasFoundIsland;
-    private SubState                                 subState;
-    private IslandMap                                map;
-    private Coordinates                              coords;
+    private NSEW orientation;
+    private ZQSD lastTurn;
+    private ZQSD lastEcho;
+    private Action lastAction;
+    private boolean isFlying;
+    private boolean hasFoundIsland;
+    private SubState subState;
+    private IslandMap map;
+    private Coordinates coords;
     private HashMap<ZQSD, Tuple2<Obstacle, Integer>> margins;
     private JsonFactory jsonFactory;
 
     private static Logger logger = getLogger(Drone.class);
 
-    public Drone (IslandMap map, NSEW orientation)
-    {
+    public Drone(IslandMap map, NSEW orientation) {
         this.map = map;
         this.coords = new Coordinates(0, 0);
         this.isFlying = true;
@@ -81,7 +80,7 @@ public class Drone
     }
 
     @SuppressWarnings("Duplicates")
-    private String heading (NSEW direction) {
+    private String heading(NSEW direction) {
 
         //region --> switch (orientation) // to change coordinates
         int newX;
@@ -162,13 +161,13 @@ public class Drone
         return jsonFactory.createJsonString("scan");
     }
 
-    private String stop () {
+    private String stop() {
 
         lastAction = Action.Stop;
         return jsonFactory.createJsonString("stop");
     }
 
-    public String takeDecision () {
+    public String takeDecision() {
 
         logger.info("--------> start");
 
@@ -202,7 +201,8 @@ public class Drone
 
                 ZQSD dir;
 
-                if (margins.get(FRONT)._1 == GROUND) dir = (margins.get(RIGHT)._2 < margins.get(LEFT)._2) ? RIGHT : LEFT;
+                if (margins.get(FRONT)._1 == GROUND)
+                    dir = (margins.get(RIGHT)._2 < margins.get(LEFT)._2) ? RIGHT : LEFT;
                 else dir = (margins.get(RIGHT)._2 > margins.get(LEFT)._2) ? RIGHT : LEFT;
 
                 margins.put(FRONT, new Tuple2<>(BORDER, margins.get(dir)._2 - 1));
@@ -343,8 +343,7 @@ public class Drone
 
                     subState = (lastTurn == LEFT) ? ABOUT_TURN_L_1 : ABOUT_TURN_R_1;
                     return takeDecision();
-                }
-                else {
+                } else {
                     Integer frontDist = margins.get(FRONT)._2;
                     margins.put(FRONT, new Tuple2<>(BORDER, frontDist - 1));
                     subState = PASS_ISLAND_STEP_2;
@@ -455,7 +454,7 @@ public class Drone
         return stop();
     }
 
-    public void acknowledgeEcho (Echo echo) {
+    public void acknowledgeEcho(Echo echo) {
 
         Obstacle obstacle = echo.getObstacle();
         Integer range = echo.getRange();
@@ -465,37 +464,43 @@ public class Drone
         margins.put(lastEcho, new Tuple2<>(obstacle, range));
     }
 
-    public void acknowledgeScan (Scan scan) {
-
+    public void acknowledgeScan(Scan scan) {
         Tile tile = new Tile();
-
         if (!scan.getCreeks().isEmpty()) map.addCreek(coords, scan.getCreeks().get(0));
         if (!scan.getEmergencySites().isEmpty()) map.addSite(coords, scan.getEmergencySites().get(0));
-        if (!scan.getBiomes().isEmpty()) tile.setPossibleBiomes(scan.getBiomes());
-
-        map.addTile(coords, tile);
+        if (!scan.getBiomes().isEmpty()) {
+            //For each layer
+            int numLayer = 0;
+            for (List<Tile> layer : map.getTileToUpdateFrom(coords.getX(), coords.getY())) {
+                //On each tile
+                for (Tile tileOfLayer : layer) {
+                    //With each biome
+                    Map<Biome, Double> toAdd = new HashMap<>();
+                    for (Biome biome : scan.getBiomes()) {
+                        toAdd.put(biome, IslandMap.percentageOfLayerForUpdate[numLayer]);
+                    }
+                    tileOfLayer.addBiomesPercentage(toAdd);
+                }
+                ++numLayer;
+            }
+        }
     }
 
     //region ===== Getters =====
 
-    public boolean isFlying ()
-    {
+    public boolean isFlying() {
         return isFlying;
     }
 
-    public HashMap<ZQSD, Tuple2<Obstacle, Integer>> getMargins ()
-    {
+    public HashMap<ZQSD, Tuple2<Obstacle, Integer>> getMargins() {
         return margins;
     }
 
-    @SuppressWarnings ("Duplicates")
-    private NSEW getOri (ZQSD direction)
-    {
-        switch (orientation)
-        {
+    @SuppressWarnings("Duplicates")
+    private NSEW getOri(ZQSD direction) {
+        switch (orientation) {
             case EAST:
-                switch (direction)
-                {
+                switch (direction) {
                     case LEFT:
                         return NORTH;
                     case RIGHT:
@@ -505,8 +510,7 @@ public class Drone
                 }
                 break;
             case WEST:
-                switch (direction)
-                {
+                switch (direction) {
                     case LEFT:
                         return SOUTH;
                     case RIGHT:
@@ -516,8 +520,7 @@ public class Drone
                 }
                 break;
             case NORTH:
-                switch (direction)
-                {
+                switch (direction) {
                     case LEFT:
                         return WEST;
                     case RIGHT:
@@ -527,8 +530,7 @@ public class Drone
                 }
                 break;
             case SOUTH:
-                switch (direction)
-                {
+                switch (direction) {
                     case LEFT:
                         return EAST;
                     case RIGHT:
@@ -541,10 +543,8 @@ public class Drone
         throw new IllegalArgumentException("Wrong direction given !");
     }
 
-    private ZQSD getOpposite (ZQSD dir)
-    {
-        switch (dir)
-        {
+    private ZQSD getOpposite(ZQSD dir) {
+        switch (dir) {
             case LEFT:
                 return RIGHT;
             case RIGHT:
@@ -558,8 +558,7 @@ public class Drone
         throw new IllegalArgumentException("Wrong params");
     }
 
-    public Action getLastAction ()
-    {
+    public Action getLastAction() {
         return lastAction;
     }
     //endregion

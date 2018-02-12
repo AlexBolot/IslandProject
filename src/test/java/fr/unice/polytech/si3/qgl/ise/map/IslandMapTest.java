@@ -1,9 +1,8 @@
 package fr.unice.polytech.si3.qgl.ise.map;
 
-import fr.unice.polytech.si3.qgl.ise.enums.Abundance;
-import fr.unice.polytech.si3.qgl.ise.enums.Biome;
-import fr.unice.polytech.si3.qgl.ise.enums.Exploitability;
-import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
+import fr.unice.polytech.si3.qgl.ise.entities.Drone;
+import fr.unice.polytech.si3.qgl.ise.enums.*;
+import fr.unice.polytech.si3.qgl.ise.parsing.Scan;
 import org.junit.Before;
 import org.junit.Test;
 import scala.Tuple2;
@@ -19,14 +18,11 @@ public class IslandMapTest {
 
     private IslandMap islandMap;
     private List<Tile> tiles;
+    private Drone drone;
 
     @Before
     public void init() {
         islandMap = new IslandMap();
-
-        List<Biome> possibleBiomes = new ArrayList<>();
-        possibleBiomes.add(Biome.ALPINE);
-        possibleBiomes.add(Biome.GLACIER);
 
         Map<Biome, Double> biomesPercentage = new HashMap<>();
         biomesPercentage.put(Biome.ALPINE, 30.8);
@@ -39,11 +35,9 @@ public class IslandMapTest {
 
         tiles = new ArrayList<>();
         tiles.add(new Tile());
-        tiles.add(new Tile(possibleBiomes));
-        tiles.add(new Tile(possibleBiomes));
-        tiles.get(2).setBiomesPercentage(biomesPercentage);
-        tiles.add(new Tile(possibleBiomes));
-        tiles.get(3).setBiomesPercentage(biomesPercentage);
+        tiles.add(new Tile(biomesPercentage));
+        tiles.add(new Tile(biomesPercentage));
+        tiles.add(new Tile(biomesPercentage));
         tiles.get(3).setResourcesStats(resourcesStats);
     }
 
@@ -59,7 +53,6 @@ public class IslandMapTest {
 
         islandMap.addTile(new Coordinates(-4668, 489861), tiles.get(2));
         assertEquals(tiles.get(2), islandMap.getTile(new Coordinates(-4668, 489861)));
-        assertNotEquals(tiles.get(1), islandMap.getTile(new Coordinates(-4668, 489861)));
 
         islandMap.addTile(new Coordinates(0, 0), tiles.get(3));
         assertEquals(tiles.get(3), islandMap.getTile(new Coordinates(0, 0)));
@@ -115,5 +108,20 @@ public class IslandMapTest {
         assertEquals("The layer 5 must have 12 tiles", 12, expected.get(4).size());
         assertEquals("The layer 6 must have 8 tiles", 8, expected.get(5).size());
         assertEquals("The layer 7 must have 4 tiles", 4, expected.get(6).size());
+    }
+
+    @Test
+    public void testTilesToUpdatesBiomes() {
+        drone = new Drone(islandMap, DroneEnums.NSEW.EAST);
+        //After acknoledwing, all tiles must have the biome in their list
+        drone.acknowledgeScan(new Scan("{\"cost\":6,\"extras\":{\"creeks\":[],\"biomes\":[\"MANGROVE\"],\"sites\":[]},\"status\":\"OK\"}"));
+        int size = 0;
+        for (List<Tile> layer : islandMap.getTileToUpdateFrom(0, 0)) {
+            for (Tile tile : layer) {
+                assertTrue(tile.getPossibleBiomes().contains(Biome.MANGROVE));
+                ++size;
+            }
+        }
+        assertEquals("There should be 81 tiles to update", 81, size);
     }
 }
