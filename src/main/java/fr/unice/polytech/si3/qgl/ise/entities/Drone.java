@@ -466,7 +466,6 @@ public class Drone {
 
     public void acknowledgeScan(Scan scan) {
         Tile tile = new Tile();
-
         if (!scan.getCreeks().isEmpty()) map.addCreek(coords, scan.getCreeks().get(0));
         if (!scan.getEmergencySites().isEmpty()) map.addSite(coords, scan.getEmergencySites().get(0));
         if (!scan.getBiomes().isEmpty()) {
@@ -485,8 +484,6 @@ public class Drone {
                 ++numLayer;
             }
         }
-
-        map.addTile(coords, tile);
     }
 
     //region ===== Getters =====

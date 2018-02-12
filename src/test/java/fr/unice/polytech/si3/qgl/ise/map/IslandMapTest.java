@@ -1,9 +1,8 @@
 package fr.unice.polytech.si3.qgl.ise.map;
 
-import fr.unice.polytech.si3.qgl.ise.enums.Abundance;
-import fr.unice.polytech.si3.qgl.ise.enums.Biome;
-import fr.unice.polytech.si3.qgl.ise.enums.Exploitability;
-import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
+import fr.unice.polytech.si3.qgl.ise.entities.Drone;
+import fr.unice.polytech.si3.qgl.ise.enums.*;
+import fr.unice.polytech.si3.qgl.ise.parsing.Scan;
 import org.junit.Before;
 import org.junit.Test;
 import scala.Tuple2;
@@ -19,6 +18,7 @@ public class IslandMapTest {
 
     private IslandMap islandMap;
     private List<Tile> tiles;
+    private Drone drone;
 
     @Before
     public void init() {
@@ -108,5 +108,20 @@ public class IslandMapTest {
         assertEquals("The layer 5 must have 12 tiles", 12, expected.get(4).size());
         assertEquals("The layer 6 must have 8 tiles", 8, expected.get(5).size());
         assertEquals("The layer 7 must have 4 tiles", 4, expected.get(6).size());
+    }
+
+    @Test
+    public void testTilesToUpdatesBiomes() {
+        drone = new Drone(islandMap, DroneEnums.NSEW.EAST);
+        //After acknoledwing, all tiles must have the biome in their list
+        drone.acknowledgeScan(new Scan("{\"cost\":6,\"extras\":{\"creeks\":[],\"biomes\":[\"MANGROVE\"],\"sites\":[]},\"status\":\"OK\"}"));
+        int size = 0;
+        for (List<Tile> layer : islandMap.getTileToUpdateFrom(0, 0)) {
+            for (Tile tile : layer) {
+                assertTrue(tile.getPossibleBiomes().contains(Biome.MANGROVE));
+                ++size;
+            }
+        }
+        assertEquals("There should be 81 tiles to update", 81, size);
     }
 }
