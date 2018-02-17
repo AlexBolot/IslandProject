@@ -7,22 +7,66 @@ public class DroneEnums {
         LEFT,
         RIGHT,
         FRONT,
-        BACK
+        BACK;
+
+        public static ZQSD getOpposite (ZQSD dir)
+        {
+            switch (dir)
+            {
+                case LEFT:
+                    return RIGHT;
+                case RIGHT:
+                    return LEFT;
+                case FRONT:
+                    return BACK;
+                case BACK:
+                    return FRONT;
+            }
+
+            throw new IllegalArgumentException("Wrong params");
+        }
     }
 
-    public enum NSEW {
+    public enum NSEW
+    {
         EAST("E"),
         WEST("W"),
         NORTH("N"),
         SOUTH("S");
 
         private String value;
+        private NSEW   toTheLeft;
+        private NSEW   toTheRight;
 
         NSEW(String value) {
             this.value = value;
         }
 
-        public String getValue() {
+        static
+        {
+            NORTH.toTheRight = EAST;
+            EAST.toTheRight = SOUTH;
+            SOUTH.toTheRight = WEST;
+            WEST.toTheRight = NORTH;
+
+            NORTH.toTheLeft = WEST;
+            WEST.toTheLeft = SOUTH;
+            SOUTH.toTheLeft = EAST;
+            EAST.toTheLeft = NORTH;
+        }
+
+        public NSEW getToTheLeft ()
+        {
+            return toTheLeft;
+        }
+
+        public NSEW getToTheRight ()
+        {
+            return toTheRight;
+        }
+
+        public String getValue ()
+        {
             return value;
         }
 
@@ -41,11 +85,13 @@ public class DroneEnums {
 
         private String value;
 
-        Obstacle(String value) {
+        Obstacle (String value)
+        {
             this.value = value;
         }
 
-        public String getValue() {
+        public String getValue ()
+        {
             return value;
         }
 
