@@ -27,7 +27,7 @@ public class ChangeLineAction extends DroneAction
     public ChangeLineAction (Drone drone)
     {
         super(drone);
-        currentStep = Turn1;
+        currentStep = EchoSide;
         flyAction = new FlyAction(drone);
         echoAction = new EchoAction(drone);
         headingAction = new HeadingAction(drone);
@@ -53,11 +53,16 @@ public class ChangeLineAction extends DroneAction
                 break;
 
             case FlyOrTurn:
+                generalDirection = direction;
                 res = flyOrTurn();
 
                 if (!res.isEmpty())
                 {
                     nextStep = EchoSide;
+                    break;
+                } else {
+                    res = headingAction.apply(generalDirection);
+                    nextStep = Turn2;
                     break;
                 }
 
@@ -104,8 +109,9 @@ public class ChangeLineAction extends DroneAction
 
         if (lastMargin._1 == GROUND && lastMargin._2 <= 1)
         {
-            if (margins.get(FRONT)._2 > 1) res = flyAction.apply();
-            else res = StopAction.get();
+            //if (margins.get(FRONT)._2 > 1) res = flyAction.apply();
+            //else res = StopAction.get();
+            res = flyAction.apply();
         }
 
         return res;
