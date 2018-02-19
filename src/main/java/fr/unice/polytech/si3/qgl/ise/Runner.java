@@ -27,7 +27,7 @@ public class Runner {
                 .exploring(mapLocation.toFile())
                 .withName("ise")
                 .withSeed(0x161D552A4A22E2A1L)
-                .startingAt(159, 159, "NORTH")
+                .startingAt(1, 1, "SOUTH")
                 .backBefore(30000)
                 .withCrew(15)
                 .collecting(2000, "WOOD")

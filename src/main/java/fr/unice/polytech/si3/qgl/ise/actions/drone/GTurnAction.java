@@ -5,6 +5,10 @@ import fr.unice.polytech.si3.qgl.ise.actions.simple.EchoAction;
 import fr.unice.polytech.si3.qgl.ise.actions.simple.FlyAction;
 import fr.unice.polytech.si3.qgl.ise.actions.simple.HeadingAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
+import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums;
+import scala.Tuple2;
+
+import java.util.HashMap;
 
 import static fr.unice.polytech.si3.qgl.ise.actions.drone.GTurnAction.Step.*;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
@@ -46,17 +50,34 @@ public class GTurnAction extends DroneAction
 
             case Turn_1:
                 res = headingAction.apply(getDrone().getLastTurn());
+                nextStep = EchoSide;
+                break;
+
+            case EchoSide:
+                res = echoAction.apply(getDrone().getLastTurn());
                 nextStep = FlyFront_2;
                 break;
 
             case FlyFront_2:
+                HashMap<DroneEnums.ZQSD, Tuple2<DroneEnums.Obstacle, Integer>> margins = getDrone().getMargins();
+                DroneEnums.ZQSD lastTurn = getDrone().getLastTurn();
+                Tuple2<DroneEnums.Obstacle, Integer> lastMargin = margins.get(lastTurn);
+                if (lastMargin._1 == DroneEnums.Obstacle.GROUND) {
+                    nextStep = Turn_2;
+                } else {
+                    nextStep = Turn_2_bis;
+                }
                 res = decideToFly();
-                nextStep = Turn_2;
                 break;
 
             case Turn_2:
                 res = headingAction.apply(getDrone().getLastTurn());
                 nextStep = Turn_3;
+                break;
+
+            case Turn_2_bis:
+                res = headingAction.apply(getDrone().getLastTurn());
+                nextStep = EchoFront;
                 break;
 
             case Turn_3:
@@ -68,6 +89,22 @@ public class GTurnAction extends DroneAction
             case Turn_4:
                 res = headingAction.apply(getOpposite(getDrone().getLastTurn()));
                 this.finish();
+                break;
+
+            case EchoFront:
+                res = echoAction.apply(FRONT);
+                nextStep = Fly;
+                break;
+
+            case Fly:
+                int frontDist = getDrone().getMargins().get(FRONT)._2;
+                if (frontDist > 0) {
+                    res = flyAction.apply();
+                    nextStep = EchoFront;
+                } else {
+                    res = flyAction.apply();
+                    finish();
+                }
                 break;
 
             default:
@@ -102,9 +139,13 @@ public class GTurnAction extends DroneAction
     {
         FlyFront_1,
         Turn_1,
+        EchoSide,
         FlyFront_2,
         Turn_2,
+        Turn_2_bis,
         Turn_3,
         Turn_4,
+        EchoFront,
+        Fly,
     }
 }
