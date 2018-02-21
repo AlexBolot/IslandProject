@@ -20,6 +20,7 @@ public class GTurnAction extends DroneAction
     private FlyAction     flyAction;
     private EchoAction    echoAction;
     private HeadingAction headingAction;
+    private boolean turnNotBis;
 
     public GTurnAction (Drone drone)
     {
@@ -28,6 +29,7 @@ public class GTurnAction extends DroneAction
         flyAction = new FlyAction(drone);
         echoAction = new EchoAction(drone);
         headingAction = new HeadingAction(drone);
+        turnNotBis = false;
     }
 
     @Override
@@ -71,6 +73,7 @@ public class GTurnAction extends DroneAction
                 break;
 
             case Turn_2:
+                turnNotBis = true;
                 res = headingAction.apply(getDrone().getLastTurn());
                 nextStep = Turn_3;
                 break;
@@ -83,12 +86,11 @@ public class GTurnAction extends DroneAction
             case Turn_3:
                 res = headingAction.apply(getDrone().getLastTurn());
                 nextStep = Turn_4;
-                this.finish();
                 break;
 
             case Turn_4:
                 res = headingAction.apply(getOpposite(getDrone().getLastTurn()));
-                this.finish();
+                nextStep = EchoFront;
                 break;
 
             case EchoFront:
@@ -103,6 +105,9 @@ public class GTurnAction extends DroneAction
                     nextStep = EchoFront;
                 } else {
                     res = flyAction.apply();
+                    if (turnNotBis) {
+                        getDrone().setLastTurn(DroneEnums.ZQSD.getOpposite(getDrone().getLastTurn()));
+                    }
                     finish();
                 }
                 break;

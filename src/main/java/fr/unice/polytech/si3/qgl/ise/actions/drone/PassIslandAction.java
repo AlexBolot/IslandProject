@@ -19,6 +19,7 @@ public class PassIslandAction extends DroneAction
     private Step          currentStep;
     private FlyAction     flyAction;
     private EchoAction    echoAction;
+    private boolean passing;
 
     public PassIslandAction (Drone drone)
     {
@@ -26,6 +27,7 @@ public class PassIslandAction extends DroneAction
         currentStep = EchoSide;
         flyAction = new FlyAction(drone);
         echoAction = new EchoAction(drone);
+        passing = true;
     }
 
     @Override
@@ -66,6 +68,12 @@ public class PassIslandAction extends DroneAction
     {
         HashMap<DroneEnums.ZQSD, Tuple2<DroneEnums.Obstacle, Integer>> margins = getDrone().getMargins();
         String res = "";
+        if (passing) {
+            res = flyAction.apply();
+            if (margins.get(getDrone().getLastEcho())._1 == GROUND) {
+                passing = false;
+            }
+        }
 
         if (margins.get(getDrone().getLastEcho())._1 == GROUND)
         {
