@@ -4,6 +4,7 @@ import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
 import fr.unice.polytech.si3.qgl.ise.factories.JsonFactory;
 import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
+import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 import scala.Tuple2;
 
 import java.util.HashMap;
@@ -65,11 +66,19 @@ public class FlyAction extends SimpleAction
 
     private void updateMargins ()
     {
-        HashMap<ZQSD, Tuple2<Obstacle, Integer>> margins = getDrone().getMargins();
-        Tuple2<Obstacle, Integer> oldFront = margins.get(FRONT);
-        Tuple2<Obstacle, Integer> oldBack = margins.get(BACK);
+        Margin margins = getDrone().getMargins();
+        //update local margins
+        Tuple2<Obstacle, Integer> oldFront = margins.getLocal(FRONT);
+        Tuple2<Obstacle, Integer> oldBack = margins.getLocal(BACK);
 
-        margins.put(FRONT, new Tuple2<>(oldFront._1, oldFront._2 - 1));
-        margins.put(BACK, new Tuple2<>(oldBack._1, oldBack._2 + 1));
+        margins.setLocal(FRONT, oldFront._1, oldFront._2 - 1);
+        margins.setLocal(BACK, oldBack._1, oldBack._2 + 1);
+
+        //update global margins
+        Tuple2<Obstacle, Integer> oldGlobalFront = margins.getGlobal(FRONT);
+        Tuple2<Obstacle, Integer> oldGlobalBack = margins.getGlobal(BACK);
+
+        margins.setGlobal(FRONT, oldGlobalFront._1, oldGlobalFront._2 - 1);
+        margins.setGlobal(BACK, oldGlobalBack._1, oldGlobalBack._2 + 1);
     }
 }

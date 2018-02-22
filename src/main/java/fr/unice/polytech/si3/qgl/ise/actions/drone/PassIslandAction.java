@@ -5,6 +5,7 @@ import fr.unice.polytech.si3.qgl.ise.actions.simple.EchoAction;
 import fr.unice.polytech.si3.qgl.ise.actions.simple.FlyAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums;
+import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 import scala.Tuple2;
 
 import java.util.HashMap;
@@ -66,18 +67,18 @@ public class PassIslandAction extends DroneAction
 
     private String decideToFly ()
     {
-        HashMap<DroneEnums.ZQSD, Tuple2<DroneEnums.Obstacle, Integer>> margins = getDrone().getMargins();
+        Margin margins = getDrone().getMargins();
         String res = "";
         if (passing) {
             res = flyAction.apply();
-            if (margins.get(getDrone().getLastEcho())._1 == GROUND) {
+            if (margins.getLocal(getDrone().getLastEcho())._1 == GROUND) {
                 passing = false;
             }
         }
 
-        if (margins.get(getDrone().getLastEcho())._1 == GROUND)
+        if (margins.getLocal(getDrone().getLastEcho())._1 == GROUND)
         {
-            if (margins.get(FRONT)._2 > 1) res = flyAction.apply();
+            if (margins.getLocal(FRONT)._2 > 1) res = flyAction.apply();
             else res = StopAction.get();
         }
 
