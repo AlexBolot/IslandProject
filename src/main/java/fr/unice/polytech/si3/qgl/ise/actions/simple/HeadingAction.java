@@ -5,6 +5,7 @@ import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
 import fr.unice.polytech.si3.qgl.ise.factories.JsonFactory;
 import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
+import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 import scala.Tuple2;
 
 import java.util.HashMap;
@@ -129,30 +130,45 @@ public class HeadingAction extends SimpleAction
 
     private void updateMargins (ZQSD direction)
     {
-        HashMap<ZQSD, Tuple2<Obstacle, Integer>> margins = getDrone().getMargins();
+        Margin margins = getDrone().getMargins();
 
-        Tuple2<Obstacle, Integer> oldFront = margins.get(FRONT);
-        Tuple2<Obstacle, Integer> oldRight = margins.get(RIGHT);
-        Tuple2<Obstacle, Integer> oldBack = margins.get(BACK);
-        Tuple2<Obstacle, Integer> oldLeft = margins.get(LEFT);
+        Tuple2<Obstacle, Integer> oldFront = margins.getLocal(FRONT);
+        Tuple2<Obstacle, Integer> oldRight = margins.getLocal(RIGHT);
+        Tuple2<Obstacle, Integer> oldBack = margins.getLocal(BACK);
+        Tuple2<Obstacle, Integer> oldLeft = margins.getLocal(LEFT);
+
+        Tuple2<Obstacle, Integer> oldGlobalFront = margins.getGlobal(FRONT);
+        Tuple2<Obstacle, Integer> oldGlobalRight = margins.getGlobal(RIGHT);
+        Tuple2<Obstacle, Integer> oldGlobalBack = margins.getGlobal(BACK);
+        Tuple2<Obstacle, Integer> oldGlobalLeft = margins.getGlobal(LEFT);
 
         switch (direction)
         {
             case LEFT:
 
-                margins.put(FRONT, new Tuple2<>(oldLeft._1, oldLeft._2 - 1));
-                margins.put(RIGHT, new Tuple2<>(oldFront._1, oldFront._2 - 1));
-                margins.put(BACK, new Tuple2<>(oldRight._1, oldRight._2 + 1));
-                margins.put(LEFT, new Tuple2<>(oldBack._1, oldBack._2 + 1));
+                margins.setLocal(FRONT, oldLeft._1, oldLeft._2 - 1);
+                margins.setLocal(RIGHT, oldFront._1, oldFront._2 - 1);
+                margins.setLocal(BACK, oldRight._1, oldRight._2 + 1);
+                margins.setLocal(LEFT, oldBack._1, oldBack._2 + 1);
+
+                margins.setGlobal(FRONT, oldGlobalLeft._1, oldGlobalLeft._2 - 1);
+                margins.setGlobal(RIGHT, oldGlobalFront._1, oldGlobalFront._2 - 1);
+                margins.setGlobal(BACK, oldGlobalRight._1, oldGlobalRight._2 + 1);
+                margins.setGlobal(LEFT, oldGlobalBack._1, oldGlobalBack._2 + 1);
 
                 break;
 
             case RIGHT:
 
-                margins.put(FRONT, new Tuple2<>(oldRight._1, oldRight._2 - 1));
-                margins.put(RIGHT, new Tuple2<>(oldBack._1, oldBack._2 + 1));
-                margins.put(BACK, new Tuple2<>(oldLeft._1, oldLeft._2 + 1));
-                margins.put(LEFT, new Tuple2<>(oldFront._1, oldFront._2 - 1));
+                margins.setLocal(FRONT, oldRight._1, oldRight._2 - 1);
+                margins.setLocal(RIGHT, oldBack._1, oldBack._2 + 1);
+                margins.setLocal(BACK, oldLeft._1, oldLeft._2 + 1);
+                margins.setLocal(LEFT, oldFront._1, oldFront._2 - 1);
+
+                margins.setGlobal(FRONT, oldGlobalRight._1, oldGlobalRight._2 - 1);
+                margins.setGlobal(RIGHT, oldGlobalBack._1, oldGlobalBack._2 + 1);
+                margins.setGlobal(BACK, oldGlobalLeft._1, oldGlobalLeft._2 + 1);
+                margins.setGlobal(LEFT, oldGlobalFront._1, oldGlobalFront._2 - 1);
 
                 break;
 

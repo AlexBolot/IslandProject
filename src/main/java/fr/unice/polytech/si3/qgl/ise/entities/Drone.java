@@ -17,6 +17,7 @@ import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
 import fr.unice.polytech.si3.qgl.ise.map.Tile;
 import fr.unice.polytech.si3.qgl.ise.parsing.Echo;
 import fr.unice.polytech.si3.qgl.ise.parsing.Scan;
+import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 import org.apache.logging.log4j.Logger;
 import scala.Tuple2;
 
@@ -44,7 +45,7 @@ public class Drone
     private IslandMap                                map;
     private Coordinates                              coords;
     private ArrayList<Action>                        steps;
-    private HashMap<ZQSD, Tuple2<Obstacle, Integer>> margins;
+    private Margin margins;
 
     private static Logger logger = getLogger(Drone.class);
 
@@ -55,8 +56,7 @@ public class Drone
         this.isFlying = true;
         this.subState = INIT_ECHO_FRONT;
         this.orientation = orientation;
-        this.margins = new HashMap<>();
-        this.margins.put(BACK, new Tuple2<>(BORDER, 0));
+        this.margins = new Margin();
 
         initSteps();
     }
@@ -98,9 +98,10 @@ public class Drone
         Obstacle obstacle = echo.getObstacle();
         Integer range = echo.getRange();
 
-        if (obstacle == GROUND) hasFoundIsland = true;
+        margins.setLocal(lastEcho, obstacle, range);
 
-        margins.put(lastEcho, new Tuple2<>(obstacle, range));
+        if (obstacle == GROUND) hasFoundIsland = true;
+        if (obstacle == BORDER) margins.setGlobal(lastEcho, obstacle, range);
     }
 
     public void acknowledgeScan (Scan scan)
@@ -137,7 +138,7 @@ public class Drone
         return isFlying;
     }
 
-    public HashMap<ZQSD, Tuple2<Obstacle, Integer>> getMargins ()
+    public Margin getMargins()
     {
         return margins;
     }

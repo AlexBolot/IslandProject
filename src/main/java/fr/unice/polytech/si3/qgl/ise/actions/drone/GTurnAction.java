@@ -6,6 +6,7 @@ import fr.unice.polytech.si3.qgl.ise.actions.simple.FlyAction;
 import fr.unice.polytech.si3.qgl.ise.actions.simple.HeadingAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums;
+import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 import scala.Tuple2;
 
 import java.util.HashMap;
@@ -61,9 +62,9 @@ public class GTurnAction extends DroneAction
                 break;
 
             case FlyFront_2:
-                HashMap<DroneEnums.ZQSD, Tuple2<DroneEnums.Obstacle, Integer>> margins = getDrone().getMargins();
+                Margin margins = getDrone().getMargins();
                 DroneEnums.ZQSD lastTurn = getDrone().getLastTurn();
-                Tuple2<DroneEnums.Obstacle, Integer> lastMargin = margins.get(lastTurn);
+                Tuple2<DroneEnums.Obstacle, Integer> lastMargin = margins.getLocal(lastTurn);
                 if (lastMargin._1 == DroneEnums.Obstacle.GROUND) {
                     nextStep = Turn_2;
                 } else {
@@ -99,7 +100,7 @@ public class GTurnAction extends DroneAction
                 break;
 
             case Fly:
-                int frontDist = getDrone().getMargins().get(FRONT)._2;
+                int frontDist = getDrone().getMargins().getLocal(FRONT)._2;
                 if (frontDist > 0) {
                     res = flyAction.apply();
                     nextStep = EchoFront;
@@ -125,7 +126,7 @@ public class GTurnAction extends DroneAction
     {
         String res;
 
-        int frontDist = getDrone().getMargins().get(FRONT)._2;
+        int frontDist = getDrone().getMargins().getLocal(FRONT)._2;
 
         if (frontDist > 1) res = flyAction.apply();
         else res = StopAction.get();

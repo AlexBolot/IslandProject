@@ -5,6 +5,7 @@ import fr.unice.polytech.si3.qgl.ise.actions.simple.EchoAction;
 import fr.unice.polytech.si3.qgl.ise.actions.simple.FlyAction;
 import fr.unice.polytech.si3.qgl.ise.actions.simple.HeadingAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
+import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 import scala.Tuple2;
 
 import java.util.HashMap;
@@ -101,9 +102,9 @@ public class ChangeLineAction extends DroneAction
 
     private String flyOrTurn ()
     {
-        HashMap<ZQSD, Tuple2<Obstacle, Integer>> margins = getDrone().getMargins();
+        Margin margins = getDrone().getMargins();
         ZQSD lastEcho = getDrone().getLastEcho();
-        Tuple2<Obstacle, Integer> lastMargin = margins.get(lastEcho);
+        Tuple2<Obstacle, Integer> lastMargin = margins.getLocal(lastEcho);
 
         String res = "";
 
@@ -119,8 +120,8 @@ public class ChangeLineAction extends DroneAction
 
     private String reachIsland ()
     {
-        HashMap<ZQSD, Tuple2<Obstacle, Integer>> margins = getDrone().getMargins();
-        Tuple2<Obstacle, Integer> frontMargin = margins.get(FRONT);
+        Margin margins = getDrone().getMargins();
+        Tuple2<Obstacle, Integer> frontMargin = margins.getLocal(FRONT);
         String res = "";
 
         if(frontMargin._1 == GROUND && frontMargin._2 >= 0) res = flyAction.apply();

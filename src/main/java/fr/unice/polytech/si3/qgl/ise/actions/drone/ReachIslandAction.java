@@ -3,6 +3,7 @@ package fr.unice.polytech.si3.qgl.ise.actions.drone;
 import fr.unice.polytech.si3.qgl.ise.actions.simple.EchoAction;
 import fr.unice.polytech.si3.qgl.ise.actions.simple.FlyAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
+import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 import scala.Tuple2;
 
 import java.util.HashMap;
@@ -73,12 +74,12 @@ public class ReachIslandAction extends DroneAction
 
     private String decideToFly ()
     {
-        HashMap<ZQSD, Tuple2<Obstacle, Integer>> margins = getDrone().getMargins();
+        Margin margins = getDrone().getMargins();
         String res = "";
 
-        if (margins.get(FRONT)._1 == GROUND)
+        if (margins.getLocal(FRONT)._1 == GROUND)
         {
-            int frontDist = margins.get(FRONT)._2;
+            int frontDist = margins.getLocal(FRONT)._2;
 
             if (frontDist >= 0) return flyAction.apply();
         }

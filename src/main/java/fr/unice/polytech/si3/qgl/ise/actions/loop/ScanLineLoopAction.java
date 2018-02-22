@@ -36,7 +36,7 @@ public class ScanLineLoopAction extends Action
             }
         }
 
-        if (drone.getMargins().get(drone.getLastEcho())._1 == GROUND)
+        if (drone.getMargins().getLocal(drone.getLastEcho())._1 == GROUND)
         {
             actions.forEach(Action::reset);
             return apply();

@@ -5,6 +5,7 @@ import fr.unice.polytech.si3.qgl.ise.actions.simple.EchoAction;
 import fr.unice.polytech.si3.qgl.ise.actions.simple.FlyAction;
 import fr.unice.polytech.si3.qgl.ise.actions.simple.HeadingAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
+import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 import scala.Tuple2;
 
 import java.util.HashMap;
@@ -72,12 +73,12 @@ public class SearchIslandAction extends DroneAction
 
     private String choseDirection ()
     {
-        HashMap<ZQSD, Tuple2<Obstacle, Integer>> margins = getDrone().getMargins();
+        Margin margins = getDrone().getMargins();
         ZQSD dir;
 
-        boolean facingGround = margins.get(FRONT)._1 == GROUND;
-        int marginRight = margins.get(RIGHT)._2;
-        int marginLeft = margins.get(LEFT)._2;
+        boolean facingGround = margins.getLocal(FRONT)._1 == GROUND;
+        int marginRight = margins.getLocal(RIGHT)._2;
+        int marginLeft = margins.getLocal(LEFT)._2;
 
         if (facingGround) dir = (marginRight < marginLeft) ? RIGHT : LEFT;
         else dir = (marginRight > marginLeft) ? RIGHT : LEFT;
@@ -87,12 +88,12 @@ public class SearchIslandAction extends DroneAction
 
     private String decideToFly ()
     {
-        HashMap<ZQSD, Tuple2<Obstacle, Integer>> margins = getDrone().getMargins();
+        Margin margins = getDrone().getMargins();
         String res = "";
 
-        if (margins.get(getDrone().getLastEcho())._1 == GROUND || !getDrone().hasFoundIsland())
+        if (margins.getLocal(getDrone().getLastEcho())._1 == GROUND || !getDrone().hasFoundIsland())
         {
-            int frontDist = margins.get(FRONT)._2;
+            int frontDist = margins.getLocal(FRONT)._2;
 
             if (frontDist > 1) res = flyAction.apply();
             else  res= StopAction.get();

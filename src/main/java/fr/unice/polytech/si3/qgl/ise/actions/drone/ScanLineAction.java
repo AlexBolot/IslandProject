@@ -61,7 +61,7 @@ public class ScanLineAction extends DroneAction
 
             case EchoFront:
                 res = flyAction.apply();
-                Tuple2<DroneEnums.Obstacle, Integer> margin = getDrone().getMargins().get(FRONT);
+                Tuple2<DroneEnums.Obstacle, Integer> margin = getDrone().getMargins().getLocal(FRONT);
                 if (margin._1 == DroneEnums.Obstacle.BORDER) {
                     this.finish();
                 }
@@ -69,9 +69,10 @@ public class ScanLineAction extends DroneAction
                 break;
 
             case Reach:
-                Tuple2<DroneEnums.Obstacle, Integer> lastMargin = getDrone().getMargins().get(FRONT);
+                Tuple2<DroneEnums.Obstacle, Integer> lastMargin = getDrone().getMargins().getLocal(FRONT);
                 if (lastMargin._1 == DroneEnums.Obstacle.GROUND && lastMargin._2 > 0) {
                     res = flyAction.apply();
+                    nextStep = Reach;
                 } else {
                     res = scanAction.apply();
                     nextStep = FlyOrTurn;
