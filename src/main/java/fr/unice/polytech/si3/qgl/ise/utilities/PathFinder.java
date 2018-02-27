@@ -18,7 +18,7 @@ public class PathFinder {
      */
     public static double calculateDistance(Coordinates c1, Coordinates c2) {
         if (c1.equals(c2)) return 0;
-        return Math.sqrt(Math.pow(c1.getX() - c2.getX(), 2) + Math.pow(c1.getY() - c2.getY(), 2));
+        return Math.sqrt(Math.pow((double)c1.getX() - c2.getX(), 2) + Math.pow((double)c1.getY() - c2.getY(), 2));
     }
 
     /**

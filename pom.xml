@@ -8,7 +8,7 @@
     <packaging>jar</packaging>
 
     <name>ISE :: Island :: Team E</name>
-    <url>http://maven.apache.org</url>
+    <url>http://www.i3s.unice.fr/~mosser/teaching/16_17/se</url>
 
     <repositories>
         <repository>
@@ -92,5 +92,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
