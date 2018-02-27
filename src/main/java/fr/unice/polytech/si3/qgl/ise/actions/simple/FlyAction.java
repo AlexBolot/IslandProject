@@ -25,6 +25,10 @@ public class FlyAction extends SimpleAction
     public String apply ()
     {
         getDrone().setLastAction(Fly);
+        //security if the drone wants to fly out of the map
+        if (getDrone().getMargins().getGlobal(FRONT)._2 < 1) {
+            return new JsonFactory().createJsonString("stop");
+        }
         return fly();
     }
 
