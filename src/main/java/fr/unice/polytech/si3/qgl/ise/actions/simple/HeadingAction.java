@@ -45,7 +45,13 @@ public class HeadingAction extends SimpleAction {
         return res;
     }
 
-    private String turnRight() {
+    private String turnRight ()
+    {
+        //security if the drone wants to head out of the map
+        if (getDrone().getMargins().getGlobal(FRONT)._2 < 1 || getDrone().getMargins().getGlobal(RIGHT)._2 < 1) {
+            return new JsonFactory().createJsonString("stop");
+        }
+
         int unit = Drone.getMovementUnit();
         int oldX = getDrone().getCoords().getX();
         int oldY = getDrone().getCoords().getY();
@@ -81,7 +87,13 @@ public class HeadingAction extends SimpleAction {
         return new JsonFactory().createJsonString("heading", "direction", newOri.getValue());
     }
 
-    private String turnLeft() {
+    private String turnLeft ()
+    {
+        //security if the drone wants to head out of the map
+        if (getDrone().getMargins().getGlobal(FRONT)._2 < 1 || getDrone().getMargins().getGlobal(LEFT)._2 < 1) {
+            return new JsonFactory().createJsonString("stop");
+        }
+
         int unit = Drone.getMovementUnit();
         int oldX = getDrone().getCoords().getX();
         int oldY = getDrone().getCoords().getY();

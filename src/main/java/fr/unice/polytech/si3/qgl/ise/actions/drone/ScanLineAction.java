@@ -47,6 +47,11 @@ public class ScanLineAction extends DroneAction {
             case FlyOrTurn:
                 res = checkResult();
 
+                if (getDrone().getMargins().getGlobal(FRONT)._2 < 2) {
+                    res = echoAction.apply(FRONT);
+                    this.finish();
+                }
+
                 if (!res.isEmpty()) nextStep = Scan;
                 else {
                     res = echoAction.apply(FRONT);
