@@ -67,19 +67,19 @@ public class IslandMapTest {
         islandMap.addCreek(new Coordinates(4, 1), "id3");
         islandMap.addCreek(new Coordinates(-11, -489), "id4");
 
-        assertEquals(4, islandMap.getCreeks().size());
-        assertEquals("id1", islandMap.getCreeks().get(new Coordinates(0, 0)));
-        assertEquals("id2", islandMap.getCreeks().get(new Coordinates(4986, -49876)));
-        assertEquals("id3", islandMap.getCreeks().get(new Coordinates(4, 1)));
-        assertEquals("id4", islandMap.getCreeks().get(new Coordinates(-11, -489)));
+        assertEquals(5, islandMap.getCreeks().size());
+        assertEquals(new Coordinates(0, 0), islandMap.getCreeks().get("id0"));
+        assertEquals(new Coordinates(4986, -49876), islandMap.getCreeks().get("id2"));
+        assertEquals(new Coordinates(4, 1), islandMap.getCreeks().get("id3"));
+        assertEquals(new Coordinates(-11, -489), islandMap.getCreeks().get("id4"));
     }
 
     @Test
     public void addSiteTest() {
         islandMap.addSite(new Coordinates(4986, -49876), "id");
 
-        assertEquals("id", islandMap.getEmergencySite()._2);
-        assertEquals(new Coordinates(4986, -49876), islandMap.getEmergencySite()._1);
+        assertEquals("id", islandMap.getEmergencySite()._1);
+        assertEquals(new Coordinates(4986, -49876), islandMap.getEmergencySite()._2);
     }
 
     @Test

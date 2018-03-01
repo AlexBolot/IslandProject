@@ -18,7 +18,7 @@ public class PathFinder {
      */
     public static double calculateDistance(Coordinates c1, Coordinates c2) {
         if (c1.equals(c2)) return 0;
-        return Math.sqrt(Math.pow((double)c1.getX() - c2.getX(), 2) + Math.pow((double)c1.getY() - c2.getY(), 2));
+        return Math.sqrt(Math.pow((double) c1.getX() - c2.getX(), 2) + Math.pow((double) c1.getY() - c2.getY(), 2));
     }
 
     /**
@@ -28,10 +28,10 @@ public class PathFinder {
      * @param emergencySite : tuple containing the recorded emergency site (id and coordinates)
      * @return the id of the creek nearest to the emergency site
      */
-    public static String findNearestCreek(Map<Coordinates, String> creeks, Tuple2<Coordinates, String> emergencySite) {
+    public static String findNearestCreek(Map<String, Coordinates> creeks, Tuple2<String, Coordinates> emergencySite) {
         return creeks.entrySet().stream()
-                .sorted(Comparator.comparingDouble(entry2 -> calculateDistance(entry2.getKey(), emergencySite._1)))
-                .map(Map.Entry::getValue)
+                .sorted(Comparator.comparingDouble(entry2 -> calculateDistance(entry2.getValue(), emergencySite._2)))
+                .map(Map.Entry::getKey)
                 .collect(Collectors.toList())
                 .get(0);
     }
