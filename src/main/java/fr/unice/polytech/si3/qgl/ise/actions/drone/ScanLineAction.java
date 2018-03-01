@@ -36,7 +36,7 @@ public class ScanLineAction extends DroneAction {
 
     public String apply(Step step) {
         String res;
-        Step nextStep = null;
+        Step nextStep;
 
         switch (step) {
             case Scan:

@@ -9,6 +9,7 @@ import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 import scala.Tuple2;
 
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action.Heading;
+import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action.Stop;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 
@@ -45,10 +46,10 @@ public class HeadingAction extends SimpleAction {
         return res;
     }
 
-    private String turnRight ()
-    {
+    private String turnRight() {
         //security if the drone wants to head out of the map
         if (getDrone().getMargins().getGlobal(FRONT)._2 < 1 || getDrone().getMargins().getGlobal(RIGHT)._2 < 1) {
+            getDrone().setLastAction(Stop);
             return new JsonFactory().createJsonString("stop");
         }
 
@@ -87,10 +88,10 @@ public class HeadingAction extends SimpleAction {
         return new JsonFactory().createJsonString("heading", "direction", newOri.getValue());
     }
 
-    private String turnLeft ()
-    {
+    private String turnLeft() {
         //security if the drone wants to head out of the map
         if (getDrone().getMargins().getGlobal(FRONT)._2 < 1 || getDrone().getMargins().getGlobal(LEFT)._2 < 1) {
+            getDrone().setLastAction(Stop);
             return new JsonFactory().createJsonString("stop");
         }
 
