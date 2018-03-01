@@ -51,5 +51,9 @@ public class Crew {
     public boolean isLanded() {
         return isLanded;
     }
+
+    public Coordinates getCoords() {
+        return coords;
+    }
 }
 
