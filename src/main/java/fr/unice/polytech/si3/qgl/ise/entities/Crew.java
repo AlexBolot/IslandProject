@@ -1,6 +1,8 @@
 package fr.unice.polytech.si3.qgl.ise.entities;
 
-import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums;
+import fr.unice.polytech.si3.qgl.ise.actions.Action;
+import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
+import fr.unice.polytech.si3.qgl.ise.actions.crew.Land;
 import fr.unice.polytech.si3.qgl.ise.factories.JsonFactory;
 import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
@@ -10,7 +12,7 @@ public class Crew {
 
     private JsonFactory json;
 
-    private DroneEnums.Action lastAction;
+    private Action lastAction;
 
     private boolean isLanded;
     private String idCreek;
@@ -38,11 +40,12 @@ public class Crew {
     }
 
     public String takeDecision() {
-        if (!isLanded)
-            return json.createJsonString("land", "creek", idCreek,
-                    "people", crewSize.toString());
+        if (!isLanded) {
+            lastAction = new Land(this, idCreek, crewSize);
+            return lastAction.apply();
+        }
 
-        return json.createJsonString("stop");
+        return StopAction.get();
     }
 
     public boolean isLanded() {
