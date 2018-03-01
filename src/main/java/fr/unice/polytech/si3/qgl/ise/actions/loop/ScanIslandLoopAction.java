@@ -7,15 +7,13 @@ import fr.unice.polytech.si3.qgl.ise.actions.drone.PassIslandAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
 
-public class ScanIslandLoopAction extends Action
-{
-    private Drone              drone;
-    private GTurnAction        gTurnAction;
+public class ScanIslandLoopAction extends Action {
+    private Drone drone;
+    private GTurnAction gTurnAction;
     private ScanLineLoopAction scanLineLoopAction;
     private PassIslandAction passIslandAction;
 
-    public ScanIslandLoopAction (Drone drone)
-    {
+    public ScanIslandLoopAction(Drone drone) {
         this.drone = drone;
         this.scanLineLoopAction = new ScanLineLoopAction(drone);
         this.gTurnAction = new GTurnAction(drone);
@@ -23,16 +21,14 @@ public class ScanIslandLoopAction extends Action
     }
 
     @Override
-    public String apply ()
-    {
+    public String apply() {
         IslandMap map = drone.getMap();
         String res = "";
 
         if (!scanLineLoopAction.isFinished()) res = scanLineLoopAction.apply();
         if (!res.isEmpty()) return res;
 
-        if (!map.getCreeks().isEmpty() && map.getEmergencySite() != null)
-        {
+        if (!map.getCreeks().isEmpty() && map.getEmergencySite() != null) {
             finish();
             return StopAction.get();
         }
@@ -40,8 +36,7 @@ public class ScanIslandLoopAction extends Action
         if (!res.isEmpty()) return res;
 
         if (!gTurnAction.isFinished()) res = gTurnAction.apply();
-        else
-        {
+        else {
             scanLineLoopAction.reset();
             res = apply();
         }

@@ -10,15 +10,13 @@ import static fr.unice.polytech.si3.qgl.ise.actions.drone.ReachIslandAction.Step
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 
-public class ReachIslandAction extends DroneAction
-{
-    private Step          currentStep;
-    private FlyAction     flyAction;
-    private EchoAction    echoAction;
-    private LTurnAction   lTurnAction;
+public class ReachIslandAction extends DroneAction {
+    private Step currentStep;
+    private FlyAction flyAction;
+    private EchoAction echoAction;
+    private LTurnAction lTurnAction;
 
-    public ReachIslandAction (Drone drone)
-    {
+    public ReachIslandAction(Drone drone) {
         super(drone);
         currentStep = LTurn;
         flyAction = new FlyAction(drone);
@@ -27,21 +25,17 @@ public class ReachIslandAction extends DroneAction
     }
 
     @Override
-    public String apply ()
-    {
+    public String apply() {
         return apply(currentStep);
     }
 
-    public String apply (Step step)
-    {
+    public String apply(Step step) {
         String res;
         Step nextStep = null;
 
-        switch (step)
-        {
+        switch (step) {
             case LTurn:
-                if (!lTurnAction.isFinished())
-                {
+                if (!lTurnAction.isFinished()) {
                     res = lTurnAction.apply();
                     nextStep = LTurn;
                     break;
@@ -67,13 +61,11 @@ public class ReachIslandAction extends DroneAction
         return res;
     }
 
-    private String decideToFly ()
-    {
+    private String decideToFly() {
         Margin margins = getDrone().getMargins();
         String res = "";
 
-        if (margins.getLocal(FRONT)._1 == GROUND)
-        {
+        if (margins.getLocal(FRONT)._1 == GROUND) {
             int frontDist = margins.getLocal(FRONT)._2;
 
             if (frontDist >= 0) return flyAction.apply();
@@ -82,14 +74,12 @@ public class ReachIslandAction extends DroneAction
     }
 
     @Override
-    public void reset ()
-    {
+    public void reset() {
         super.reset();
         currentStep = LTurn;
     }
 
-    public enum Step
-    {
+    public enum Step {
         LTurn,
         EchoFront,
         FlyToIsland

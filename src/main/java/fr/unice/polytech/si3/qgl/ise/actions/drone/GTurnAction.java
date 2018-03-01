@@ -13,16 +13,14 @@ import static fr.unice.polytech.si3.qgl.ise.actions.drone.GTurnAction.Step.*;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.getOpposite;
 
-public class GTurnAction extends DroneAction
-{
-    private Step          currentStep;
-    private FlyAction     flyAction;
-    private EchoAction    echoAction;
+public class GTurnAction extends DroneAction {
+    private Step currentStep;
+    private FlyAction flyAction;
+    private EchoAction echoAction;
     private HeadingAction headingAction;
     private boolean turnNotBis;
 
-    public GTurnAction (Drone drone)
-    {
+    public GTurnAction(Drone drone) {
         super(drone);
         currentStep = FlyFront_1;
         flyAction = new FlyAction(drone);
@@ -32,18 +30,15 @@ public class GTurnAction extends DroneAction
     }
 
     @Override
-    public String apply ()
-    {
+    public String apply() {
         return apply(currentStep);
     }
 
-    public String apply (Step step)
-    {
+    public String apply(Step step) {
         String res;
         Step nextStep = null;
 
-        switch (step)
-        {
+        switch (step) {
             case FlyFront_1:
                 res = decideToFly();
                 nextStep = Turn_1;
@@ -120,8 +115,7 @@ public class GTurnAction extends DroneAction
         return res;
     }
 
-    private String decideToFly ()
-    {
+    private String decideToFly() {
         String res;
 
         int frontDist = getDrone().getMargins().getLocal(FRONT)._2;
@@ -133,14 +127,12 @@ public class GTurnAction extends DroneAction
     }
 
     @Override
-    public void reset ()
-    {
+    public void reset() {
         super.reset();
         currentStep = FlyFront_1;
     }
 
-    public enum Step
-    {
+    public enum Step {
         FlyFront_1,
         Turn_1,
         EchoSide,

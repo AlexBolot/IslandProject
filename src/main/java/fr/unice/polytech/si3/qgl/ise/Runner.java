@@ -1,4 +1,6 @@
-package fr.unice.polytech.si3.qgl.ise;import java.nio.file.Path;
+package fr.unice.polytech.si3.qgl.ise;
+
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;

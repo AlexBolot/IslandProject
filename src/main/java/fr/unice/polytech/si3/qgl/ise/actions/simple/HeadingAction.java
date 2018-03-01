@@ -12,25 +12,20 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action.Heading;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 
-public class HeadingAction extends SimpleAction
-{
-    public HeadingAction (Drone drone)
-    {
+public class HeadingAction extends SimpleAction {
+    public HeadingAction(Drone drone) {
         super(drone);
     }
 
     @Override
-    public String apply ()
-    {
+    public String apply() {
         return apply(getDrone().getLastTurn());
     }
 
-    public String apply (ZQSD direction)
-    {
+    public String apply(ZQSD direction) {
         String res;
 
-        switch (direction)
-        {
+        switch (direction) {
             case LEFT:
                 res = turnLeft();
                 break;
@@ -50,16 +45,14 @@ public class HeadingAction extends SimpleAction
         return res;
     }
 
-    private String turnRight ()
-    {
+    private String turnRight() {
         int unit = Drone.getMovementUnit();
         int oldX = getDrone().getCoords().getX();
         int oldY = getDrone().getCoords().getY();
 
         Coordinates newCoords;
 
-        switch (getDrone().getOrientation())
-        {
+        switch (getDrone().getOrientation()) {
             case EAST:
                 newCoords = new Coordinates(oldX + unit, oldY - unit);
                 break;
@@ -88,16 +81,14 @@ public class HeadingAction extends SimpleAction
         return new JsonFactory().createJsonString("heading", "direction", newOri.getValue());
     }
 
-    private String turnLeft ()
-    {
+    private String turnLeft() {
         int unit = Drone.getMovementUnit();
         int oldX = getDrone().getCoords().getX();
         int oldY = getDrone().getCoords().getY();
 
         Coordinates newCoords;
 
-        switch (getDrone().getOrientation())
-        {
+        switch (getDrone().getOrientation()) {
             case EAST:
                 newCoords = new Coordinates(oldX + unit, oldY + unit);
                 break;
@@ -126,8 +117,7 @@ public class HeadingAction extends SimpleAction
         return new JsonFactory().createJsonString("heading", "direction", newOri.getValue());
     }
 
-    private void updateMargins (ZQSD direction)
-    {
+    private void updateMargins(ZQSD direction) {
         Margin margins = getDrone().getMargins();
 
         Tuple2<Obstacle, Integer> oldFront = margins.getLocal(FRONT);
@@ -140,8 +130,7 @@ public class HeadingAction extends SimpleAction
         Tuple2<Obstacle, Integer> oldGlobalBack = margins.getGlobal(BACK);
         Tuple2<Obstacle, Integer> oldGlobalLeft = margins.getGlobal(LEFT);
 
-        switch (direction)
-        {
+        switch (direction) {
             case LEFT:
 
                 margins.setLocal(FRONT, oldLeft._1, oldLeft._2 - 1);

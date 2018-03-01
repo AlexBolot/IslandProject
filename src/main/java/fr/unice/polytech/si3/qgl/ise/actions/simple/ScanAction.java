@@ -5,16 +5,13 @@ import fr.unice.polytech.si3.qgl.ise.factories.JsonFactory;
 
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action.Scan;
 
-public class ScanAction extends SimpleAction
-{
-    public ScanAction (Drone drone)
-    {
+public class ScanAction extends SimpleAction {
+    public ScanAction(Drone drone) {
         super(drone);
     }
 
     @Override
-    public String apply ()
-    {
+    public String apply() {
         getDrone().setLastAction(Scan);
         return new JsonFactory().createJsonString("scan");
     }
