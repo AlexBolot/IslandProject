@@ -12,16 +12,14 @@ import org.json.JSONObject;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
 import static org.apache.logging.log4j.LogManager.getLogger;
 
-public class Explorer implements IExplorerRaid
-{
+public class Explorer implements IExplorerRaid {
     private static Logger logger = getLogger(Explorer.class);
-    private Drone     drone;
+    private Drone drone;
     private IslandMap map;
-    private int       remainingBudget;
+    private int remainingBudget;
 
     @Override
-    public void initialize (String contract)
-    {
+    public void initialize(String contract) {
         logger.debug("Initializing the Explorer");
         logger.trace("Contract: " + contract);
         JSONObject data = new JSONObject(contract);
@@ -35,16 +33,12 @@ public class Explorer implements IExplorerRaid
     }
 
     @Override
-    public String takeDecision ()
-    {
-        try
-        {
+    public String takeDecision() {
+        try {
             String s = drone.takeDecision();
             logger.info("Decision :\t" + s);
             return s;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             logger.info(e.getMessage());
 
             JSONObject data = new JSONObject();
@@ -55,16 +49,14 @@ public class Explorer implements IExplorerRaid
     }
 
     @Override
-    public void acknowledgeResults (String results)
-    {
+    public void acknowledgeResults(String results) {
         JSONObject data = new JSONObject(results);
 
         logger.info("Réponse :\t" + data);
 
         remainingBudget -= data.getInt("cost");
 
-        switch (drone.getLastAction())
-        {
+        switch (drone.getLastAction()) {
             case Scan:
                 drone.acknowledgeScan(new Scan(data.toString()));
                 break;
@@ -75,8 +67,7 @@ public class Explorer implements IExplorerRaid
     }
 
     @Override
-    public String deliverFinalReport ()
-    {
+    public String deliverFinalReport() {
         StringBuilder str = new StringBuilder();
 
         str.append("CREEKS = ");

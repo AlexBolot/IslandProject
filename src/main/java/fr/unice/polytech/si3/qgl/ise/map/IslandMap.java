@@ -12,8 +12,8 @@ public class IslandMap {
     public static double[] percentageOfLayerForUpdate = {100, 70, 60, 50, 40, 30, 20};
 
     private Map<Coordinates, Tile> tiles;
-    private Map<Coordinates, String> creeks;
-    private Tuple2<Coordinates, String> emergencySite;
+    private Map<String, Coordinates> creeks;
+    private Tuple2<String, Coordinates> emergencySite;
 
     public IslandMap() {
         tiles = new HashMap<>();
@@ -26,22 +26,22 @@ public class IslandMap {
     }
 
     public void addCreek(Coordinates coordinates, String creekId) {
-        creeks.put(coordinates, creekId);
+        creeks.put(creekId, coordinates);
     }
 
     public void addCreeks(Coordinates coordinates, ArrayList<String> creekIds) {
         creekIds.forEach(id -> addCreek(coordinates, id));
     }
 
-    public Map<Coordinates, String> getCreeks() {
+    public Map<String, Coordinates> getCreeks() {
         return new HashMap<>(creeks);
     }
 
     public void addSite(Coordinates coordinates, String siteId) {
-        emergencySite = new Tuple2<>(coordinates, siteId);
+        emergencySite = new Tuple2<>(siteId, coordinates);
     }
 
-    public Tuple2<Coordinates, String> getEmergencySite() {
+    public Tuple2<String, Coordinates> getEmergencySite() {
         return emergencySite;
     }
 

@@ -11,15 +11,13 @@ import static fr.unice.polytech.si3.qgl.ise.actions.drone.PassIslandAction.Step.
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 
-public class PassIslandAction extends DroneAction
-{
-    private Step          currentStep;
-    private FlyAction     flyAction;
-    private EchoAction    echoAction;
+public class PassIslandAction extends DroneAction {
+    private Step currentStep;
+    private FlyAction flyAction;
+    private EchoAction echoAction;
     private boolean passing;
 
-    public PassIslandAction (Drone drone)
-    {
+    public PassIslandAction(Drone drone) {
         super(drone);
         currentStep = EchoSide;
         flyAction = new FlyAction(drone);
@@ -28,18 +26,15 @@ public class PassIslandAction extends DroneAction
     }
 
     @Override
-    public String apply ()
-    {
+    public String apply() {
         return apply(currentStep);
     }
 
-    public String apply (Step step)
-    {
+    public String apply(Step step) {
         String res;
         Step nextStep = null;
 
-        switch (step)
-        {
+        switch (step) {
             case EchoSide:
                 res = echoAction.apply(getDrone().getLastTurn());
                 nextStep = FlyOrTurn;
@@ -48,7 +43,7 @@ public class PassIslandAction extends DroneAction
             case FlyOrTurn:
                 res = decideToFly();
 
-                if(!res.isEmpty()) nextStep = EchoSide;
+                if (!res.isEmpty()) nextStep = EchoSide;
                 else finish();
                 break;
 
@@ -61,8 +56,7 @@ public class PassIslandAction extends DroneAction
         return res;
     }
 
-    private String decideToFly ()
-    {
+    private String decideToFly() {
         Margin margins = getDrone().getMargins();
         String res = "";
         if (passing) {
@@ -72,8 +66,7 @@ public class PassIslandAction extends DroneAction
             }
         }
 
-        if (margins.getLocal(getDrone().getLastEcho())._1 == GROUND)
-        {
+        if (margins.getLocal(getDrone().getLastEcho())._1 == GROUND) {
             if (margins.getLocal(FRONT)._2 > 1) res = flyAction.apply();
             else res = StopAction.get();
         }
@@ -82,14 +75,12 @@ public class PassIslandAction extends DroneAction
     }
 
     @Override
-    public void reset ()
-    {
+    public void reset() {
         super.reset();
         currentStep = EchoSide;
     }
 
-    public enum Step
-    {
+    public enum Step {
         EchoSide,
         FlyOrTurn,
     }

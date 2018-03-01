@@ -9,10 +9,8 @@ public class DroneEnums {
         FRONT,
         BACK;
 
-        public static ZQSD getOpposite (ZQSD dir)
-        {
-            switch (dir)
-            {
+        public static ZQSD getOpposite(ZQSD dir) {
+            switch (dir) {
                 case LEFT:
                     return RIGHT;
                 case RIGHT:
@@ -27,23 +25,15 @@ public class DroneEnums {
         }
     }
 
-    public enum NSEW
-    {
+    public enum NSEW {
         EAST("E"),
         WEST("W"),
         NORTH("N"),
         SOUTH("S");
 
         private String value;
-        private NSEW   toTheLeft;
-        private NSEW   toTheRight;
 
-        NSEW(String value) {
-            this.value = value;
-        }
-
-        static
-        {
+        static {
             NORTH.toTheRight = EAST;
             EAST.toTheRight = SOUTH;
             SOUTH.toTheRight = WEST;
@@ -55,27 +45,31 @@ public class DroneEnums {
             EAST.toTheLeft = NORTH;
         }
 
-        public NSEW getToTheLeft ()
-        {
+        private NSEW toTheLeft;
+
+        NSEW(String value) {
+            this.value = value;
+        }
+
+        private NSEW toTheRight;
+
+        public static NSEW getFromValue(String value) {
+            return Arrays.stream(NSEW.values())
+                    .filter(nsew -> nsew.value.equals(value))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("This NSEW does not exist"));
+        }
+
+        public NSEW getToTheLeft() {
             return toTheLeft;
         }
 
-        public NSEW getToTheRight ()
-        {
+        public NSEW getToTheRight() {
             return toTheRight;
         }
 
-        public String getValue ()
-        {
+        public String getValue() {
             return value;
-        }
-
-        public static NSEW getFromValue (String value)
-        {
-            return Arrays.stream(NSEW.values())
-                         .filter(nsew -> nsew.value.equals(value))
-                         .findFirst()
-                         .orElseThrow(() -> new IllegalArgumentException("This NSEW does not exist"));
         }
     }
 
@@ -85,22 +79,19 @@ public class DroneEnums {
 
         private String value;
 
-        Obstacle (String value)
-        {
+        Obstacle(String value) {
             this.value = value;
         }
 
-        public String getValue ()
-        {
-            return value;
+        public static Obstacle getFromValue(String value) {
+            return Arrays.stream(Obstacle.values())
+                    .filter(obs -> obs.value.equals(value))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("This Obstacle does not exist"));
         }
 
-        public static Obstacle getFromValue (String value)
-        {
-            return Arrays.stream(Obstacle.values())
-                         .filter(obs -> obs.value.equals(value))
-                         .findFirst()
-                         .orElseThrow(() -> new IllegalArgumentException("This Obstacle does not exist"));
+        public String getValue() {
+            return value;
         }
     }
 

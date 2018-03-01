@@ -13,17 +13,15 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 
-public class ChangeLineAction extends DroneAction
-{
-    private Step          currentStep;
-    private FlyAction     flyAction;
-    private EchoAction    echoAction;
+public class ChangeLineAction extends DroneAction {
+    private Step currentStep;
+    private FlyAction flyAction;
+    private EchoAction echoAction;
     private HeadingAction headingAction;
 
     private ZQSD generalDirection;
 
-    public ChangeLineAction (Drone drone)
-    {
+    public ChangeLineAction(Drone drone) {
         super(drone);
         currentStep = EchoSide;
         flyAction = new FlyAction(drone);
@@ -33,18 +31,15 @@ public class ChangeLineAction extends DroneAction
     }
 
     @Override
-    public String apply ()
-    {
+    public String apply() {
         return apply(ZQSD.getOpposite(getDrone().getLastTurn()));
     }
 
-    public String apply (ZQSD direction)
-    {
+    public String apply(ZQSD direction) {
         String res;
         Step nextStep = null;
 
-        switch (currentStep)
-        {
+        switch (currentStep) {
             case EchoSide:
                 res = echoAction.apply(ZQSD.getOpposite(getDrone().getLastTurn()));
                 nextStep = FlyOrTurn;
@@ -54,8 +49,7 @@ public class ChangeLineAction extends DroneAction
                 generalDirection = direction;
                 res = flyOrTurn();
 
-                if (!res.isEmpty())
-                {
+                if (!res.isEmpty()) {
                     nextStep = EchoSide;
                     break;
                 } else {
@@ -97,16 +91,14 @@ public class ChangeLineAction extends DroneAction
         return res;
     }
 
-    private String flyOrTurn ()
-    {
+    private String flyOrTurn() {
         Margin margins = getDrone().getMargins();
         ZQSD lastEcho = getDrone().getLastEcho();
         Tuple2<Obstacle, Integer> lastMargin = margins.getLocal(lastEcho);
 
         String res = "";
 
-        if (lastMargin._1 == GROUND && lastMargin._2 <= 1)
-        {
+        if (lastMargin._1 == GROUND && lastMargin._2 <= 1) {
             //if (margins.get(FRONT)._2 > 1) res = flyAction.apply();
             //else res = StopAction.get();
             res = flyAction.apply();
@@ -115,26 +107,23 @@ public class ChangeLineAction extends DroneAction
         return res;
     }
 
-    private String reachIsland ()
-    {
+    private String reachIsland() {
         Margin margins = getDrone().getMargins();
         Tuple2<Obstacle, Integer> frontMargin = margins.getLocal(FRONT);
         String res = "";
 
-        if(frontMargin._1 == GROUND && frontMargin._2 >= 0) res = flyAction.apply();
+        if (frontMargin._1 == GROUND && frontMargin._2 >= 0) res = flyAction.apply();
 
         return res;
     }
 
     @Override
-    public void reset ()
-    {
+    public void reset() {
         super.reset();
         currentStep = Turn1;
     }
 
-    public enum Step
-    {
+    public enum Step {
         EchoSide,
         FlyOrTurn,
         Turn1,

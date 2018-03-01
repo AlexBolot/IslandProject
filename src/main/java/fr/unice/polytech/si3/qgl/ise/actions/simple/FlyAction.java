@@ -11,30 +11,25 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.BACK;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 
-public class FlyAction extends SimpleAction
-{
-    public FlyAction (Drone drone)
-    {
+public class FlyAction extends SimpleAction {
+    public FlyAction(Drone drone) {
         super(drone);
     }
 
     @Override
-    public String apply ()
-    {
+    public String apply() {
         getDrone().setLastAction(Fly);
         return fly();
     }
 
-    private String fly ()
-    {
+    private String fly() {
         int unit = Drone.getMovementUnit();
         int oldX = getDrone().getCoords().getX();
         int oldY = getDrone().getCoords().getY();
 
         Coordinates newCoords;
 
-        switch (getDrone().getOrientation())
-        {
+        switch (getDrone().getOrientation()) {
             case EAST:
                 newCoords = new Coordinates(oldX + unit, oldY);
                 break;
@@ -61,8 +56,7 @@ public class FlyAction extends SimpleAction
         return new JsonFactory().createJsonString("fly");
     }
 
-    private void updateMargins ()
-    {
+    private void updateMargins() {
         Margin margins = getDrone().getMargins();
         //update local margins
         Tuple2<Obstacle, Integer> oldFront = margins.getLocal(FRONT);

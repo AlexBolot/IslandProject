@@ -10,39 +10,31 @@ import java.util.Arrays;
 
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 
-public class ScanLineLoopAction extends Action
-{
-    private Drone             drone;
+public class ScanLineLoopAction extends Action {
+    private Drone drone;
     private ArrayList<Action> actions;
 
-    public ScanLineLoopAction (Drone drone)
-    {
+    public ScanLineLoopAction(Drone drone) {
         actions = new ArrayList<>(Arrays.asList(new ScanLineAction(drone), new ChangeLineAction(drone)));
         this.drone = drone;
     }
 
     @Override
-    public String apply ()
-    {
+    public String apply() {
         String res;
 
-        for (Action action : actions)
-        {
-            if (!action.isFinished())
-            {
+        for (Action action : actions) {
+            if (!action.isFinished()) {
                 res = action.apply();
 
                 if (!res.isEmpty()) return res;
             }
         }
 
-        if (drone.getMargins().getLocal(drone.getLastEcho())._1 == GROUND)
-        {
+        if (drone.getMargins().getLocal(drone.getLastEcho())._1 == GROUND) {
             actions.forEach(Action::reset);
             return apply();
-        }
-        else
-        {
+        } else {
             finish();
             return "";
         }

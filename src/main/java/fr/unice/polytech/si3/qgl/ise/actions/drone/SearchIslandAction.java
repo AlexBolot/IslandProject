@@ -12,15 +12,13 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 
-public class SearchIslandAction extends DroneAction
-{
-    private Step          currentStep;
-    private FlyAction     flyAction;
-    private EchoAction    echoAction;
+public class SearchIslandAction extends DroneAction {
+    private Step currentStep;
+    private FlyAction flyAction;
+    private EchoAction echoAction;
     private HeadingAction headingAction;
 
-    public SearchIslandAction (Drone drone)
-    {
+    public SearchIslandAction(Drone drone) {
         super(drone);
         currentStep = ChoseDirection;
         flyAction = new FlyAction(drone);
@@ -29,18 +27,15 @@ public class SearchIslandAction extends DroneAction
     }
 
     @Override
-    public String apply ()
-    {
+    public String apply() {
         return apply(currentStep);
     }
 
-    public String apply (Step step)
-    {
+    public String apply(Step step) {
         String res;
         Step nextStep = null;
 
-        switch (step)
-        {
+        switch (step) {
             case ChoseDirection:
                 res = choseDirection();
                 nextStep = EchoSide;
@@ -54,7 +49,7 @@ public class SearchIslandAction extends DroneAction
             case FlyFront:
                 res = decideToFly();
 
-                if(!res.isEmpty()) nextStep = EchoSide;
+                if (!res.isEmpty()) nextStep = EchoSide;
                 else finish();
                 break;
 
@@ -67,8 +62,7 @@ public class SearchIslandAction extends DroneAction
         return res;
     }
 
-    private String choseDirection ()
-    {
+    private String choseDirection() {
         Margin margins = getDrone().getMargins();
         ZQSD dir;
 
@@ -82,31 +76,27 @@ public class SearchIslandAction extends DroneAction
         return headingAction.apply(dir);
     }
 
-    private String decideToFly ()
-    {
+    private String decideToFly() {
         Margin margins = getDrone().getMargins();
         String res = "";
 
-        if (margins.getLocal(getDrone().getLastEcho())._1 == GROUND || !getDrone().hasFoundIsland())
-        {
+        if (margins.getLocal(getDrone().getLastEcho())._1 == GROUND || !getDrone().hasFoundIsland()) {
             int frontDist = margins.getLocal(FRONT)._2;
 
             if (frontDist > 1) res = flyAction.apply();
-            else  res= StopAction.get();
+            else res = StopAction.get();
         }
 
         return res;
     }
 
     @Override
-    public void reset ()
-    {
+    public void reset() {
         super.reset();
         currentStep = ChoseDirection;
     }
 
-    public enum Step
-    {
+    public enum Step {
         ChoseDirection,
         EchoSide,
         FlyFront

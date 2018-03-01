@@ -7,25 +7,20 @@ import fr.unice.polytech.si3.qgl.ise.factories.JsonFactory;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action.Echo;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
 
-public class EchoAction extends SimpleAction
-{
-    public EchoAction (Drone drone)
-    {
+public class EchoAction extends SimpleAction {
+    public EchoAction(Drone drone) {
         super(drone);
     }
 
     @Override
-    public String apply ()
-    {
+    public String apply() {
         return apply(getDrone().getLastEcho());
     }
 
-    public String apply (ZQSD direction)
-    {
+    public String apply(ZQSD direction) {
         String res;
 
-        switch (direction)
-        {
+        switch (direction) {
             case FRONT:
                 res = echo(getDrone().getOrientation());
                 break;
@@ -48,8 +43,7 @@ public class EchoAction extends SimpleAction
         return res;
     }
 
-    private String echo (NSEW orientation)
-    {
+    private String echo(NSEW orientation) {
         return new JsonFactory().createJsonString("echo", "direction", orientation.getValue());
     }
 }

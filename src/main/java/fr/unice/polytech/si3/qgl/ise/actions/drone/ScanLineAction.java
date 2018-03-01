@@ -15,15 +15,13 @@ import static fr.unice.polytech.si3.qgl.ise.actions.drone.ScanLineAction.Step.*;
 import static fr.unice.polytech.si3.qgl.ise.enums.Biome.OCEAN;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 
-public class ScanLineAction extends DroneAction
-{
-    private Step       currentStep;
-    private FlyAction  flyAction;
+public class ScanLineAction extends DroneAction {
+    private Step currentStep;
+    private FlyAction flyAction;
     private ScanAction scanAction;
     private EchoAction echoAction;
 
-    public ScanLineAction (Drone drone)
-    {
+    public ScanLineAction(Drone drone) {
         super(drone);
         currentStep = Scan;
         flyAction = new FlyAction(drone);
@@ -32,18 +30,15 @@ public class ScanLineAction extends DroneAction
     }
 
     @Override
-    public String apply ()
-    {
+    public String apply() {
         return apply(currentStep);
     }
 
-    public String apply (Step step)
-    {
+    public String apply(Step step) {
         String res;
         Step nextStep = null;
 
-        switch (step)
-        {
+        switch (step) {
             case Scan:
                 res = scanAction.apply();
                 nextStep = FlyOrTurn;
@@ -88,15 +83,13 @@ public class ScanLineAction extends DroneAction
         return res;
     }
 
-    private String checkResult ()
-    {
+    private String checkResult() {
         Tile tile = getDrone().getMap().getTile(getDrone().getCoords());
         List<Biome> biomes = tile.getPossibleBiomes();
 
         String res = "";
 
-        if (biomes.stream().anyMatch(biome -> biome != OCEAN))
-        {
+        if (biomes.stream().anyMatch(biome -> biome != OCEAN)) {
             /*if (getDrone().getMargins().get(FRONT)._2 > 1) res = flyAction.apply();
             else res = StopAction.get();*/
 
@@ -107,14 +100,12 @@ public class ScanLineAction extends DroneAction
     }
 
     @Override
-    public void reset ()
-    {
+    public void reset() {
         super.reset();
         currentStep = Scan;
     }
 
-    public enum Step
-    {
+    public enum Step {
         Scan,
         FlyOrTurn,
         EchoFront,

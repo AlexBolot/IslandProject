@@ -1,23 +1,19 @@
 package fr.unice.polytech.si3.qgl.ise.actions;
 
-public abstract class Action
-{
+public abstract class Action {
     private boolean isFinished = false;
 
-    public boolean isFinished ()
-    {
+    public boolean isFinished() {
         return isFinished;
     }
 
-    protected void finish ()
-    {
+    protected void finish() {
         isFinished = true;
     }
 
-    public void reset ()
-    {
+    public void reset() {
         isFinished = false;
     }
 
-    public abstract String apply ();
+    public abstract String apply();
 }
