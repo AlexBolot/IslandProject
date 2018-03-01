@@ -9,8 +9,6 @@ import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums;
 import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 import scala.Tuple2;
 
-import java.util.HashMap;
-
 import static fr.unice.polytech.si3.qgl.ise.actions.drone.GTurnAction.Step.*;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.getOpposite;

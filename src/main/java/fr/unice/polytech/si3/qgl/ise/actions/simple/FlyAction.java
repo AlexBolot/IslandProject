@@ -1,13 +1,10 @@
 package fr.unice.polytech.si3.qgl.ise.actions.simple;
 
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
-import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
 import fr.unice.polytech.si3.qgl.ise.factories.JsonFactory;
 import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
 import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 import scala.Tuple2;
-
-import java.util.HashMap;
 
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action.Fly;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle;

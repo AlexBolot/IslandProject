@@ -1,8 +1,7 @@
 package fr.unice.polytech.si3.qgl.ise.utilities;
 
-import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle;
-
+import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
 import scala.Tuple2;
 
 import java.util.HashMap;

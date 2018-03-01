@@ -19,7 +19,6 @@ import fr.unice.polytech.si3.qgl.ise.parsing.Echo;
 import fr.unice.polytech.si3.qgl.ise.parsing.Scan;
 import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 import org.apache.logging.log4j.Logger;
-import scala.Tuple2;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +28,6 @@ import java.util.Map;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.BORDER;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.SubState.INIT_ECHO_FRONT;
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.BACK;
 import static org.apache.logging.log4j.LogManager.getLogger;
 
 public class Drone

@@ -4,15 +4,10 @@ import fr.unice.polytech.si3.qgl.ise.actions.simple.EchoAction;
 import fr.unice.polytech.si3.qgl.ise.actions.simple.FlyAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
-import scala.Tuple2;
-
-import java.util.HashMap;
 
 import static fr.unice.polytech.si3.qgl.ise.actions.drone.ReachIslandAction.Step.FlyToIsland;
 import static fr.unice.polytech.si3.qgl.ise.actions.drone.ReachIslandAction.Step.LTurn;
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 
 public class ReachIslandAction extends DroneAction
