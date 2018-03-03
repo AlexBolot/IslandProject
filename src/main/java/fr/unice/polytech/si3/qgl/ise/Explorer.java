@@ -50,19 +50,23 @@ public class Explorer implements IExplorerRaid {
 
     @Override
     public void acknowledgeResults(String results) {
-        JSONObject data = new JSONObject(results);
+        try {
+            JSONObject data = new JSONObject(results);
 
-        logger.info("Réponse :\t" + data);
+            logger.info("Réponse :\t" + data);
 
-        remainingBudget -= data.getInt("cost");
+            remainingBudget -= data.getInt("cost");
 
-        switch (drone.getLastAction()) {
-            case Scan:
-                drone.acknowledgeScan(new Scan(data.toString()));
-                break;
-            case Echo:
-                drone.acknowledgeEcho(new Echo(data.toString()));
-                break;
+            switch (drone.getLastAction()) {
+                case Scan:
+                    drone.acknowledgeScan(new Scan(data.toString()));
+                    break;
+                case Echo:
+                    drone.acknowledgeEcho(new Echo(data.toString()));
+                    break;
+            }
+        } catch (Exception e) {
+            logger.info("Something failed while processing the results");
         }
     }
 

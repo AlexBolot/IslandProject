@@ -31,9 +31,15 @@ public class HeadingActionTest {
     }
 
     @Test
-    public void correctResult() {
+    public void correctResultLeft() {
         String result = headingAction.apply(LEFT);
         assertEquals("{\"action\":\"heading\",\"parameters\":{\"direction\":\"W\"}}", result);
+    }
+
+    @Test
+    public void correctResultRight() {
+        String result = headingAction.apply(RIGHT);
+        assertEquals("{\"action\":\"heading\",\"parameters\":{\"direction\":\"E\"}}", result);
     }
 
     @Test
