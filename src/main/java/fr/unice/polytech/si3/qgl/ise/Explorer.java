@@ -50,20 +50,26 @@ public class Explorer implements IExplorerRaid {
 
     @Override
     public void acknowledgeResults(String results) {
-        JSONObject data = new JSONObject(results);
+        try {
+            JSONObject data = new JSONObject(results);
 
-        logger.info("Réponse :\t" + data);
+            logger.info("Réponse :\t" + data);
 
-        remainingBudget -= data.getInt("cost");
+            remainingBudget -= data.getInt("cost");
 
-        switch (drone.getLastAction()) {
-            case Scan:
-                drone.acknowledgeScan(new Scan(data.toString()));
-                break;
-            case Echo:
-                drone.acknowledgeEcho(new Echo(data.toString()));
-                break;
+            switch (drone.getLastAction()) {
+                case Scan:
+                    drone.acknowledgeScan(new Scan(data.toString()));
+                    break;
+                case Echo:
+                    drone.acknowledgeEcho(new Echo(data.toString()));
+                    break;
+            }
+        } catch (Exception e) {
+            logger.info(e.getMessage());
         }
+
+
     }
 
     @Override
@@ -71,10 +77,10 @@ public class Explorer implements IExplorerRaid {
         StringBuilder str = new StringBuilder();
 
         str.append("CREEKS = ");
-        map.getCreeks().forEach((key, value) -> str.append(value).append(", "));
+        map.getCreeks().forEach((key, value) -> str.append(key).append(", "));
 
         str.append("SITE = ");
-        if (map.getEmergencySite() != null) str.append(map.getEmergencySite()._2);
+        if (map.getEmergencySite() != null) str.append(map.getEmergencySite()._1);
         else str.append("NOT FOUND");
 
         str.append(System.getProperty("line.separator"));

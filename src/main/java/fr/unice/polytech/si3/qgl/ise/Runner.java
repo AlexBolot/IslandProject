@@ -22,17 +22,17 @@ public class Runner {
         int y = 1;
         String heading = "SOUTH";
         int points = 30000;
-        int crew = 15;
+        int crew = 30;
         List<String> resources = new ArrayList<>();
         resources.add("WOOD");
-        resources.add("RUM");
-        resources.add("FUR");
+        resources.add("FLOWER");
+        resources.add("PLANK");
         resources.add("QUARTZ");
         List<Integer> amounts = new ArrayList<>();
         amounts.add(5000);
-        amounts.add(10);
+        amounts.add(2);
+        amounts.add(1000);
         amounts.add(200);
-        amounts.add(100);
 
         switch (argc) {
             case 6:
