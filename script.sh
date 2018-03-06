@@ -1,5 +1,4 @@
-CURRENT_PATH=$(pwd)
-
+#!/usr/bin/env bash
 mvn clean install;
 
 testMap()
@@ -44,5 +43,3 @@ for f in scriptResults/*/island.log; do
 	cat $f | awk  '$3 == "Report:" {i=1;next};i && i++' >> $respath
 	echo >> $respath
 done
-
-cd $CURRENT_PATH;
