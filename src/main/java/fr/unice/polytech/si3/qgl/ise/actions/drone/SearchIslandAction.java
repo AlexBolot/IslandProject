@@ -20,7 +20,7 @@ public class SearchIslandAction extends DroneAction {
 
     public SearchIslandAction(Drone drone) {
         super(drone);
-        currentStep = ChoseDirection;
+        currentStep = ChooseDirection;
         flyAction = new FlyAction(drone);
         echoAction = new EchoAction(drone);
         headingAction = new HeadingAction(drone);
@@ -36,8 +36,8 @@ public class SearchIslandAction extends DroneAction {
         Step nextStep = null;
 
         switch (step) {
-            case ChoseDirection:
-                res = choseDirection();
+            case ChooseDirection:
+                res = chooseDirection();
                 nextStep = EchoSide;
                 break;
 
@@ -62,7 +62,7 @@ public class SearchIslandAction extends DroneAction {
         return res;
     }
 
-    private String choseDirection() {
+    private String chooseDirection() {
         Margin margins = getDrone().getMargins();
         ZQSD dir;
 
@@ -93,11 +93,11 @@ public class SearchIslandAction extends DroneAction {
     @Override
     public void reset() {
         super.reset();
-        currentStep = ChoseDirection;
+        currentStep = ChooseDirection;
     }
 
     public enum Step {
-        ChoseDirection,
+        ChooseDirection,
         EchoSide,
         FlyFront
     }

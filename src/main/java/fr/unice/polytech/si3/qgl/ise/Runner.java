@@ -61,6 +61,7 @@ public class Runner {
                         amounts.add(Integer.valueOf(args[i + 1]));
                     }
                 } else {
+                    for (String arg : args) System.out.println(arg);
                     throw new IllegalArgumentException("Invalid arguments");
                 }
         }

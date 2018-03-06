@@ -79,6 +79,8 @@ public class Explorer implements IExplorerRaid {
         str.append("CREEKS = ");
         map.getCreeks().forEach((key, value) -> str.append(key).append(", "));
 
+        str.append(System.getProperty("line.separator"));
+
         str.append("SITE = ");
         if (map.getEmergencySite() != null) str.append(map.getEmergencySite()._1);
         else str.append("NOT FOUND");
@@ -89,7 +91,9 @@ public class Explorer implements IExplorerRaid {
             str.append("Nearest creek to emergency site : ").append(PathFinder.findNearestCreek(map.getCreeks(), map.getEmergencySite()));
         else str.append("Emergency site not found");
 
+        logger.info("Report:");
         logger.info(str.toString());
+        logger.info("Remaining points : " + remainingBudget);
 
         return str.toString();
     }
