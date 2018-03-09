@@ -22,4 +22,11 @@ public enum RawResource {
     public String getId() {
         return id;
     }
+
+    public static boolean contains(String id) {
+        for (RawResource c : RawResource.values())
+            if (c.name().equals(id))
+                return true;
+        return false;
+    }
 }
