@@ -11,7 +11,7 @@ import java.util.Map;
 public class Contract {
     private int men;
     private String heading;
-    private int actions;
+    private int budget;
     private Map<RawResource, Integer> totalToCollect;
     private Map<CraftedResource, Integer> withCraftedRessource;
 
@@ -21,7 +21,7 @@ public class Contract {
         JSONObject data = new JSONObject(stringToParse);
         men = data.getInt("men");
         heading = data.getString("heading");
-        actions = data.getInt("budget");
+        budget = data.getInt("budget");
         parseContracts(data.getJSONArray("contracts"));
     }
 
@@ -61,7 +61,7 @@ public class Contract {
     }
 
     public int getBudget() {
-        return actions;
+        return budget;
     }
 
     public Map<RawResource, Integer> getTotalToCollect() {
