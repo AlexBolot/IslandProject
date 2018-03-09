@@ -29,7 +29,7 @@ public enum CraftedResource {
         return recipe;
     }
 
-    public Map<RawResource, Double> getValueOf(String id) {
+    public static Map<RawResource, Double> getValueOf(String id) {
         Map<RawResource, Double> returnData = new HashMap<>();
         switch (id) {
             case "GLASS":
