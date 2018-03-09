@@ -53,4 +53,11 @@ public enum CraftedResource {
         }
         return returnData;
     }
+
+    public static boolean contains(String id) {
+        for (CraftedResource c : CraftedResource.values())
+            if (c.name().equals(id))
+                return true;
+        return false;
+    }
 }
