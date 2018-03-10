@@ -68,6 +68,19 @@ public class DroneEnums {
             return toTheRight;
         }
 
+        public NSEW getToThe(ZQSD dir)
+        {
+            switch (dir)
+            {
+                case LEFT: return toTheLeft;
+                case RIGHT: return toTheRight;
+                case FRONT: return this;
+                case BACK: return toTheLeft.toTheLeft;
+            }
+
+            throw new IllegalArgumentException("Direction does not exist");
+        }
+
         public String getValue() {
             return value;
         }

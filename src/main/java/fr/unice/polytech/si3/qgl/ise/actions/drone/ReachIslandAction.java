@@ -77,6 +77,7 @@ public class ReachIslandAction extends DroneAction {
     public void reset() {
         super.reset();
         currentStep = LTurn;
+        lTurnAction.reset();
     }
 
     public enum Step {

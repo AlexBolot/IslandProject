@@ -41,7 +41,7 @@ public class ChangeLineAction extends DroneAction {
 
         switch (currentStep) {
             case EchoSide:
-                res = echoAction.apply(ZQSD.getOpposite(getDrone().getLastTurn()));
+                res = echoAction.apply(direction);
                 nextStep = FlyOrTurn;
                 break;
 
@@ -98,11 +98,7 @@ public class ChangeLineAction extends DroneAction {
 
         String res = "";
 
-        if (lastMargin._1 == GROUND && lastMargin._2 <= 1) {
-            //if (margins.get(FRONT)._2 > 1) res = flyAction.apply();
-            //else res = StopAction.get();
-            res = flyAction.apply();
-        }
+        if (lastMargin._1 == GROUND && lastMargin._2 <= 1) res = flyAction.apply();
 
         return res;
     }
@@ -120,7 +116,7 @@ public class ChangeLineAction extends DroneAction {
     @Override
     public void reset() {
         super.reset();
-        currentStep = Turn1;
+        currentStep = EchoSide;
     }
 
     public enum Step {

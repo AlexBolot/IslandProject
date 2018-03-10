@@ -121,6 +121,16 @@ public class Drone {
                 }
                 ++numLayer;
             }
+
+            Tile currentTile = map.getTile(coords);
+
+            currentTile.getPossibleBiomes().clear();
+            currentTile.getBiomesPercentage().clear();
+
+            scan.getBiomes().forEach(biome -> {
+                currentTile.getPossibleBiomes().add(biome);
+                currentTile.getBiomesPercentage().put(biome, 100d);
+            });
         }
     }
 
