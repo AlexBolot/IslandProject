@@ -17,6 +17,7 @@ public class Explorer implements IExplorerRaid {
     private Drone drone;
     private IslandMap map;
     private int remainingBudget;
+    private Contract contract;
 
     @Override
     public void initialize(String contract) {
@@ -24,8 +25,9 @@ public class Explorer implements IExplorerRaid {
         logger.trace("Contract: " + contract);
         JSONObject data = new JSONObject(contract);
 
-        String heading = data.getString("heading");
-        remainingBudget = data.getInt("budget");
+        this.contract = new Contract(contract);
+        String heading = this.contract.getHeading();
+        remainingBudget = this.contract.getBudget();
 
         NSEW orientation = NSEW.getFromValue(heading);
         map = new IslandMap();
