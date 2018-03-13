@@ -1,5 +1,6 @@
 package fr.unice.polytech.si3.qgl.ise.entities;
 
+import fr.unice.polytech.si3.qgl.ise.Contract;
 import fr.unice.polytech.si3.qgl.ise.actions.Action;
 import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
 import fr.unice.polytech.si3.qgl.ise.actions.crew.Land;
@@ -31,7 +32,7 @@ public class Crew {
      */
     private Coordinates objective;
 
-    public Crew(IslandMap map, String creekId, int crewSize) {
+    public Crew(IslandMap map, String creekId, int crewSize, Contract contract) {
         this.map = map;
         this.idCreek = creekId;
         this.coords = map.getCreeks().get(creekId);

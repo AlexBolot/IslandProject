@@ -5,7 +5,6 @@ import fr.unice.polytech.si3.qgl.ise.actions.simple.FlyAction;
 import fr.unice.polytech.si3.qgl.ise.actions.simple.ScanAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.enums.Biome;
-import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums;
 import fr.unice.polytech.si3.qgl.ise.map.Tile;
 import scala.Tuple2;
 
@@ -13,6 +12,8 @@ import java.util.List;
 
 import static fr.unice.polytech.si3.qgl.ise.actions.drone.ScanLineAction.Step.*;
 import static fr.unice.polytech.si3.qgl.ise.enums.Biome.OCEAN;
+import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle;
+import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.*;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 
 public class ScanLineAction extends DroneAction {
@@ -61,16 +62,16 @@ public class ScanLineAction extends DroneAction {
 
             case EchoFront:
                 res = flyAction.apply();
-                Tuple2<DroneEnums.Obstacle, Integer> margin = getDrone().getMargins().getLocal(FRONT);
-                if (margin._1 == DroneEnums.Obstacle.BORDER) {
+                Tuple2<Obstacle, Integer> margin = getDrone().getMargins().getLocal(FRONT);
+                if (margin._1 == BORDER) {
                     this.finish();
                 }
                 nextStep = Reach;
                 break;
 
             case Reach:
-                Tuple2<DroneEnums.Obstacle, Integer> lastMargin = getDrone().getMargins().getLocal(FRONT);
-                if (lastMargin._1 == DroneEnums.Obstacle.GROUND && lastMargin._2 > 0) {
+                Tuple2<Obstacle, Integer> lastMargin = getDrone().getMargins().getLocal(FRONT);
+                if (lastMargin._1 == GROUND && lastMargin._2 > 0) {
                     res = flyAction.apply();
                     nextStep = Reach;
                 } else {
@@ -94,12 +95,7 @@ public class ScanLineAction extends DroneAction {
 
         String res = "";
 
-        if (biomes.stream().anyMatch(biome -> biome != OCEAN)) {
-            /*if (getDrone().getMargins().get(FRONT)._2 > 1) res = flyAction.apply();
-            else res = StopAction.get();*/
-
-            res = flyAction.apply();
-        }
+        if (biomes.stream().anyMatch(biome -> biome != OCEAN)) res = flyAction.apply();
 
         return res;
     }

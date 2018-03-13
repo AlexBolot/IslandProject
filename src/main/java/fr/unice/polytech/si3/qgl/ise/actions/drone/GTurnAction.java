@@ -5,11 +5,13 @@ import fr.unice.polytech.si3.qgl.ise.actions.simple.EchoAction;
 import fr.unice.polytech.si3.qgl.ise.actions.simple.FlyAction;
 import fr.unice.polytech.si3.qgl.ise.actions.simple.HeadingAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
-import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums;
+import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle;
+import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
 import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 import scala.Tuple2;
 
 import static fr.unice.polytech.si3.qgl.ise.actions.drone.GTurnAction.Step.*;
+import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.getOpposite;
 
@@ -56,9 +58,9 @@ public class GTurnAction extends DroneAction {
 
             case FlyFront_2:
                 Margin margins = getDrone().getMargins();
-                DroneEnums.ZQSD lastTurn = getDrone().getLastTurn();
-                Tuple2<DroneEnums.Obstacle, Integer> lastMargin = margins.getLocal(lastTurn);
-                if (lastMargin._1 == DroneEnums.Obstacle.GROUND) {
+                ZQSD lastTurn = getDrone().getLastTurn();
+                Tuple2<Obstacle, Integer> lastMargin = margins.getLocal(lastTurn);
+                if (lastMargin._1 == GROUND) {
                     nextStep = Turn_2;
                 } else {
                     nextStep = Turn_2_bis;
@@ -100,7 +102,7 @@ public class GTurnAction extends DroneAction {
                 } else {
                     res = flyAction.apply();
                     if (turnNotBis) {
-                        getDrone().setLastTurn(DroneEnums.ZQSD.getOpposite(getDrone().getLastTurn()));
+                        getDrone().setLastTurn(ZQSD.getOpposite(getDrone().getLastTurn()));
                     }
                     finish();
                 }
