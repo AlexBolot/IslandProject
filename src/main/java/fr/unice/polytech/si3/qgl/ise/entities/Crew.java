@@ -46,7 +46,7 @@ public class Crew {
             return lastAction.apply();
         }
 
-        return StopAction.get();
+        return new StopAction().apply();
     }
 
     public boolean isLanded() {

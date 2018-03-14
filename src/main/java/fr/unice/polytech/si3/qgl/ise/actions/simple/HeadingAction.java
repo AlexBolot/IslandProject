@@ -1,5 +1,6 @@
 package fr.unice.polytech.si3.qgl.ise.actions.simple;
 
+import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
@@ -50,7 +51,7 @@ public class HeadingAction extends SimpleAction {
         //security if the drone wants to head out of the map
         if (getDrone().getMargins().getGlobal(FRONT)._2 < 1 || getDrone().getMargins().getGlobal(RIGHT)._2 < 1) {
             getDrone().setLastAction(Stop);
-            return new JsonFactory().createJsonString("stop");
+            return new StopAction(getDrone()).apply();
         }
 
         int unit = Drone.getMovementUnit();
@@ -92,7 +93,7 @@ public class HeadingAction extends SimpleAction {
         //security if the drone wants to head out of the map
         if (getDrone().getMargins().getGlobal(FRONT)._2 < 1 || getDrone().getMargins().getGlobal(LEFT)._2 < 1) {
             getDrone().setLastAction(Stop);
-            return new JsonFactory().createJsonString("stop");
+            return new StopAction(getDrone()).apply();
         }
 
         int unit = Drone.getMovementUnit();

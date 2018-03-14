@@ -30,7 +30,7 @@ public class ScanIslandLoopAction extends Action {
 
         if (!map.getCreeks().isEmpty() && map.getEmergencySite() != null) {
             finish();
-            return StopAction.get();
+            return new StopAction(drone).apply();
         }
         if (!passIslandAction.isFinished()) res = passIslandAction.apply();
         if (!res.isEmpty()) return res;

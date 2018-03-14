@@ -73,7 +73,7 @@ public class Drone {
     public String takeDecision() {
         logger.info("--------> start");
 
-        if (!isFlying) return StopAction.get();
+        if (!isFlying) return new StopAction(this).apply();
 
         for (Action step : steps) {
             if (step.isFinished()) continue;
@@ -87,7 +87,7 @@ public class Drone {
 
         isFlying = false;
 
-        return StopAction.get();
+        return new StopAction(this).apply();
     }
 
     public void acknowledgeEcho(Echo echo) {

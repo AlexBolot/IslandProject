@@ -84,7 +84,7 @@ public class SearchIslandAction extends DroneAction {
             int frontDist = margins.getLocal(FRONT)._2;
 
             if (frontDist > 1) res = flyAction.apply();
-            else res = StopAction.get();
+            else res = new StopAction(getDrone()).apply();
         }
 
         return res;

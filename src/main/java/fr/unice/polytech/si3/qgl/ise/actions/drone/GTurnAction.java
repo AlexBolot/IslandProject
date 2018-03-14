@@ -123,7 +123,7 @@ public class GTurnAction extends DroneAction {
         int frontDist = getDrone().getMargins().getLocal(FRONT)._2;
 
         if (frontDist > 1) res = flyAction.apply();
-        else res = StopAction.get();
+        else res = new StopAction(getDrone()).apply();
 
         return res;
     }

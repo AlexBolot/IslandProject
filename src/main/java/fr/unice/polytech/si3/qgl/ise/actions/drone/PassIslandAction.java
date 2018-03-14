@@ -68,7 +68,7 @@ public class PassIslandAction extends DroneAction {
 
         if (margins.getLocal(getDrone().getLastEcho())._1 == GROUND) {
             if (margins.getLocal(FRONT)._2 > 1) res = flyAction.apply();
-            else res = StopAction.get();
+            else res = new StopAction(getDrone()).apply();
         }
 
         return res;

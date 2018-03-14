@@ -1,5 +1,6 @@
 package fr.unice.polytech.si3.qgl.ise.actions.simple;
 
+import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.factories.JsonFactory;
 import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
@@ -23,7 +24,7 @@ public class FlyAction extends SimpleAction {
         //security if the drone wants to fly out of the map
         if (getDrone().getMargins().getGlobal(FRONT)._2 < 1) {
             getDrone().setLastAction(Stop);
-            return new JsonFactory().createJsonString("stop");
+            return new StopAction(getDrone()).apply();
         }
         return fly();
     }
