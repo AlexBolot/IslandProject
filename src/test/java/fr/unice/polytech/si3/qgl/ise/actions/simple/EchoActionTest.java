@@ -19,9 +19,21 @@ public class EchoActionTest {
     }
 
     @Test
-    public void correctEcho() {
+    public void correctEchoFront() {
         String result = echoAction.apply(DroneEnums.ZQSD.FRONT);
         assertEquals("{\"action\":\"echo\",\"parameters\":{\"direction\":\"N\"}}", result);
+    }
+
+    @Test
+    public void correctEchoLeft() {
+        String result = echoAction.apply(DroneEnums.ZQSD.LEFT);
+        assertEquals("{\"action\":\"echo\",\"parameters\":{\"direction\":\"W\"}}", result);
+    }
+
+    @Test
+    public void correctEchoRight() {
+        String result = echoAction.apply(DroneEnums.ZQSD.RIGHT);
+        assertEquals("{\"action\":\"echo\",\"parameters\":{\"direction\":\"E\"}}", result);
     }
 
     @Test(expected = IllegalArgumentException.class)
