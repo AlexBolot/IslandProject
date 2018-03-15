@@ -16,12 +16,20 @@
   - Points Positifs
     - _On trouve le site_
   - Points négatifs
-    - _Une erreur nous fait crash apres l'arret du drone_   
+    - _Une erreur nous fait crash après l'arrêt du drone_   
 
 ### Semaine 10 
 
  - Points Positifs
-    - _Meilleur couverture de test_
+    - _Meilleure couverture de test_
     - _Resolution de l'erreur de la semaine précédente_
  - Points négatifs
-    - _Un journal vide nous fait crash_
+    - _Un journal vide empêche la livraison_
+    
+### Semaine 11
+
+ - Points Positifs
+    - _Résolution des différents bugs : pas de crash, pas de problème de livraison_
+    - _Meilleure définition des tâches_
+ - Points Négatifs
+    - _Pas d'ajout de valeur au code pour le client_
