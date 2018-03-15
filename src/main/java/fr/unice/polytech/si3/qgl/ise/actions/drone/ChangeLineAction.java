@@ -49,6 +49,14 @@ public class ChangeLineAction extends DroneAction {
                 generalDirection = direction;
                 res = flyOrTurn();
 
+                if (!res.isEmpty() && getDrone().getMargins().getGlobal(FRONT)._2 < 2) {
+                    generalDirection = direction;
+
+                    res = headingAction.apply(generalDirection);
+                    nextStep = Turn2;
+                    break;
+                }
+
                 if (!res.isEmpty()) {
                     nextStep = EchoSide;
                     break;
