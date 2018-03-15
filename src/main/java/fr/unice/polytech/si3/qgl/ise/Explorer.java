@@ -97,6 +97,6 @@ public class Explorer implements IExplorerRaid {
         logger.info(str.toString());
         logger.info("Remaining points : " + remainingBudget);
 
-        return str.toString();
+        return "At least we didn't crash... Right?";
     }
 }
