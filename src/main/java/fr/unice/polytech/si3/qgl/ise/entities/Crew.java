@@ -63,5 +63,9 @@ public class Crew {
     public Coordinates getCoords() {
         return coords;
     }
+
+    public void setCoords(Coordinates coords) {
+        this.coords = coords;
+    }
 }
 
