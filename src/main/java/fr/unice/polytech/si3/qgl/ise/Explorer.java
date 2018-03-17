@@ -3,11 +3,14 @@ package fr.unice.polytech.si3.qgl.ise;
 import eu.ace_design.island.bot.IExplorerRaid;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
+import fr.unice.polytech.si3.qgl.ise.map.PathFinder;
+import fr.unice.polytech.si3.qgl.ise.parsing.ContractParser;
 import fr.unice.polytech.si3.qgl.ise.parsing.Echo;
 import fr.unice.polytech.si3.qgl.ise.parsing.Scan;
-import fr.unice.polytech.si3.qgl.ise.map.PathFinder;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
+
+import java.util.List;
 
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
 import static org.apache.logging.log4j.LogManager.getLogger;
@@ -17,7 +20,9 @@ public class Explorer implements IExplorerRaid {
     private Drone drone;
     private IslandMap map;
     private int remainingBudget;
-    private Contract contract;
+    private List<RawContract> rawConrtacts;
+    private List<CraftedContract> craftedContracts;
+    private int crewNumber;
 
     @Override
     public void initialize(String contract) {
@@ -25,9 +30,11 @@ public class Explorer implements IExplorerRaid {
         logger.trace("Contract: " + contract);
         JSONObject data = new JSONObject(contract);
 
-        this.contract = new Contract(contract);
-        String heading = this.contract.getHeading();
-        remainingBudget = this.contract.getBudget();
+        ContractParser contractParser = new ContractParser(contract);
+
+        String heading = contractParser.getHeading();
+        remainingBudget = contractParser.getBudget();
+        crewNumber = contractParser.getMen();
 
         NSEW orientation = NSEW.getFromValue(heading);
         map = new IslandMap();
