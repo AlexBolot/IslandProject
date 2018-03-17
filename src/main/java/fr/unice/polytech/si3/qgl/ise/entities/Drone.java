@@ -103,8 +103,7 @@ public class Drone {
     //region ===== Getters =====
 
     public void acknowledgeScan(Scan scan) {
-        Tile tile = new Tile();
-        if (!scan.getCreeks().isEmpty()) map.addCreek(coords, scan.getCreeks().get(0));
+        if (!scan.getCreeks().isEmpty()) map.addCreeks(coords, scan.getCreeks());
         if (!scan.getEmergencySites().isEmpty()) map.addSite(coords, scan.getEmergencySites().get(0));
         if (!scan.getBiomes().isEmpty()) {
             //For each layer
@@ -124,11 +123,9 @@ public class Drone {
 
             Tile currentTile = map.getTile(coords);
 
-            currentTile.getPossibleBiomes().clear();
             currentTile.getBiomesPercentage().clear();
 
             scan.getBiomes().forEach(biome -> {
-                currentTile.getPossibleBiomes().add(biome);
                 currentTile.getBiomesPercentage().put(biome, 100d);
             });
         }

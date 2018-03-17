@@ -45,14 +45,18 @@ public class IslandMap {
         return emergencySite;
     }
 
-    public Tile getTile(Coordinates coord) {
-        if (tiles.containsKey(coord))
-            return tiles.get(coord);
+    public Tile getTile(Coordinates coordinates) {
+        if (tiles.containsKey(coordinates))
+            return tiles.get(coordinates);
         else {
             Tile tile = new Tile();
-            tiles.put(coord, tile);
+            tiles.put(coordinates, tile);
             return tile;
         }
+    }
+
+    Map<Coordinates, Tile> getMap() {
+        return tiles;
     }
 
     /**
