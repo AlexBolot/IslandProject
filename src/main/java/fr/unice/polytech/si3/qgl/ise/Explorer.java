@@ -42,7 +42,7 @@ public class Explorer implements IExplorerRaid {
         NSEW orientation = NSEW.getFromValue(heading);
         map = new IslandMap();
         drone = new Drone(map, orientation);
-        crew = new Crew(map, contractParser.getRawContracts(), contractParser.getCraftedContracts());
+        crew = new Crew(map, contractParser.getMen(), contractParser.getRawContracts(), contractParser.getCraftedContracts());
 
     }
 

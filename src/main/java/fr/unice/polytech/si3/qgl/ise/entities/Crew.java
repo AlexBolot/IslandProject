@@ -43,7 +43,7 @@ public class Crew {
      */
     private Coordinates objective;
 
-    public Crew(IslandMap map, List<RawContract> rawContracts, List<CraftedContract> craftedContracts) {
+    public Crew(IslandMap map, int crewSize, List<RawContract> rawContracts, List<CraftedContract> craftedContracts) {
         this.map = map;
         this.rawContracts = rawContracts;
         this.craftedContracts = craftedContracts;
