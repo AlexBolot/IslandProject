@@ -3,12 +3,16 @@ package fr.unice.polytech.si3.qgl.ise.entities;
 import fr.unice.polytech.si3.qgl.ise.CraftedContract;
 import fr.unice.polytech.si3.qgl.ise.RawContract;
 import fr.unice.polytech.si3.qgl.ise.actions.Action;
+import fr.unice.polytech.si3.qgl.ise.actions.CrewAction;
 import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
 import fr.unice.polytech.si3.qgl.ise.actions.crew.Land;
+import fr.unice.polytech.si3.qgl.ise.enums.Abundance;
+import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
 import fr.unice.polytech.si3.qgl.ise.factories.JsonFactory;
 import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class Crew {
@@ -23,9 +27,11 @@ public class Crew {
     private final List<RawContract> rawContracts;
     private final List<CraftedContract> craftedContracts;
     private Integer crewSize;
+    private HashMap<RawResource, Abundance> lastExplore;
 
     private IslandMap map;
     private Coordinates coords;
+    private RawResource currentResource;
 
     /**
      * While the coord is an hypothesis and we didn't have a situation that can makes us sure of where we are
@@ -37,12 +43,10 @@ public class Crew {
      */
     private Coordinates objective;
 
-    public Crew(IslandMap map, String creekId, int crewSize, List<RawContract> rawContracts, List<CraftedContract> craftedContracts) {
+    public Crew(IslandMap map, List<RawContract> rawContracts, List<CraftedContract> craftedContracts) {
         this.map = map;
-        this.idCreek = creekId;
         this.rawContracts = rawContracts;
         this.craftedContracts = craftedContracts;
-        this.coords = map.getCreeks().get(creekId);
         knowExactPosition = false;
         this.crewSize = crewSize;
     }
@@ -56,6 +60,13 @@ public class Crew {
         return new StopAction().apply();
     }
 
+    public void acknowledgeResults(String results) {
+        if (lastAction instanceof CrewAction) {
+            ((CrewAction) lastAction).acknowledgeResults(this, results);
+        }
+        //else would be only for stop action <=> do nothing
+    }
+
     public boolean isLanded() {
         return isLanded;
     }
@@ -66,6 +77,30 @@ public class Crew {
 
     public void setCoords(Coordinates coords) {
         this.coords = coords;
+    }
+
+    public void setLastExplore(HashMap<RawResource, Abundance> resources) {
+        this.lastExplore = resources;
+    }
+
+    public HashMap<RawResource, Abundance> getLastExplore() {
+        return lastExplore;
+    }
+
+    public void setCurrentResource(RawResource currentResource) {
+        this.currentResource = currentResource;
+    }
+
+    public RawResource getCurrentResource() {
+        return currentResource;
+    }
+
+    public void setIdCreek(String id) {
+        this.idCreek = id;
+    }
+
+    public void setCrewSize(int size) {
+        this.crewSize = size;
     }
 }
 

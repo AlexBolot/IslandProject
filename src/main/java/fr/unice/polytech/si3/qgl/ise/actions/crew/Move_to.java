@@ -56,7 +56,7 @@ public class Move_to extends CrewAction {
     }
 
     @Override
-    public String aknowledgeResult(Crew crewToUpdate, String result) {
+    public String acknowledgeResults(Crew crewToUpdate, String result) {
         return "";
     }
 }

@@ -23,7 +23,7 @@ public class Land extends CrewAction {
     }
 
     @Override
-    public String aknowledgeResult(Crew crewToUpdate, String result) {
+    public String acknowledgeResults(Crew crewToUpdate, String result) {
         return "";
     }
 }

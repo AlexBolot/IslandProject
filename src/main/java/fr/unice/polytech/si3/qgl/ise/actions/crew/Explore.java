@@ -3,6 +3,7 @@ package fr.unice.polytech.si3.qgl.ise.actions.crew;
 import fr.unice.polytech.si3.qgl.ise.actions.CrewAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Crew;
 import fr.unice.polytech.si3.qgl.ise.factories.JsonFactory;
+import fr.unice.polytech.si3.qgl.ise.parsing.ExploreParsing;
 
 public class Explore extends CrewAction {
 
@@ -16,7 +17,10 @@ public class Explore extends CrewAction {
     }
 
     @Override
-    public String aknowledgeResult(Crew crewToUpdate, String result) {
+    public String acknowledgeResults(Crew crewToUpdate, String result) {
+        ExploreParsing exploreParsing = new ExploreParsing(result);
+        int cost = exploreParsing.getCost();
+        crewToUpdate.setLastExplore(exploreParsing.getResources());
         return "";
     }
 }

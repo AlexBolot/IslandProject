@@ -20,7 +20,9 @@ public class MoveTo {
         map = new IslandMap();
         map.addCreek(new Coordinates(0, 0), "idDepart");
 
-        crew = new Crew(map, "idDepart", 10, null, null);
+        crew = new Crew(map, null, null);
+        crew.setCrewSize(10);
+        crew.setIdCreek("idDepart");
     }
 
     @Test
