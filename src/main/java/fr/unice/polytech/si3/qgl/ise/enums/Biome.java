@@ -1,38 +1,54 @@
 package fr.unice.polytech.si3.qgl.ise.enums;
 
-/**
- * Enum describing every biome and its unique id
- */
-public enum Biome {
+import static fr.unice.polytech.si3.qgl.ise.enums.RawResource.*;
 
-    ALPINE("ALPINE"),
+/**
+ Enum describing every biome and its unique id
+ */
+public enum Biome
+{
+
+    OCEAN("OCEAN", FISH),
+    LAKE("LAKE", FISH),
+    BEACH("BEACH", QUARTZ),
+    GRASSLAND("GRASSLAND", FUR),
+
+    MANGROVE("MANGROVE", WOOD, FLOWER),
+    TROPICAL_RAIN_FOREST("TROPICAL_RAIN_FOREST", WOOD, FRUITS),
+    TROPICAL_SEASONAL_FOREST("TROPICAL_SEASONAL_FOREST", WOOD, FRUITS),
+
+    TEMPERATE_DECIDUOUS_FOREST("TEMPERATE_DECIDUOUS_FOREST", WOOD),
+    TEMPERATE_RAIN_FOREST("TEMPERATE_RAIN_FOREST", WOOD, FUR),
+    TEMPERATE_DESERT("TEMPERATE_DESERT", QUARTZ, ORE),
+
+    TAIGA("TAIGA", WOOD),
     SNOW("SNOW"),
-    BEACH("BEACH"),
-    TROPICAL_RAIN_FOREST("TROPICAL_RAIN_FOREST"),
-    MANGROVE("MANGROVE"),
-    TUNDRA("TUNDRA"),
-    GRASSLAND("GRASSLAND"),
-    TROPICAL_SEASONAL_FOREST("TROPICAL_SEASONAL_FOREST"),
-    TEMPERATE_DESERT("TEMPERATE_DESERT"),
-    TAIGA("TAIGA"),
-    SUB_TROPICAL_DESERT("SUB_TROPICAL_DESERT"),
-    TEMPERATE_RAIN_FOREST("TEMPERATE_RAIN_FOREST"),
-    SHRUBLAND("SHRUBLAND"),
-    TEMPERATE_DECIDUOUS_FOREST("TEMPERATE_DECIDUOUS_FOREST"),
-    OCEAN("OCEAN"),
-    LAKE("LAKE"),
-    GLACIER("GLACIER");
+    TUNDRA("TUNDRA", FUR),
+    ALPINE("ALPINE", FLOWER, ORE),
+    GLACIER("GLACIER", FLOWER),
+
+    SHRUBLAND("SHRUBLAND", FUR),
+    SUB_TROPICAL_DESERT("SUB_TROPICAL_DESERT", QUARTZ, ORE);
 
     /**
-     * Unique id of a biome
+     Unique id of a biome
      */
-    private String id;
+    private String        id;
+    private RawResource[] resources;
 
-    Biome(String id) {
+    Biome (String id, RawResource... resources)
+    {
         this.id = id;
+        this.resources = resources;
     }
 
-    public String getId() {
+    public String getId ()
+    {
         return id;
+    }
+
+    public RawResource[] getResources ()
+    {
+        return resources;
     }
 }
