@@ -38,10 +38,10 @@ public class PathFinderTest {
         map.addTile(new Coordinates(13, 39), tile2);
         map.addTile(new Coordinates(15, -34), tile3);
 
-        map.addCreek(new Coordinates(945, 990), "id0");
-        map.addCreek(new Coordinates(648, -976), "id1");
-        map.addCreek(new Coordinates(-670, 300), "id2");
-        map.addCreek(new Coordinates(376, 833), "id3");
+        map.addCreek(new Coordinates(30, 4), "id0");
+        map.addCreek(new Coordinates(30, -28), "id1");
+        map.addCreek(new Coordinates(10, 40), "id2");
+        map.addCreek(new Coordinates(-11, 11), "id3");
     }
 
     @Test
@@ -55,11 +55,11 @@ public class PathFinderTest {
 
     @Test
     public void findNearestCreekTest() {
-        Coordinates coordinates = new Coordinates(-146, -975);
+        Coordinates coordinates = new Coordinates(-2, 44);
 
-        assertEquals("id1", PathFinder.findNearestCreek(map.getCreeks(), coordinates));
+        assertEquals("id2", PathFinder.findNearestCreek(map.getCreeks(), coordinates));
 
-        map.addCreek(new Coordinates(-146, -975), "id4");
+        map.addCreek(new Coordinates(-2, 42), "id4");
 
         assertEquals("id4", PathFinder.findNearestCreek(map.getCreeks(), coordinates));
     }
@@ -81,5 +81,15 @@ public class PathFinderTest {
         assertEquals(new Coordinates(15, -34), PathFinder.findNearestTileOfResource(map, new Coordinates(0,0), RawResource.FUR));
         assertEquals(new Coordinates(13, 39), PathFinder.findNearestTileOfResource(map, new Coordinates(0,0), RawResource.FLOWER));
         assertEquals(new Coordinates(13, 39), PathFinder.findNearestTileOfResource(map, new Coordinates(0,0), RawResource.ORE));
+    }
+
+    @Test
+    public void findNearestCreekOfResourceTest() {
+        assertEquals("", PathFinder.findNearestCreekOfResource(map, RawResource.FRUITS));
+        assertEquals("", PathFinder.findNearestCreekOfResource(map, RawResource.FISH));
+        assertEquals("id1", PathFinder.findNearestCreekOfResource(map, RawResource.WOOD));
+        assertEquals("id2", PathFinder.findNearestCreekOfResource(map, RawResource.FUR));
+        assertEquals("id2", PathFinder.findNearestCreekOfResource(map, RawResource.FLOWER));
+        assertEquals("id2", PathFinder.findNearestCreekOfResource(map, RawResource.ORE));
     }
 }
