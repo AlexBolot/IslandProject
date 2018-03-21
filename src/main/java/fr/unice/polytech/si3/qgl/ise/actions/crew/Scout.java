@@ -19,7 +19,7 @@ public class Scout extends CrewAction {
     }
 
     @Override
-    public String aknowledgeResult(Crew crewToUpdate, String result) {
-        return null;
+    public String acknowledgeResults(Crew crewToUpdate, String result) {
+        return "";
     }
 }

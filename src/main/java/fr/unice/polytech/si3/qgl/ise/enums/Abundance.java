@@ -5,7 +5,13 @@ package fr.unice.polytech.si3.qgl.ise.enums;
  */
 public enum Abundance {
 
-    HIGH,
-    MEDIUM,
-    LOW
+    HIGH("HIGH"),
+    MEDIUM("MEDIUM"),
+    LOW("LOW");
+
+    private String id;
+
+    Abundance(String id) {
+        this.id = id;
+    }
 }

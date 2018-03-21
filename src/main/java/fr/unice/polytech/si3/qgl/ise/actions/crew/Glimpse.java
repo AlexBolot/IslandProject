@@ -24,7 +24,7 @@ public class Glimpse extends CrewAction {
     }
 
     @Override
-    public String aknowledgeResult(Crew crewToUpdate, String result) {
+    public String acknowledgeResults(Crew crewToUpdate, String result) {
         return "";
     }
 }

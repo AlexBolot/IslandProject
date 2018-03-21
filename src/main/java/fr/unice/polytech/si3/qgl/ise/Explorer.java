@@ -1,6 +1,7 @@
 package fr.unice.polytech.si3.qgl.ise;
 
 import eu.ace_design.island.bot.IExplorerRaid;
+import fr.unice.polytech.si3.qgl.ise.entities.Crew;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
 import fr.unice.polytech.si3.qgl.ise.map.PathFinder;
@@ -10,6 +11,7 @@ import fr.unice.polytech.si3.qgl.ise.parsing.Scan;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
+import javax.swing.*;
 import java.util.List;
 
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
@@ -23,6 +25,7 @@ public class Explorer implements IExplorerRaid {
     private List<RawContract> rawConrtacts;
     private List<CraftedContract> craftedContracts;
     private int crewNumber;
+    private Crew crew;
 
     @Override
     public void initialize(String contract) {
@@ -39,6 +42,8 @@ public class Explorer implements IExplorerRaid {
         NSEW orientation = NSEW.getFromValue(heading);
         map = new IslandMap();
         drone = new Drone(map, orientation);
+        crew = new Crew(map, contractParser.getMen(), contractParser.getRawContracts(), contractParser.getCraftedContracts());
+
     }
 
     @Override
@@ -66,13 +71,17 @@ public class Explorer implements IExplorerRaid {
 
             remainingBudget -= data.getInt("cost");
 
-            switch (drone.getLastAction()) {
-                case Scan:
-                    drone.acknowledgeScan(new Scan(data.toString()));
-                    break;
-                case Echo:
-                    drone.acknowledgeEcho(new Echo(data.toString()));
-                    break;
+            if (drone.isFlying()) {
+                switch (drone.getLastAction()) {
+                    case Scan:
+                        drone.acknowledgeScan(new Scan(data.toString()));
+                        break;
+                    case Echo:
+                        drone.acknowledgeEcho(new Echo(data.toString()));
+                        break;
+                }
+            } else {
+                crew.acknowledgeResults(results);
             }
         } catch (Exception e) {
             logger.info(e.getMessage());
