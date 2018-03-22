@@ -25,7 +25,7 @@ CONTRACTS[8]="20000 3 WOOD 7000 QUARTZ 20 FLOWER 5 RUM 5"
 
 index=0
 
-for f in ressources/*.json; do 
+for f in maps/*.json; do
 	testMap $f '1' '1' 'SOUTH' ${CONTRACTS[index]};
 	testMap $f '1' '1' 'EAST' ${CONTRACTS[index]};
 	testMap $f '159' '159' 'WEST' ${CONTRACTS[index]};

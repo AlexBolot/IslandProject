@@ -2,7 +2,6 @@ package fr.unice.polytech.si3.qgl.ise.map;
 
 import fr.unice.polytech.si3.qgl.ise.enums.Biome;
 import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
-import scala.Tuple2;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -45,7 +44,7 @@ public class PathFinder {
      */
     public static Coordinates findNearestTileOfBiome(IslandMap map, Coordinates coordinates, Biome biome) {
         return map.getMap().entrySet().stream()
-                .filter(entry -> entry.getValue().getPossibleBiomes().contains(biome))
+                .filter(entry -> entry.getValue().getPossibleBiomes().contains(biome)) //TODO filter isExplored
                 .min(Comparator.comparingDouble(entry -> calculateDistance(entry.getKey(), coordinates)))
                 .map(Map.Entry::getKey)
                 .orElse(null);
@@ -74,7 +73,7 @@ public class PathFinder {
     /**
      * Finds the nearest known creek to the given raw resource
      *
-     * @param map : the map containing the tiles and the creeks
+     * @param map      : the map containing the tiles and the creeks
      * @param resource : the resource we want to find
      * @return the id of the creek nearest to given resource, or an empty string if there is no such creek
      */
