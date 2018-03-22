@@ -35,26 +35,26 @@ public class PathFinder {
     }
 
     /**
-     * Searches for the nearest tile belonging to the given biome from the given coordinates
+     * Searches for the nearest tile belonging to the given biome from the given coordinates, excluding already explored tiles
      *
      * @param map         : the map containing the tiles
      * @param coordinates : the coordinates from where the search is led
      * @param biome       : the biome containing tiles to search for
      * @return the coordinates of the nearest tiles or null if there is no such tile
      */
-    public static Coordinates findNearestTileOfBiome (IslandMap map, Coordinates coordinates, Biome biome)
-    {
+    public static Coordinates findNearestTileOfBiome(IslandMap map, Coordinates coordinates, Biome biome) {
         return map.getMap()
-                  .entrySet()
-                  .stream()
-                  .filter(entry -> entry.getValue().getPossibleBiomes().contains(biome)) //TODO filter isExplored
-                  .min(Comparator.comparingDouble(entry -> calculateDistance(entry.getKey(), coordinates)))
-                  .map(Map.Entry::getKey)
-                  .orElse(null);
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().getPossibleBiomes().contains(biome))
+                .filter(entry -> !entry.getValue().isExplored())
+                .min(Comparator.comparingDouble(entry -> calculateDistance(entry.getKey(), coordinates)))
+                .map(Map.Entry::getKey)
+                .orElse(null);
     }
 
     /**
-     * Finds the nearest tile that possibly contains the given raw resource
+     * Finds the nearest tile that possibly contains the given raw resource, excluding already explored tiles
      *
      * @param map         : the map containing the tiles
      * @param coordinates : the coordinates from where the search is led
@@ -63,42 +63,11 @@ public class PathFinder {
      */
     public static Coordinates findNearestTileOfResource(IslandMap map, Coordinates coordinates, RawResource resource) {
         List<Biome> acceptableBiomes = Arrays.stream(Biome.values())
-                                             .filter(biome -> Arrays.asList(biome.getResources()).contains(resource))
-                                             .collect(Collectors.toList());
+                .filter(biome -> Arrays.asList(biome.getResources()).contains(resource))
+                .collect(Collectors.toList());
 
         return acceptableBiomes.stream().map(biome -> findNearestTileOfBiome(map, coordinates, biome)).filter(Objects::nonNull).min(
                 Comparator.comparingDouble(tileCoordinates -> calculateDistance(tileCoordinates, coordinates))).orElse(null);
-    }
-
-    public static ArrayList<Coordinates> findCoordsOfTilesOfBiome (IslandMap map, Biome biome)
-    {
-        return map.getMap()
-                  .entrySet()
-                  .stream()
-                  .filter(entry -> entry.getValue().getPossibleBiomes().contains(biome))
-                  .map(Map.Entry::getKey)
-                  .collect(Collectors.toCollection(ArrayList::new));
-    }
-
-    public static Coordinates findNearestTileOfCurrentTile (IslandMap map, Coordinates coordinates, RawResource resource)
-    {
-        List<Biome> acceptableBiomes = Arrays.stream(Biome.values())
-                                             .filter(biome -> Arrays.asList(biome.getResources()).contains(resource))
-                                             .collect(Collectors.toList());
-
-        return acceptableBiomes.stream()
-                               .map(biome -> findCoordsOfTilesOfBiome(map, biome))
-                               .reduce((tiles, tiles2) -> {
-                                   ArrayList<Coordinates> res = new ArrayList<>();
-                                   res.addAll(tiles);
-                                   res.addAll(tiles2);
-                                   return res;
-                               })
-                               .orElse(new ArrayList<>())
-                               .stream()
-                               .filter(coords -> !coords.equals(coordinates))
-                               .min(Comparator.comparingDouble(coords -> calculateDistance(coords, coordinates)))
-                               .orElse(null);
     }
 
     /**
@@ -108,17 +77,16 @@ public class PathFinder {
      * @param resource : the resource we want to find
      * @return the id of the creek nearest to given resource, or an empty string if there is no such creek
      */
-    public static String findNearestCreekOfResource (IslandMap map, RawResource resource)
-    {
+    public static String findNearestCreekOfResource(IslandMap map, RawResource resource) {
         return map.getCreeks()
-                  .entrySet()
-                  .stream()
-                  .filter(entry -> Objects.nonNull(findNearestTileOfResource(map,
-                                                                             entry.getValue(),
-                                                                             resource)))
-                  .min(Comparator.comparingDouble(entry -> calculateDistance(entry.getValue(),
-                                                                             findNearestTileOfResource(map, entry.getValue(), resource))))
-                  .map(Map.Entry::getKey)
-                  .orElse("");
+                .entrySet()
+                .stream()
+                .filter(entry -> Objects.nonNull(findNearestTileOfResource(map,
+                        entry.getValue(),
+                        resource)))
+                .min(Comparator.comparingDouble(entry -> calculateDistance(entry.getValue(),
+                        findNearestTileOfResource(map, entry.getValue(), resource))))
+                .map(Map.Entry::getKey)
+                .orElse("");
     }
 }

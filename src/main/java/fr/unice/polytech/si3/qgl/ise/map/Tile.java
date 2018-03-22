@@ -11,6 +11,7 @@ import java.util.*;
 public class Tile {
     private Map<Biome, Double> biomesPercentage;
     private Map<RawResource, Tuple2<Abundance, Exploitability>> resourcesStats;
+    private boolean isExplored = false;
 
     public Tile() {
         biomesPercentage = new HashMap<>();
@@ -68,5 +69,13 @@ public class Tile {
 
     void setResourcesStats(Map<RawResource, Tuple2<Abundance, Exploitability>> resourcesStats) {
         this.resourcesStats = resourcesStats;
+    }
+
+    public void setExplored(boolean explored) {
+        isExplored = explored;
+    }
+
+    public boolean isExplored() {
+        return isExplored;
     }
 }
