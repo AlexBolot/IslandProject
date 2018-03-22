@@ -33,3 +33,11 @@
     - _Meilleure définition des tâches_
  - Points Négatifs
     - _Pas d'ajout de valeur au code pour le client_
+    
+### Semaine 12
+
+ - Points Positifs
+    - _Meilleure gestion des tâches_
+ - Points Négatifs
+    - _Dernière tâche "oubliée" faite trop tardivement_
+    - _Pas de valeur ajoutée_
