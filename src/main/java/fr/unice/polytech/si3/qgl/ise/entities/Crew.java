@@ -129,7 +129,6 @@ public class Crew {
     }
 
     public void setIdCreek(String id) {
-        this.coords = map.getCreeks().get(id);
         this.idCreek = id;
     }
 

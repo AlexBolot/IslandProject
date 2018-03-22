@@ -34,6 +34,7 @@ public class Move_toTest {
         rawContracts.add(new RawContract(RawResource.WOOD, 500));
         crew = new Crew(map, 10, rawContracts, craftedContracts);
         crew.setIdCreek("idDepart");
+        crew.setCoords(new Coordinates(0, 0));
     }
 
     @Test
@@ -46,8 +47,15 @@ public class Move_toTest {
     public void testDeplacement() {
         moveTo = new Move_to(crew, new Coordinates(10, 10));
         while (!moveTo.isFinished()) {
+            System.out.println(crew.getCoords());
             moveTo.apply();
         }
         assertEquals("The crew should be in 10,10 ", new Coordinates(10, 10), crew.getCoords());
+        moveTo = new Move_to(crew, new Coordinates(-10, -10));
+        while (!moveTo.isFinished()) {
+            System.out.println(crew.getCoords());
+            moveTo.apply();
+        }
+        assertEquals("The crew should be in -10,-10 ", new Coordinates(-10, -10), crew.getCoords());
     }
 }

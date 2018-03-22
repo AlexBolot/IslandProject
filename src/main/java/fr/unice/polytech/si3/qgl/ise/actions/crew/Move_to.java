@@ -10,17 +10,22 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW.*;
 public class Move_to extends CrewAction {
 
     private Coordinates coordinates;
-    private Coordinates currentCoords;
-
 
     public Move_to(Crew crewToUpdate, Coordinates coordinates) {
         super(crewToUpdate);
         this.coordinates = coordinates;
     }
 
+    private int caseToReachFrom(Coordinates coord) {
+        return Math.abs(Math.abs(coord.getX()) + Math.abs(coordinates.getX()))
+                + Math.abs(Math.abs(coord.getY()) + Math.abs(coordinates.getY()));
+    }
+
     private boolean setLastAction() {
         //The action is the last when whe are 1 tile close
-        if (Math.abs(coordinates.getX()) - Math.abs(getCrewToUpdate().getCoords().getX()) + Math.abs(coordinates.getY()) - Math.abs(getCrewToUpdate().getCoords().getY()) == 1)
+        Coordinates crewCoords = getCrewToUpdate().getCoords();
+//        if ((crewCoords.getX() == coordinates.getX() && Ydiff1) || (crewCoords.getY() == coordinates.getY() && Xdiff1))
+        if (caseToReachFrom(crewCoords) == 1)
             finish();
 
         return this.isFinished();
@@ -40,14 +45,14 @@ public class Move_to extends CrewAction {
                 crew.setCoords(new Coordinates(crew.getCoords().getX(), crew.getCoords().getY() - 1));
                 return new JsonFactory().createJsonString("move_to", "direction", SOUTH.getValue());
             }
-            //If the x is good, we check for the Y
+            //If the x is good, we check for the X
             //We have to go east
             if (crew.getCoords().getX() < coordinates.getX()) {
                 crew.setCoords(new Coordinates(crew.getCoords().getX() + 1, crew.getCoords().getY()));
                 return new JsonFactory().createJsonString("move_to", "direction", EAST.getValue());
             } else if (crew.getCoords().getX() > coordinates.getX()) {
                 crew.setCoords(new Coordinates(crew.getCoords().getX() - 1, crew.getCoords().getY()));
-                return new JsonFactory().createJsonString("move_to", "direction", EAST.getValue());
+                return new JsonFactory().createJsonString("move_to", "direction", WEST.getValue());
             }
         }
 
