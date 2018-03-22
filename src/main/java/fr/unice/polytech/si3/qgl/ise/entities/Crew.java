@@ -32,6 +32,7 @@ public class Crew
     private Integer                         crewSize;
     private HashMap<RawResource, Abundance> lastExplore;
     private ArrayList<Action>               steps;
+    private EnumMap<RawResource, Integer>   stock;
 
     private IslandMap   map;
     private Coordinates coords;
@@ -101,6 +102,12 @@ public class Crew
             ((CrewAction) lastAction).acknowledgeResults(this, results);
         }
         //else would be only for stop action <=> do nothing
+    }
+
+    public void addToStock (RawResource resource, int amount)
+    {
+        if (stock.containsKey(resource)) amount += stock.get(resource);
+        stock.put(resource, amount);
     }
 
     public IslandMap getMap ()
