@@ -2,9 +2,10 @@ package fr.unice.polytech.si3.qgl.ise.actions.crew;
 
 import fr.unice.polytech.si3.qgl.ise.actions.CrewAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Crew;
-import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums;
 import fr.unice.polytech.si3.qgl.ise.factories.JsonFactory;
 import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
+
+import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW.*;
 
 public class Move_to extends CrewAction {
 
@@ -18,41 +19,40 @@ public class Move_to extends CrewAction {
     }
 
     private boolean setLastAction() {
-        //The action is the last when whe are 1 case close
-        if (Math.abs(coordinates.getX()) - Math.abs(getCrewToUpdate().getCoords().getX()) + Math.abs(coordinates.getY()) - Math.abs(getCrewToUpdate().getCoords().getY()) == 1) {
+        //The action is the last when whe are 1 tile close
+        if (Math.abs(coordinates.getX()) - Math.abs(getCrewToUpdate().getCoords().getX()) + Math.abs(coordinates.getY()) - Math.abs(getCrewToUpdate().getCoords().getY()) == 1)
             finish();
-            return true;
-        }
-        return false;
+
+        return this.isFinished();
     }
 
     @Override
     public String apply() {
+        Crew crew = getCrewToUpdate();
+
         //We update the state of the action
         if (setLastAction() || !isFinished()) {
             //We have to go north
-            if (getCrewToUpdate().getCoords().getY() < coordinates.getY()) {
-                getCrewToUpdate().setCoords(new Coordinates(getCrewToUpdate().getCoords().getX(), getCrewToUpdate().getCoords().getY() + 1));
-                return new JsonFactory().createJsonString("move_to", "direction",
-                        DroneEnums.NSEW.NORTH.getValue());
-            } else if (getCrewToUpdate().getCoords().getY() > coordinates.getY()) { //We go South
-                getCrewToUpdate().setCoords(new Coordinates(getCrewToUpdate().getCoords().getX(), getCrewToUpdate().getCoords().getY() - 1));
-                return new JsonFactory().createJsonString("move_to", "direction",
-                        DroneEnums.NSEW.SOUTH.getValue());
+            if (crew.getCoords().getY() < coordinates.getY()) {
+                crew.setCoords(new Coordinates(crew.getCoords().getX(), crew.getCoords().getY() + 1));
+                return new JsonFactory().createJsonString("move_to", "direction", NORTH.getValue());
+            } else if (crew.getCoords().getY() > coordinates.getY()) { //We go South
+                crew.setCoords(new Coordinates(crew.getCoords().getX(), crew.getCoords().getY() - 1));
+                return new JsonFactory().createJsonString("move_to", "direction", SOUTH.getValue());
             }
             //If the x is good, we check for the Y
             //We have to go east
-            if (getCrewToUpdate().getCoords().getX() < coordinates.getX()) {
-                getCrewToUpdate().setCoords(new Coordinates(getCrewToUpdate().getCoords().getX() + 1, getCrewToUpdate().getCoords().getY()));
-                return new JsonFactory().createJsonString("move_to", "direction",
-                        DroneEnums.NSEW.EAST.getValue());
-            } else if (getCrewToUpdate().getCoords().getX() > coordinates.getX()) {
-                getCrewToUpdate().setCoords(new Coordinates(getCrewToUpdate().getCoords().getX() - 1, getCrewToUpdate().getCoords().getY()));
-                return new JsonFactory().createJsonString("move_to", "direction",
-                        DroneEnums.NSEW.EAST.getValue());
+            if (crew.getCoords().getX() < coordinates.getX()) {
+                crew.setCoords(new Coordinates(crew.getCoords().getX() + 1, crew.getCoords().getY()));
+                return new JsonFactory().createJsonString("move_to", "direction", EAST.getValue());
+            } else if (crew.getCoords().getX() > coordinates.getX()) {
+                crew.setCoords(new Coordinates(crew.getCoords().getX() - 1, crew.getCoords().getY()));
+                return new JsonFactory().createJsonString("move_to", "direction", EAST.getValue());
             }
         }
-        throw new IllegalStateException("You shouldn't try to move if you've already reached your goal, coords : " + getCrewToUpdate().getCoords());
+
+        this.finish();
+        return "";
     }
 
     @Override
