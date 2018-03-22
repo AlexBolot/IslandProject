@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class MoveTo {
+public class Move_ToTest {
 
     Crew crew;
     CrewAction moveTo;
