@@ -1,7 +1,6 @@
 package fr.unice.polytech.si3.qgl.ise.parsing;
 
 import fr.unice.polytech.si3.qgl.ise.enums.Abundance;
-import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle;
 import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,6 +15,10 @@ public class ExploreParsing {
     private HashMap<RawResource, Abundance> resources;
 
     public ExploreParsing(String exploreResult) {
+       try
+       {
+        resources = new HashMap<>();
+
         JSONObject data = new JSONObject(exploreResult);
         cost = data.getInt("cost");
         JSONObject extras = data.getJSONObject("extras");
@@ -25,6 +28,12 @@ public class ExploreParsing {
             resources.put(RawResource.valueOf(temp.getString("resource")), Abundance.valueOf(temp.getString("amount")));
             //need to add cond when needed
         }
+
+       }
+       catch (Exception e)
+       {
+           int i = 0;
+       }
     }
 
     public int getCost() {

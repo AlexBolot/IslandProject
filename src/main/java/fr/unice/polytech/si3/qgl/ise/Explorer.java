@@ -1,6 +1,7 @@
 package fr.unice.polytech.si3.qgl.ise;
 
 import eu.ace_design.island.bot.IExplorerRaid;
+import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Crew;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
@@ -11,29 +12,30 @@ import fr.unice.polytech.si3.qgl.ise.parsing.Scan;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
-import javax.swing.*;
 import java.util.List;
 
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
 import static org.apache.logging.log4j.LogManager.getLogger;
 
-public class Explorer implements IExplorerRaid {
+public class Explorer implements IExplorerRaid
+{
     private static Logger logger = getLogger(Explorer.class);
-    private Drone drone;
-    private IslandMap map;
-    private int remainingBudget;
-    private List<RawContract> rawConrtacts;
+    private Drone                 drone;
+    private Crew                  crew;
+    private IslandMap             map;
+    private int                   remainingBudget;
+    private List<RawContract>     rawConrtacts;
     private List<CraftedContract> craftedContracts;
-    private int crewNumber;
-    private Crew crew;
+    private int                   crewNumber;
+    private ContractParser        contractParser;
 
     @Override
-    public void initialize(String contract) {
+    public void initialize (String contract)
+    {
         logger.debug("Initializing the Explorer");
         logger.trace("Contract: " + contract);
-        JSONObject data = new JSONObject(contract);
 
-        ContractParser contractParser = new ContractParser(contract);
+        contractParser = new ContractParser(contract);
 
         String heading = contractParser.getHeading();
         remainingBudget = contractParser.getBudget();
@@ -42,37 +44,54 @@ public class Explorer implements IExplorerRaid {
         NSEW orientation = NSEW.getFromValue(heading);
         map = new IslandMap();
         drone = new Drone(map, orientation);
-        crew = new Crew(map, contractParser.getMen(), contractParser.getRawContracts(), contractParser.getCraftedContracts());
-
     }
 
     @Override
-    public String takeDecision() {
-        try {
-            String s = drone.takeDecision();
-            logger.info("Decision :\t" + s);
-            return s;
-        } catch (Exception e) {
-            logger.info(e.getMessage());
+    public String takeDecision ()
+    {
+        try
+        {
+            String decision;
 
-            JSONObject data = new JSONObject();
-            data.put("action", "stop");
-            return data.toString();
+            if (drone.isFlying())
+            {
+                decision = drone.takeDecision();
+                logger.info("Decision :\t" + decision);
+                if (!decision.isEmpty()) return decision;
+            }
+
+            if (crew == null) crew = new Crew(map,
+                                              contractParser.getMen(),
+                                              contractParser.getRawContracts(),
+                                              contractParser.getCraftedContracts());
+
+            decision = crew.takeDecision();
+            logger.info("Crew :\t\t" + decision);
+
+            return decision.isEmpty() ? new StopAction().apply() : decision;
         }
-
+        catch (Exception e)
+        {
+            logger.info(e.getMessage());
+            return new StopAction(drone).apply();
+        }
     }
 
     @Override
-    public void acknowledgeResults(String results) {
-        try {
+    public void acknowledgeResults (String results)
+    {
+        try
+        {
             JSONObject data = new JSONObject(results);
 
             logger.info("Réponse :\t" + data);
 
             remainingBudget -= data.getInt("cost");
 
-            if (drone.isFlying()) {
-                switch (drone.getLastAction()) {
+            if (drone.isFlying())
+            {
+                switch (drone.getLastAction())
+                {
                     case Scan:
                         drone.acknowledgeScan(new Scan(data.toString()));
                         break;
@@ -80,18 +99,21 @@ public class Explorer implements IExplorerRaid {
                         drone.acknowledgeEcho(new Echo(data.toString()));
                         break;
                 }
-            } else {
+            }
+            else
+            {
                 crew.acknowledgeResults(results);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.info(e.getMessage());
         }
-
-
     }
 
     @Override
-    public String deliverFinalReport() {
+    public String deliverFinalReport ()
+    {
         StringBuilder str = new StringBuilder();
 
         str.append("CREEKS = ");
@@ -106,7 +128,8 @@ public class Explorer implements IExplorerRaid {
         str.append(System.getProperty("line.separator"));
 
         if (map.getEmergencySite() != null)
-            str.append("Nearest creek to emergency site : ").append(PathFinder.findNearestCreek(map.getCreeks(), map.getEmergencySite()._2));
+            str.append("Nearest creek to emergency site : ").append(PathFinder.findNearestCreek(map.getCreeks(),
+                                                                                                map.getEmergencySite()._2));
         else str.append("Emergency site not found");
 
         logger.info("Report:");

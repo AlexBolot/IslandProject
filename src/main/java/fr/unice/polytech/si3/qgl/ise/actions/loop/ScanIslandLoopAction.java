@@ -1,7 +1,6 @@
 package fr.unice.polytech.si3.qgl.ise.actions.loop;
 
 import fr.unice.polytech.si3.qgl.ise.actions.Action;
-import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
 import fr.unice.polytech.si3.qgl.ise.actions.drone.GTurnAction;
 import fr.unice.polytech.si3.qgl.ise.actions.drone.PassIslandAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
@@ -30,7 +29,7 @@ public class ScanIslandLoopAction extends Action {
 
         if (!map.getCreeks().isEmpty() && map.getEmergencySite() != null) {
             finish();
-            return new StopAction(drone).apply();
+            return "";
         }
         if (!passIslandAction.isFinished()) res = passIslandAction.apply();
         if (!res.isEmpty()) return res;

@@ -86,8 +86,7 @@ public class Drone {
         logger.info("--------> end - " + subState);
 
         isFlying = false;
-
-        return new StopAction(this).apply();
+        return "";
     }
 
     public void acknowledgeEcho(Echo echo) {

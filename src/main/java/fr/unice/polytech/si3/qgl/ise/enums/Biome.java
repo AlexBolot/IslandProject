@@ -7,7 +7,6 @@ import static fr.unice.polytech.si3.qgl.ise.enums.RawResource.*;
  */
 public enum Biome
 {
-
     OCEAN("OCEAN", FISH),
     LAKE("LAKE", FISH),
     BEACH("BEACH", QUARTZ),
