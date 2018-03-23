@@ -15,8 +15,6 @@ public class ExploreParsing {
     private HashMap<RawResource, Abundance> resources;
 
     public ExploreParsing(String exploreResult) {
-       try
-       {
         resources = new HashMap<>();
 
         JSONObject data = new JSONObject(exploreResult);
@@ -28,12 +26,6 @@ public class ExploreParsing {
             resources.put(RawResource.valueOf(temp.getString("resource")), Abundance.valueOf(temp.getString("amount")));
             //need to add cond when needed
         }
-
-       }
-       catch (Exception e)
-       {
-           int i = 0;
-       }
     }
 
     public int getCost() {

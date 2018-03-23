@@ -54,7 +54,7 @@ public class PathFinder {
     }
 
     /**
-     * Finds the nearest tile that possibly contains the given raw resource
+     * Finds the nearest tile to the given point that possibly contains the given raw resource
      *
      * @param map         : the map containing the tiles
      * @param coordinates : the coordinates from where the search is led

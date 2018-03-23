@@ -51,4 +51,8 @@ public class Scan {
     public ArrayList<Biome> getBiomes() {
         return biomes;
     }
+
+    public int getCost() {
+        return cost;
+    }
 }

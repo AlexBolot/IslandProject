@@ -19,7 +19,6 @@ public class Explore extends CrewAction {
     @Override
     public String acknowledgeResults(Crew crewToUpdate, String result) {
         ExploreParsing exploreParsing = new ExploreParsing(result);
-        int cost = exploreParsing.getCost();
         crewToUpdate.setLastExplore(exploreParsing.getResources());
         return "";
     }
