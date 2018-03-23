@@ -28,22 +28,22 @@ public class ContractTest {
 
     @Test
     public void testHeading() {
-        assertEquals("The heading isn't parse correctly", contractParser.getHeading(), DroneEnums.NSEW.WEST.getValue());
+        assertEquals("The heading isn't parse correctly", DroneEnums.NSEW.WEST.getValue(), contractParser.getHeading());
     }
 
     @Test
     public void testMen() {
-        assertEquals("The number of crew isn't parse correctly", contractParser.getMen(), 12);
+        assertEquals("The number of crew isn't parse correctly", 12, contractParser.getMen());
     }
 
     @Test
     public void testBudget() {
-        assertEquals("The budget isn't parse correctly", contractParser.getBudget(), 10000);
+        assertEquals("The budget isn't parse correctly", 10000, contractParser.getBudget());
     }
 
     @Test
     public void testWood() {
-        assertEquals("The number of wood isn't parse correctly", contractParser.getRawContracts().get(0).getQuantity(), 600);
+        assertEquals("The number of wood isn't parse correctly", 600, contractParser.getRawContracts().get(0).getQuantity());
     }
 
     @Test

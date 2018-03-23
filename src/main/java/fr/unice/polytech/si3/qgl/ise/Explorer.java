@@ -17,21 +17,19 @@ import java.util.List;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
 import static org.apache.logging.log4j.LogManager.getLogger;
 
-public class Explorer implements IExplorerRaid
-{
+public class Explorer implements IExplorerRaid {
     private static Logger logger = getLogger(Explorer.class);
-    private Drone                 drone;
-    private Crew                  crew;
-    private IslandMap             map;
-    private int                   remainingBudget;
-    private List<RawContract>     rawConrtacts;
+    private Drone drone;
+    private Crew crew;
+    private IslandMap map;
+    private int remainingBudget;
+    private List<RawContract> rawConrtacts;
     private List<CraftedContract> craftedContracts;
-    private int                   crewNumber;
-    private ContractParser        contractParser;
+    private int crewNumber;
+    private ContractParser contractParser;
 
     @Override
-    public void initialize (String contract)
-    {
+    public void initialize(String contract) {
         logger.debug("Initializing the Explorer");
         logger.trace("Contract: " + contract);
 
@@ -47,51 +45,47 @@ public class Explorer implements IExplorerRaid
     }
 
     @Override
-    public String takeDecision ()
-    {
-        try
-        {
-            String decision;
+    public String takeDecision() {
+        try {
+            if (remainingBudget > 1000) {
+                String decision;
 
-            if (drone.isFlying())
-            {
-                decision = drone.takeDecision();
-                logger.info("Decision :\t" + decision);
-                if (!decision.isEmpty()) return decision;
+                if (drone.isFlying()) {
+                    decision = drone.takeDecision();
+                    logger.info("Decision :\t" + decision);
+                    if (!decision.isEmpty()) return decision;
+                }
+
+                if (crew == null) crew = new Crew(map,
+                        contractParser.getMen(),
+                        contractParser.getRawContracts(),
+                        contractParser.getCraftedContracts());
+
+                decision = crew.takeDecision();
+                logger.info("Crew :\t\t" + decision);
+
+                return decision.isEmpty() ? new StopAction().apply() : decision;
+            } else {
+                logger.info("No more budget!");
+                return new StopAction(drone).apply();
             }
-
-            if (crew == null) crew = new Crew(map,
-                                              contractParser.getMen(),
-                                              contractParser.getRawContracts(),
-                                              contractParser.getCraftedContracts());
-
-            decision = crew.takeDecision();
-            logger.info("Crew :\t\t" + decision);
-
-            return decision.isEmpty() ? new StopAction().apply() : decision;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             logger.info(e.getMessage());
             return new StopAction(drone).apply();
         }
     }
 
     @Override
-    public void acknowledgeResults (String results)
-    {
-        try
-        {
+    public void acknowledgeResults(String results) {
+        try {
             JSONObject data = new JSONObject(results);
 
             logger.info("Réponse :\t" + data);
 
             remainingBudget -= data.getInt("cost");
 
-            if (drone.isFlying())
-            {
-                switch (drone.getLastAction())
-                {
+            if (drone.isFlying()) {
+                switch (drone.getLastAction()) {
                     case Scan:
                         drone.acknowledgeScan(new Scan(data.toString()));
                         break;
@@ -99,21 +93,16 @@ public class Explorer implements IExplorerRaid
                         drone.acknowledgeEcho(new Echo(data.toString()));
                         break;
                 }
-            }
-            else
-            {
+            } else {
                 crew.acknowledgeResults(results);
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             logger.info(e.getMessage());
         }
     }
 
     @Override
-    public String deliverFinalReport ()
-    {
+    public String deliverFinalReport() {
         StringBuilder str = new StringBuilder();
 
         str.append("CREEKS = ");
@@ -129,7 +118,7 @@ public class Explorer implements IExplorerRaid
 
         if (map.getEmergencySite() != null)
             str.append("Nearest creek to emergency site : ").append(PathFinder.findNearestCreek(map.getCreeks(),
-                                                                                                map.getEmergencySite()._2));
+                    map.getEmergencySite()._2));
         else str.append("Emergency site not found");
 
         logger.info("Report:");
