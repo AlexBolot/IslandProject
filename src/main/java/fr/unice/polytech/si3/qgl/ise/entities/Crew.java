@@ -31,7 +31,7 @@ public class Crew {
     private Integer crewSize;
     private HashMap<RawResource, Abundance> lastExplore;
     private ArrayList<Action> steps;
-    private EnumMap<RawResource, Integer>   stock;
+    private EnumMap<RawResource, Integer> stock;
 
     private IslandMap map;
     private Coordinates coords;
@@ -54,7 +54,7 @@ public class Crew {
         knowExactPosition = false;
         this.crewSize = crewSize;
 
-        Optional<RawContract> bestContract = rawContracts.stream().min(Comparator.comparingInt(RawContract::getQuantity));
+        Optional<RawContract> bestContract = choseBestRawContract();
         bestContract.ifPresent(rawContract -> currentResource = rawContract.getResource());
 
         idCreek = PathFinder.findNearestCreekOfResource(map, currentResource);
@@ -62,6 +62,17 @@ public class Crew {
         objective = PathFinder.findNearestTileOfResource(map, coords, currentResource);
 
         initActions();
+    }
+
+    /**
+     * Chose the contract with the less ressource to collect
+     *
+     * @return the contract
+     */
+    private Optional<RawContract> choseBestRawContract() {
+        if (rawContracts.size() == 0)
+            return Optional.empty();
+        return rawContracts.stream().min(Comparator.comparingInt(RawContract::getQuantity));
     }
 
     private void initActions() {
@@ -97,8 +108,7 @@ public class Crew {
         //else would be only for stop action <=> do nothing
     }
 
-    public void addToStock (RawResource resource, int amount)
-    {
+    public void addToStock(RawResource resource, int amount) {
         if (stock.containsKey(resource)) amount += stock.get(resource);
         stock.put(resource, amount);
     }
