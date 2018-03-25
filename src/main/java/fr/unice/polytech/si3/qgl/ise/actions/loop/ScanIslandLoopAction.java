@@ -27,7 +27,7 @@ public class ScanIslandLoopAction extends Action {
         if (!scanLineLoopAction.isFinished()) res = scanLineLoopAction.apply();
         if (!res.isEmpty()) return res;
 
-        if (!map.getCreeks().isEmpty() && map.getEmergencySite() != null) {
+        if (!map.getCreeks().isEmpty()) {
             finish();
             return "";
         }
