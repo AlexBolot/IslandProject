@@ -66,6 +66,16 @@ public class Crew {
         initActions();
     }
 
+
+    private List<RawContract> getRawContractsLeft() {
+        List<RawContract> contracts = new ArrayList<>();
+        for (RawContract contract : rawContracts) {
+            if (stock.get(contract.getResource()) > contract.getQuantity())
+                contracts.add(contract);
+        }
+        return contracts;
+    }
+
     /**
      * Chose the contract with the less ressource to collect
      *
@@ -74,7 +84,7 @@ public class Crew {
     private Optional<RawContract> choseBestRawContract() {
         if (rawContracts.size() == 0)
             return Optional.empty();
-        return rawContracts.stream().min(Comparator.comparingInt(RawContract::getQuantity));
+        return getRawContractsLeft().stream().min(Comparator.comparingInt(RawContract::getQuantity));
     }
 
     private void initActions() {
