@@ -1,9 +1,11 @@
 package fr.unice.polytech.si3.qgl.ise.actions.drone;
 
+import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
 import fr.unice.polytech.si3.qgl.ise.actions.simple.EchoAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 
 import static fr.unice.polytech.si3.qgl.ise.actions.drone.DroneInitAction.Step.*;
+import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action.Stop;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 
 public class DroneInitAction extends DroneAction {
@@ -41,6 +43,10 @@ public class DroneInitAction extends DroneAction {
                 this.finish();
                 break;
 
+            case OzCheck:
+                if (getDrone().getMargins().getLocal(FRONT)._2 < 1 && getDrone().getMargins().getLocal(LEFT)._2 < 1 && getDrone().getMargins().getLocal(RIGHT)._2 < 1)
+                    return new StopAction(getDrone()).apply();
+
             default:
                 throw new IllegalStateException("Unkown step : " + step);
         }
@@ -59,6 +65,7 @@ public class DroneInitAction extends DroneAction {
     public enum Step {
         EchoFront,
         EchoRight,
-        EchoLeft
+        EchoLeft,
+        OzCheck
     }
 }
