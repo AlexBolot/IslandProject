@@ -5,6 +5,7 @@ import fr.unice.polytech.si3.qgl.ise.enums.Exploitability;
 import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
 import org.junit.Before;
 import org.junit.Test;
+import scala.Tuple2;
 
 import java.util.Random;
 
@@ -31,7 +32,7 @@ public class ExploreParsingTest {
             exploitability = generateExploitability();
             exploreParsing = new ExploreParsing(generateData(rawResource, abundance, exploitability));
             assertTrue(exploreParsing.getResources().containsKey(rawResource));
-            assertEquals(abundance, exploreParsing.getResources().get(rawResource));
+            assertEquals(new Tuple2<>(abundance, exploitability), exploreParsing.getResources().get(rawResource));
         }
     }
 

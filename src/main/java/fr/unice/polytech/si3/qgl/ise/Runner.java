@@ -10,7 +10,7 @@ import static eu.ace_design.island.runner.Runner.run;
 public class Runner {
 
     /**
-     * Run with IDE : args list : ressources/map_test_week03_2017.json
+     * Run with IDE : args list : maps/map_weekXX.json
      * Run with maven : mvn -q exec:java -Dexec.args="path/to/map_test_week03_2017.json"
      */
 

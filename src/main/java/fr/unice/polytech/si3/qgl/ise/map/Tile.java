@@ -67,7 +67,7 @@ public class Tile {
         return resourcesStats;
     }
 
-    void setResourcesStats(Map<RawResource, Tuple2<Abundance, Exploitability>> resourcesStats) {
+    public void setResourcesStats(Map<RawResource, Tuple2<Abundance, Exploitability>> resourcesStats) {
         this.resourcesStats = resourcesStats;
     }
 

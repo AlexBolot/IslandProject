@@ -78,9 +78,11 @@ public class PathFinderTest {
         assertEquals(null, PathFinder.findNearestTileOfResource(map, new Coordinates(24,-42), RawResource.FRUITS));
         assertEquals(null, PathFinder.findNearestTileOfResource(map, new Coordinates(-17,2), RawResource.FISH));
         assertEquals(new Coordinates(15, -34), PathFinder.findNearestTileOfResource(map, new Coordinates(6,-14), RawResource.WOOD));
-        assertEquals(new Coordinates(15, -34), PathFinder.findNearestTileOfResource(map, new Coordinates(0,0), RawResource.FUR));
+        map.getTile(new Coordinates(15, -34)).setExplored(true);
+        assertEquals(new Coordinates(13, 39), PathFinder.findNearestTileOfResource(map, new Coordinates(0,0), RawResource.FUR));
         assertEquals(new Coordinates(13, 39), PathFinder.findNearestTileOfResource(map, new Coordinates(0,0), RawResource.FLOWER));
-        assertEquals(new Coordinates(13, 39), PathFinder.findNearestTileOfResource(map, new Coordinates(0,0), RawResource.ORE));
+        map.getTile(new Coordinates(13, 39)).setExplored(true);
+        assertEquals(new Coordinates(23, -40), PathFinder.findNearestTileOfResource(map, new Coordinates(0,0), RawResource.ORE));
     }
 
     @Test

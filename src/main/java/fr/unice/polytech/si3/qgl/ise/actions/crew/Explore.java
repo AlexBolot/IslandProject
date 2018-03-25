@@ -19,7 +19,7 @@ public class Explore extends CrewAction {
     @Override
     public String acknowledgeResults(Crew crewToUpdate, String result) {
         ExploreParsing exploreParsing = new ExploreParsing(result);
-        crewToUpdate.setLastExplore(exploreParsing.getResources());
+        crewToUpdate.getMap().getTile(crewToUpdate.getCoords()).setResourcesStats(exploreParsing.getResources());
         return "";
     }
 }

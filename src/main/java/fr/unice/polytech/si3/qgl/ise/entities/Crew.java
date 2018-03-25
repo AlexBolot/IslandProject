@@ -9,11 +9,13 @@ import fr.unice.polytech.si3.qgl.ise.actions.crew.ExploitTile;
 import fr.unice.polytech.si3.qgl.ise.actions.crew.Land;
 import fr.unice.polytech.si3.qgl.ise.actions.crew.Move_to;
 import fr.unice.polytech.si3.qgl.ise.enums.Abundance;
+import fr.unice.polytech.si3.qgl.ise.enums.Exploitability;
 import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
 import fr.unice.polytech.si3.qgl.ise.factories.JsonFactory;
 import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
 import fr.unice.polytech.si3.qgl.ise.map.PathFinder;
+import scala.Tuple2;
 
 import java.util.*;
 
@@ -29,7 +31,7 @@ public class Crew {
     private List<RawContract> rawContracts;
     private List<CraftedContract> craftedContracts;
     private Integer crewSize;
-    private HashMap<RawResource, Abundance> lastExplore;
+    private HashMap<RawResource, Tuple2<Abundance, Exploitability>> lastExplore;
     private ArrayList<Action> steps;
     private EnumMap<RawResource, Integer> stock;
 
@@ -129,13 +131,14 @@ public class Crew {
         this.coords = coords;
     }
 
-    public void setLastExplore(HashMap<RawResource, Abundance> resources) {
+    /*public void setLastExplore(HashMap<RawResource, Tuple2<Abundance, Exploitability>> resources) {
         this.lastExplore = resources;
+        map.getTile(coords).setResourcesStats(resources);
     }
 
-    public HashMap<RawResource, Abundance> getLastExplore() {
+    public HashMap<RawResource, Tuple2<Abundance, Exploitability>> getLastExplore() {
         return lastExplore;
-    }
+    }*/
 
     public void setCurrentResource(RawResource currentResource) {
         this.currentResource = currentResource;
