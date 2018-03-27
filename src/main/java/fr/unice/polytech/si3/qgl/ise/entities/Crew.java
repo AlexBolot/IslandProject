@@ -1,5 +1,6 @@
 package fr.unice.polytech.si3.qgl.ise.entities;
 
+import eu.ace_design.island.arena.utils.Contract;
 import fr.unice.polytech.si3.qgl.ise.CraftedContract;
 import fr.unice.polytech.si3.qgl.ise.RawContract;
 import fr.unice.polytech.si3.qgl.ise.actions.Action;
@@ -39,6 +40,7 @@ public class Crew
     private IslandMap   map;
     private Coordinates coords;
     private RawResource currentResource;
+    private int currentQuantity;
 
     /**
      While the coord is an hypothesis and we didn't have a situation that can makes us sure of where we are
@@ -61,6 +63,7 @@ public class Crew
 
         Optional<RawContract> bestContract = choseBestRawContract();
         bestContract.ifPresent(rawContract -> currentResource = rawContract.getResource());
+        bestContract.ifPresent(rawContract -> currentQuantity = rawContract.getQuantity());
 
         idCreek = PathFinder.findNearestCreekOfResource(map, currentResource);
         coords = map.getCreeks().get(idCreek);
@@ -93,7 +96,7 @@ public class Crew
     private void initActions() {
         steps = new ArrayList<>();
         steps.add(new Land(this, idCreek, crewSize));
-        steps.add(new Move_to(this, objective));
+        //steps.add(new Move_to(this, objective));
         steps.add(new MoveExploitLoopAction(this));
         steps.add(new StopAction());
     }
@@ -169,6 +172,14 @@ public class Crew
     public void setCrewSize (int size)
     {
         this.crewSize = size;
+    }
+
+    public EnumMap<RawResource, Integer> getStock() {
+        return stock;
+    }
+
+    public int getCurrentQuantity() {
+        return currentQuantity;
     }
 }
 
