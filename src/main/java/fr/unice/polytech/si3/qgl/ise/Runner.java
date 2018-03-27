@@ -1,5 +1,6 @@
 package fr.unice.polytech.si3.qgl.ise;
 
+import java.math.BigInteger;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class Runner {
         String heading = "SOUTH";
         int points = 30000;
         int crew = 30;
+        long seed = 0x161D552A4A22E2A1L;
         List<String> resources = new ArrayList<>();
         resources.add("WOOD");
         resources.add("FLOWER");
@@ -35,6 +37,8 @@ public class Runner {
         amounts.add(200);
 
         switch (argc) {
+            case 7:
+                seed = new BigInteger(args[6], 16).longValue();
             case 6:
                 crew = Integer.valueOf(args[5]);
             case 5:
@@ -47,16 +51,17 @@ public class Runner {
                 mapLocation = Paths.get(args[0]);
                 break;
             default:
-                if (args.length > 6 && args.length % 2 == 0) {
+                if (args.length > 7 && args.length % 2 != 0) {
                     mapLocation = Paths.get(args[0]);
                     x = Integer.valueOf(args[1]);
                     y = Integer.valueOf(args[2]);
                     heading = args[3];
                     points = Integer.valueOf(args[4]);
                     crew = Integer.valueOf(args[5]);
+                    seed = new BigInteger(args[6], 16).longValue();
                     resources.clear();
                     amounts.clear();
-                    for (int i = 6; i < args.length; i += 2) {
+                    for (int i = 7; i < args.length; i += 2) {
                         resources.add(args[i]);
                         amounts.add(Integer.valueOf(args[i + 1]));
                     }
@@ -74,7 +79,7 @@ public class Runner {
         run(Explorer.class)
                 .exploring(mapLocation.toFile())
                 .withName("ise")
-                .withSeed(0x161D552A4A22E2A1L)
+                .withSeed(seed)
                 .startingAt(x, y, heading)
                 .backBefore(points)
                 .withCrew(crew)

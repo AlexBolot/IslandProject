@@ -25,7 +25,7 @@ public class PathFinder {
      *
      * @param creeks      : map containing the recorded creeks (ids and coordinates)
      * @param coordinates : one point on the map
-     * @return the id of the creek nearest to the given point, or an empty string if there is no creek
+     * @return the id of the creek nearest to the given po int, or an empty string if there is no creek
      */
     public static String findNearestCreek(Map<String, Coordinates> creeks, Coordinates coordinates) {
         return creeks.entrySet().stream()
@@ -43,9 +43,7 @@ public class PathFinder {
      * @return the coordinates of the nearest tiles or null if there is no such tile
      */
     public static Coordinates findNearestTileOfBiome(IslandMap map, Coordinates coordinates, Biome biome) {
-        return map.getMap()
-                .entrySet()
-                .stream()
+        return map.getMap().entrySet().stream()
                 .filter(entry -> entry.getValue().getPossibleBiomes().contains(biome))
                 .filter(entry -> !entry.getValue().isExplored())
                 .min(Comparator.comparingDouble(entry -> calculateDistance(entry.getKey(), coordinates)))
@@ -66,8 +64,11 @@ public class PathFinder {
                 .filter(biome -> Arrays.asList(biome.getResources()).contains(resource))
                 .collect(Collectors.toList());
 
-        return acceptableBiomes.stream().map(biome -> findNearestTileOfBiome(map, coordinates, biome)).filter(Objects::nonNull).min(
-                Comparator.comparingDouble(tileCoordinates -> calculateDistance(tileCoordinates, coordinates))).orElse(null);
+        return acceptableBiomes.stream()
+                .map(biome -> findNearestTileOfBiome(map, coordinates, biome))
+                .filter(Objects::nonNull)
+                .min(Comparator.comparingDouble(tileCoordinates -> calculateDistance(tileCoordinates, coordinates)))
+                .orElse(null);
     }
 
     /**
@@ -78,14 +79,9 @@ public class PathFinder {
      * @return the id of the creek nearest to given resource, or an empty string if there is no such creek
      */
     public static String findNearestCreekOfResource(IslandMap map, RawResource resource) {
-        return map.getCreeks()
-                .entrySet()
-                .stream()
-                .filter(entry -> Objects.nonNull(findNearestTileOfResource(map,
-                        entry.getValue(),
-                        resource)))
-                .min(Comparator.comparingDouble(entry -> calculateDistance(entry.getValue(),
-                        findNearestTileOfResource(map, entry.getValue(), resource))))
+        return map.getCreeks().entrySet().stream()
+                .filter(entry -> Objects.nonNull(findNearestTileOfResource(map, entry.getValue(), resource)))
+                .min(Comparator.comparingDouble(entry -> calculateDistance(entry.getValue(), findNearestTileOfResource(map, entry.getValue(), resource))))
                 .map(Map.Entry::getKey)
                 .orElse("");
     }
