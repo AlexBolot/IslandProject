@@ -66,8 +66,14 @@ public class PathFinder {
                 .filter(biome -> Arrays.asList(biome.getResources()).contains(resource))
                 .collect(Collectors.toList());
 
-        return acceptableBiomes.stream().map(biome -> findNearestTileOfBiome(map, coordinates, biome)).filter(Objects::nonNull).min(
-                Comparator.comparingDouble(tileCoordinates -> calculateDistance(tileCoordinates, coordinates))).orElse(null);
+        Coordinates coordinates1 = acceptableBiomes.stream()
+                                                   .map(biome -> findNearestTileOfBiome(map, coordinates, biome))
+                                                   .filter(Objects::nonNull)
+                                                   .min(Comparator.comparingDouble(tileCoordinates -> calculateDistance(tileCoordinates,
+                                                                                                                        coordinates)))
+                                                   .orElse(null);
+
+        return coordinates1;
     }
 
     /**

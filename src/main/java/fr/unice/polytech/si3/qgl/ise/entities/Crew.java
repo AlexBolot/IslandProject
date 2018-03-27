@@ -5,9 +5,9 @@ import fr.unice.polytech.si3.qgl.ise.RawContract;
 import fr.unice.polytech.si3.qgl.ise.actions.Action;
 import fr.unice.polytech.si3.qgl.ise.actions.CrewAction;
 import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
-import fr.unice.polytech.si3.qgl.ise.actions.crew.ExploitTile;
 import fr.unice.polytech.si3.qgl.ise.actions.crew.Land;
 import fr.unice.polytech.si3.qgl.ise.actions.crew.Move_to;
+import fr.unice.polytech.si3.qgl.ise.actions.loop.MoveExploitLoopAction;
 import fr.unice.polytech.si3.qgl.ise.enums.Abundance;
 import fr.unice.polytech.si3.qgl.ise.enums.Exploitability;
 import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
@@ -19,42 +19,45 @@ import scala.Tuple2;
 
 import java.util.*;
 
-public class Crew {
+public class Crew
+{
     private static final int movementUnit = 1;
 
     private JsonFactory json;
 
     private Action lastAction;
 
-    private boolean isLanded;
-    private String idCreek;
-    private List<RawContract> rawContracts;
-    private List<CraftedContract> craftedContracts;
-    private Integer crewSize;
+    private boolean                                                 isLanded;
+    private String                                                  idCreek;
+    private List<RawContract>                                       rawContracts;
+    private List<CraftedContract>                                   craftedContracts;
+    private Integer                                                 crewSize;
     private HashMap<RawResource, Tuple2<Abundance, Exploitability>> lastExplore;
-    private ArrayList<Action> steps;
-    private EnumMap<RawResource, Integer> stock;
+    private ArrayList<Action>                                       steps;
+    private EnumMap<RawResource, Integer>                           stock;
 
-    private IslandMap map;
+    private IslandMap   map;
     private Coordinates coords;
     private RawResource currentResource;
 
     /**
-     * While the coord is an hypothesis and we didn't have a situation that can makes us sure of where we are
+     While the coord is an hypothesis and we didn't have a situation that can makes us sure of where we are
      */
     private boolean knowExactPosition;
 
     /**
-     * Objective where we want the crew to go.
+     Objective where we want the crew to go.
      */
     private Coordinates objective;
 
-    public Crew(IslandMap map, int crewSize, List<RawContract> rawContracts, List<CraftedContract> craftedContracts) {
+    public Crew (IslandMap map, int crewSize, List<RawContract> rawContracts, List<CraftedContract> craftedContracts)
+    {
         this.map = map;
         this.rawContracts = rawContracts;
         this.craftedContracts = craftedContracts;
-        knowExactPosition = false;
+        this.knowExactPosition = false;
         this.crewSize = crewSize;
+        this.stock = new EnumMap<>(RawResource.class);
 
         Optional<RawContract> bestContract = choseBestRawContract();
         bestContract.ifPresent(rawContract -> currentResource = rawContract.getResource());
@@ -69,17 +72,17 @@ public class Crew {
 
     private List<RawContract> getRawContractsLeft() {
         List<RawContract> contracts = new ArrayList<>();
-        for (RawContract contract : rawContracts) {
-            if (stock.get(contract.getResource()) > contract.getQuantity())
-                contracts.add(contract);
+        for (RawContract contract : rawContracts)
+        {
+            if (!stock.containsKey(contract.getResource()) || stock.get(contract.getResource()) < contract.getQuantity()) contracts.add(contract);
         }
         return contracts;
     }
 
     /**
-     * Chose the contract with the less ressource to collect
-     *
-     * @return the contract
+     Chose the contract with the less ressource to collect
+
+     @return the contract
      */
     private Optional<RawContract> choseBestRawContract() {
         if (rawContracts.size() == 0)
@@ -91,7 +94,7 @@ public class Crew {
         steps = new ArrayList<>();
         steps.add(new Land(this, idCreek, crewSize));
         steps.add(new Move_to(this, objective));
-        steps.add(new ExploitTile(this, currentResource));
+        steps.add(new MoveExploitLoopAction(this));
         steps.add(new StopAction());
     }
 
@@ -113,56 +116,58 @@ public class Crew {
         return new StopAction().apply();
     }
 
-    public void acknowledgeResults(String results) {
-        if (lastAction instanceof CrewAction) {
+    public void acknowledgeResults (String results)
+    {
+        if (lastAction instanceof CrewAction)
+        {
             ((CrewAction) lastAction).acknowledgeResults(this, results);
         }
         //else would be only for stop action <=> do nothing
     }
 
-    public void addToStock(RawResource resource, int amount) {
+    public void addToStock (RawResource resource, int amount)
+    {
         if (stock.containsKey(resource)) amount += stock.get(resource);
         stock.put(resource, amount);
     }
 
-    public IslandMap getMap() {
+    public IslandMap getMap ()
+    {
         return map;
     }
 
-    public boolean isLanded() {
+    public boolean isLanded ()
+    {
         return isLanded;
     }
 
-    public Coordinates getCoords() {
+    public Coordinates getCoords ()
+    {
         return coords;
     }
 
-    public void setCoords(Coordinates coords) {
+    public void setCoords (Coordinates coords)
+    {
         this.coords = coords;
     }
 
-    /*public void setLastExplore(HashMap<RawResource, Tuple2<Abundance, Exploitability>> resources) {
-        this.lastExplore = resources;
-        map.getTile(coords).setResourcesStats(resources);
-    }
-
-    public HashMap<RawResource, Tuple2<Abundance, Exploitability>> getLastExplore() {
-        return lastExplore;
-    }*/
-
-    public void setCurrentResource(RawResource currentResource) {
+    public void setCurrentResource (RawResource currentResource)
+    {
         this.currentResource = currentResource;
     }
 
-    public RawResource getCurrentResource() {
+    public RawResource getCurrentResource ()
+    {
         return currentResource;
     }
 
-    public void setIdCreek(String id) {
+    public void setIdCreek (String id)
+    {
         this.idCreek = id;
     }
 
-    public void setCrewSize(int size) {
+    public void setCrewSize (int size)
+    {
         this.crewSize = size;
     }
 }

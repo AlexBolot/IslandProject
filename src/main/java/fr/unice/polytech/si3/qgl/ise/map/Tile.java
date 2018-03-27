@@ -43,9 +43,7 @@ public class Tile {
     }
 
     public List<Biome> getPossibleBiomes() {
-        List<Biome> list = new ArrayList<>();
-        list.addAll(biomesPercentage.keySet());
-        return list;
+        return new ArrayList<>(biomesPercentage.keySet());
     }
 
     public Map<Biome, Double> getBiomesPercentage() {
