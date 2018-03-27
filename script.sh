@@ -24,18 +24,22 @@ CONTRACTS[7]="15000 7 49FCBBF35EDDC6EA WOOD 5000 QUARTZ 20 LEATHER 50"
 CONTRACTS[8]="20000 3 FE25C1A672968594 WOOD 7000 QUARTZ 20 FLOWER 5 RUM 5"
 CONTRACTS[9]="20000 12 AB3DB02B0F1D78C6 WOOD 4000 QUARTZ 20 FUR 1000 RUM 5"
 
+ORIENTATIONS[0]="1 1 EAST"
+ORIENTATIONS[1]="1 1 SOUTH"
+ORIENTATIONS[2]="1 159 EAST"
+ORIENTATIONS[3]="1 159 NORTH"
+ORIENTATIONS[4]="159 1 SOUTH"
+ORIENTATIONS[5]="159 1 WEST"
+ORIENTATIONS[6]="159 159 NORTH"
+ORIENTATIONS[7]="159 159 WEST"
+
 index=0
 
 for f in maps/*.json; do
-	testMap $f '1' '1' 'SOUTH' ${CONTRACTS[index]};
-	testMap $f '1' '1' 'EAST' ${CONTRACTS[index]};
-	testMap $f '159' '159' 'WEST' ${CONTRACTS[index]};
-	testMap $f '159' '159' 'NORTH' ${CONTRACTS[index]};
-	testMap $f '1' '159' 'EAST' ${CONTRACTS[index]};
-	testMap $f '1' '159' 'NORTH' ${CONTRACTS[index]};
-	testMap $f '159' '1' 'SOUTH' ${CONTRACTS[index]};
-	testMap $f '159' '1' 'WEST' ${CONTRACTS[index]};
-	((index++))
+    for ((i=0; i < ${#ORIENTATIONS[*]}; i++)); do
+        testMap $f ${ORIENTATIONS[i]} ${CONTRACTS[index]};
+    done
+    ((index++))
 done
 
 respath=scriptResults/results.log
