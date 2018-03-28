@@ -1,13 +1,11 @@
 package fr.unice.polytech.si3.qgl.ise.entities;
 
-import eu.ace_design.island.arena.utils.Contract;
 import fr.unice.polytech.si3.qgl.ise.CraftedContract;
 import fr.unice.polytech.si3.qgl.ise.RawContract;
 import fr.unice.polytech.si3.qgl.ise.actions.Action;
 import fr.unice.polytech.si3.qgl.ise.actions.CrewAction;
 import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
 import fr.unice.polytech.si3.qgl.ise.actions.crew.Land;
-import fr.unice.polytech.si3.qgl.ise.actions.crew.Move_to;
 import fr.unice.polytech.si3.qgl.ise.actions.loop.MoveExploitLoopAction;
 import fr.unice.polytech.si3.qgl.ise.enums.Abundance;
 import fr.unice.polytech.si3.qgl.ise.enums.Exploitability;
@@ -90,7 +88,7 @@ public class Crew
     private Optional<RawContract> choseBestRawContract() {
         if (rawContracts.size() == 0)
             return Optional.empty();
-        return getRawContractsLeft().stream().min(Comparator.comparingInt(RawContract::getQuantity));
+        return getRawContractsLeft().stream().max(Comparator.comparingInt(RawContract::getQuantity));
     }
 
     private void initActions() {

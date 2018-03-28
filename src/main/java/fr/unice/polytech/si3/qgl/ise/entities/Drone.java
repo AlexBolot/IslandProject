@@ -118,6 +118,7 @@ public class Drone {
                     tileOfLayer.addBiomesPercentage(toAdd);
                 }
                 ++numLayer;
+                break;
             }
 
             Tile currentTile = map.getTile(coords);

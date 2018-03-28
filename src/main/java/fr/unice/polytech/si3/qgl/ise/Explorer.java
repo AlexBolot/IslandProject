@@ -5,7 +5,6 @@ import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Crew;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
-import fr.unice.polytech.si3.qgl.ise.map.PathFinder;
 import fr.unice.polytech.si3.qgl.ise.parsing.ContractParser;
 import fr.unice.polytech.si3.qgl.ise.parsing.Echo;
 import fr.unice.polytech.si3.qgl.ise.parsing.Scan;
@@ -50,26 +49,31 @@ public class Explorer implements IExplorerRaid {
             if (remainingBudget > 1000) {
                 String decision;
 
-                if (drone.isFlying()) {
+                if (drone.isFlying())
+                {
                     decision = drone.takeDecision();
                     logger.info("Decision :\t" + decision);
                     if (!decision.isEmpty()) return decision;
                 }
 
                 if (crew == null) crew = new Crew(map,
-                        contractParser.getMen(),
-                        contractParser.getRawContracts(),
-                        contractParser.getCraftedContracts());
+                                                  contractParser.getMen(),
+                                                  contractParser.getRawContracts(),
+                                                  contractParser.getCraftedContracts());
 
                 decision = crew.takeDecision();
                 logger.info("Crew :\t\t" + decision);
 
                 return decision.isEmpty() ? new StopAction().apply() : decision;
-            } else {
+            }
+            else
+            {
                 logger.info("No more budget!");
                 return new StopAction(drone).apply();
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.info(e.getMessage());
             return new StopAction(drone).apply();
         }
@@ -84,8 +88,10 @@ public class Explorer implements IExplorerRaid {
 
             remainingBudget -= data.getInt("cost");
 
-            if (drone.isFlying()) {
-                switch (drone.getLastAction()) {
+            if (drone.isFlying())
+            {
+                switch (drone.getLastAction())
+                {
                     case Scan:
                         drone.acknowledgeScan(new Scan(data.toString()));
                         break;
@@ -93,38 +99,28 @@ public class Explorer implements IExplorerRaid {
                         drone.acknowledgeEcho(new Echo(data.toString()));
                         break;
                 }
-            } else {
+            }
+            else
+            {
                 crew.acknowledgeResults(results);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.info(e.getMessage());
         }
     }
 
     @Override
     public String deliverFinalReport() {
-        StringBuilder str = new StringBuilder();
+        StringBuilder str2 = new StringBuilder();
 
-        str.append("CREEKS = ");
-        map.getCreeks().forEach((key, value) -> str.append(key).append(", "));
-
-        str.append(System.getProperty("line.separator"));
-
-        str.append("SITE = ");
-        if (map.getEmergencySite() != null) str.append(map.getEmergencySite()._1);
-        else str.append("NOT FOUND");
-
-        str.append(System.getProperty("line.separator"));
-
-        if (map.getEmergencySite() != null)
-            str.append("Nearest creek to emergency site : ").append(PathFinder.findNearestCreek(map.getCreeks(),
-                    map.getEmergencySite()._2));
-        else str.append("Emergency site not found");
+        crew.getStock().forEach((key, value) -> str2.append(key).append(" - ").append(value).append("\n"));
 
         logger.info("Report:");
-        logger.info(str.toString());
+        logger.info(str2.toString());
         logger.info("Remaining points : " + remainingBudget);
 
-        return "At least we didn't crash... Right?";
+        return str2.toString();
     }
 }
