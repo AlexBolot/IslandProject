@@ -46,7 +46,7 @@ public class Explorer implements IExplorerRaid {
     @Override
     public String takeDecision() {
         try {
-            if (remainingBudget > 1000) {
+            if (remainingBudget > 150) {
                 String decision;
 
                 if (drone.isFlying())
