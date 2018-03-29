@@ -41,3 +41,10 @@
  - Points Négatifs
     - _Dernière tâche "oubliée" faite trop tardivement_
     - _Pas de valeur ajoutée_
+    
+### Semaine 13
+ - Points Positifs
+    - _Ajout de valeur client sur les maps précédentes_
+    - _Meilleure organisation : livraison prête à J-1_
+ - Points Négatifs
+    - _Mauvais choix du contrat à remplir (trop ambitieux)_
