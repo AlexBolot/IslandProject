@@ -3,11 +3,11 @@
 
 ## État courant du projet
 
-  - Ticketing: _[3]_
+  - Ticketing: _[4]_
   - Versioning: _[4]_
   - Qualité Objet: _[4]_
   - Tests: _[3]_
-  - Confiance dans le code: _[3]_
+  - Confiance dans le code: _[5]_
 
 ## Semainier
 
