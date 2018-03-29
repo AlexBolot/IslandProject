@@ -22,7 +22,7 @@ public class Land extends CrewAction
     public String apply ()
     {
         this.finish();
-        return new JsonFactory().createJsonString("land", "creek", idCreek, "people", (crewSize - 1) + "");
+        return new JsonFactory().createJsonString("land", "creek", idCreek, "people", 1 + "");
     }
 
     @Override
