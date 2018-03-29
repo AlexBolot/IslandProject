@@ -3,8 +3,8 @@ package fr.unice.polytech.si3.qgl.ise;
 import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
 
 public class RawContract {
-    Integer quantity;
-    RawResource resource;
+    private Integer quantity;
+    private RawResource resource;
 
     public RawContract(RawResource resource, Integer quantity) {
         this.quantity = quantity;
@@ -17,5 +17,10 @@ public class RawContract {
 
     public RawResource getResource() {
         return resource;
+    }
+
+    @Override
+    public String toString() {
+        return quantity + " " + resource;
     }
 }

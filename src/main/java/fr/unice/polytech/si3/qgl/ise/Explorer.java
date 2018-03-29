@@ -22,9 +22,6 @@ public class Explorer implements IExplorerRaid {
     private Crew crew;
     private IslandMap map;
     private int remainingBudget;
-    private List<RawContract> rawConrtacts;
-    private List<CraftedContract> craftedContracts;
-    private int crewNumber;
     private ContractParser contractParser;
 
     @Override
@@ -36,7 +33,6 @@ public class Explorer implements IExplorerRaid {
 
         String heading = contractParser.getHeading();
         remainingBudget = contractParser.getBudget();
-        crewNumber = contractParser.getMen();
 
         NSEW orientation = NSEW.getFromValue(heading);
         map = new IslandMap();
@@ -115,12 +111,34 @@ public class Explorer implements IExplorerRaid {
     public String deliverFinalReport() {
         StringBuilder str2 = new StringBuilder();
 
+        str2.append("Report:").append("\n");
+
+        str2.append("Creeks found: ").append(drone.getMap().getCreeks().size()).append("\n");
+        str2.append("Inventory :").append("\n");
         crew.getStock().forEach((key, value) -> str2.append(key).append(" - ").append(value).append("\n"));
 
-        logger.info("Report:");
-        logger.info(str2.toString());
-        logger.info("Remaining points : " + remainingBudget);
 
-        return str2.toString();
+        crew.getRawContracts().forEach(rawContract -> {
+            if ((crew.getStock().containsKey(rawContract.getResource())) && crew.getStock().get(rawContract.getResource()) >= rawContract.getQuantity())
+                str2.append("Raw contract completed : ").append(rawContract).append("\n");
+            else str2.append("Raw contract failed : ").append(rawContract).append("\n");
+        });
+
+
+        /*rawContracts.forEach(rawContract -> {
+            if (crew.getStock().get(rawContract.getResource()) >= rawContract.getQuantity())  str2.append("Raw contract completed : ").append(rawContract);
+            else str2.append("Raw contract failed : ").append(rawContract);
+        });
+
+        craftedContracts.forEach(craftedContract -> {
+            if (crew.getStock().get(craftedContract.getResource()) >= craftedContract.getQuantity())  str2.append("Raw contract completed : ").append(craftedContract);
+            else str2.append("Raw contract failed : ").append(craftedContract);
+        });*/
+
+        str2.append("Remaining points : ").append(remainingBudget).append("\n");
+
+        logger.info(str2.toString());
+
+        return "Did everyone see that? Because we will not be doing it again!";
     }
 }
