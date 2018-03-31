@@ -19,7 +19,6 @@ public class Transform extends CrewAction {
 
     @Override
     public String apply() {
-        ;
         return new JsonFactory().createJsonString("transform", resourceWithQuantity);
     }
 
