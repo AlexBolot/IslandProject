@@ -17,9 +17,9 @@ public class Explore extends CrewAction {
     }
 
     @Override
-    public String acknowledgeResults(Crew crewToUpdate, String result) {
+    public String acknowledgeResults( String result) {
         ExploreParsing exploreParsing = new ExploreParsing(result);
-        crewToUpdate.getMap().getTile(crewToUpdate.getCoords()).setResourcesStats(exploreParsing.getResources());
+        getCrewToUpdate().getMap().getTile(getCrewToUpdate().getCoords()).setResourcesStats(exploreParsing.getResources());
         return "";
     }
 }
