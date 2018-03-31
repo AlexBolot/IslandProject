@@ -8,12 +8,10 @@ public class Land extends CrewAction {
 
 
     private String idCreek;
-    private Integer crewSize;
 
-    public Land(Crew crewToUpdate, String idCreek, Integer crewSize) {
+    public Land(Crew crewToUpdate, String idCreek) {
         super(crewToUpdate);
         this.idCreek = idCreek;
-        this.crewSize = crewSize;
     }
 
     @Override

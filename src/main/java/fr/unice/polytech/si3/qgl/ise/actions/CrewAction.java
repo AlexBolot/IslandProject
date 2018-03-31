@@ -10,7 +10,7 @@ public abstract class CrewAction extends Action {
         this.crewToUpdate = crewToUpdate;
     }
 
-    public Crew getCrewToUpdate() {
+    protected Crew getCrewToUpdate() {
         return crewToUpdate;
     }
 

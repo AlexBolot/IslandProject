@@ -7,7 +7,7 @@ import fr.unice.polytech.si3.qgl.ise.parsing.ExploreParsing;
 
 public class Explore extends CrewAction {
 
-    public Explore(Crew crewToUpdate) {
+    Explore(Crew crewToUpdate) {
         super(crewToUpdate);
     }
 
@@ -17,7 +17,7 @@ public class Explore extends CrewAction {
     }
 
     @Override
-    public String acknowledgeResults( String result) {
+    public String acknowledgeResults(String result) {
         ExploreParsing exploreParsing = new ExploreParsing(result);
         getCrewToUpdate().getMap().getTile(getCrewToUpdate().getCoords()).setResourcesStats(exploreParsing.getResources());
         return "";

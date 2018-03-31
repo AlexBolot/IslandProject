@@ -21,14 +21,6 @@ public enum CraftedResource {
         this.recipe = recipe;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getRecipe() {
-        return recipe;
-    }
-
     public static Map<RawResource, Double> getValueOf(String id) {
         Map<RawResource, Double> returnData = new HashMap<>();
         switch (id) {
@@ -59,5 +51,13 @@ public enum CraftedResource {
             if (c.name().equals(id))
                 return true;
         return false;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getRecipe() {
+        return recipe;
     }
 }

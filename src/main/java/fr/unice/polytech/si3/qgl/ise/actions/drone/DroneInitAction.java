@@ -5,7 +5,6 @@ import fr.unice.polytech.si3.qgl.ise.actions.simple.EchoAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 
 import static fr.unice.polytech.si3.qgl.ise.actions.drone.DroneInitAction.Step.*;
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action.Stop;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 
 public class DroneInitAction extends DroneAction {

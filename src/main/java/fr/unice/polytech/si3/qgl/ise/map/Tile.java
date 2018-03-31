@@ -13,7 +13,7 @@ public class Tile {
     private Map<RawResource, Tuple2<Abundance, Exploitability>> resourcesStats;
     private boolean isExplored = false;
 
-    public Tile() {
+    Tile() {
         biomesPercentage = new HashMap<>();
         resourcesStats = new EnumMap<>(RawResource.class);
     }
@@ -69,11 +69,11 @@ public class Tile {
         this.resourcesStats = resourcesStats;
     }
 
-    public void setExplored(boolean explored) {
-        isExplored = explored;
-    }
-
     public boolean isExplored() {
         return isExplored;
+    }
+
+    public void setExplored(boolean explored) {
+        isExplored = explored;
     }
 }

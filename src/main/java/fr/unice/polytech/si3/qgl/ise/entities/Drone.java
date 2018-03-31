@@ -32,6 +32,7 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 
 public class Drone {
     private static final int movementUnit = 3;
+    private static Logger logger = getLogger(Drone.class);
     private NSEW orientation;
     private ZQSD lastTurn;
     private ZQSD lastEcho;
@@ -43,8 +44,6 @@ public class Drone {
     private Coordinates coords;
     private ArrayList<Action> steps;
     private Margin margins;
-
-    private static Logger logger = getLogger(Drone.class);
 
     public Drone(IslandMap map, NSEW orientation) {
         this.map = map;

@@ -10,7 +10,6 @@ import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 import scala.Tuple2;
 
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action.Heading;
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action.Stop;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 

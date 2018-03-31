@@ -7,22 +7,15 @@ import fr.unice.polytech.si3.qgl.ise.actions.CrewAction;
 import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
 import fr.unice.polytech.si3.qgl.ise.actions.crew.Land;
 import fr.unice.polytech.si3.qgl.ise.actions.loop.MoveExploitLoopAction;
-import fr.unice.polytech.si3.qgl.ise.enums.Abundance;
 import fr.unice.polytech.si3.qgl.ise.enums.CraftedResource;
-import fr.unice.polytech.si3.qgl.ise.enums.Exploitability;
 import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
-import fr.unice.polytech.si3.qgl.ise.factories.JsonFactory;
 import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
 import fr.unice.polytech.si3.qgl.ise.map.PathFinder;
-import scala.Tuple2;
 
 import java.util.*;
 
 public class Crew {
-    private static final int movementUnit = 1;
-
-    private JsonFactory json;
 
     private Action lastAction;
 
@@ -30,8 +23,6 @@ public class Crew {
     private String idCreek;
     private List<RawContract> rawContracts;
     private List<CraftedContract> craftedContracts;
-    private Integer crewSize;
-    private Map<RawResource, Tuple2<Abundance, Exploitability>> lastExplore;
     private List<Action> steps;
     private Map<RawResource, Integer> stock;
     private Map<CraftedResource, Integer> craftedStock;
@@ -41,22 +32,10 @@ public class Crew {
     private RawResource currentResource;
     private int currentQuantity;
 
-    /**
-     * While the coord is an hypothesis and we didn't have a situation that can makes us sure of where we are
-     */
-    private boolean knowExactPosition;
-
-    /**
-     * Objective where we want the crew to go.
-     */
-    private Coordinates objective;
-
-    public Crew(IslandMap map, int crewSize, List<RawContract> rawContracts, List<CraftedContract> craftedContracts) {
+    public Crew(IslandMap map, List<RawContract> rawContracts, List<CraftedContract> craftedContracts) {
         this.map = map;
         this.rawContracts = rawContracts;
         this.craftedContracts = craftedContracts;
-        this.knowExactPosition = false;
-        this.crewSize = crewSize;
         this.stock = new EnumMap<>(RawResource.class);
         this.craftedStock = new EnumMap<>(CraftedResource.class);
 
@@ -66,7 +45,6 @@ public class Crew {
 
         idCreek = PathFinder.findNearestCreekOfResource(map, currentResource);
         coords = map.getCreeks().get(idCreek);
-        objective = PathFinder.findNearestTileOfResource(map, coords, currentResource);
 
         initActions();
     }
@@ -94,7 +72,7 @@ public class Crew {
 
     private void initActions() {
         steps = new ArrayList<>();
-        steps.add(new Land(this, idCreek, crewSize));
+        steps.add(new Land(this, idCreek));
         //steps.add(new Move_to(this, objective));
         steps.add(new MoveExploitLoopAction(this));
         steps.add(new StopAction());
@@ -139,10 +117,6 @@ public class Crew {
         return map;
     }
 
-    public boolean isLanded() {
-        return isLanded;
-    }
-
     public Coordinates getCoords() {
         return coords;
     }
@@ -151,20 +125,12 @@ public class Crew {
         this.coords = coords;
     }
 
-    public void setCurrentResource(RawResource currentResource) {
-        this.currentResource = currentResource;
-    }
-
     public RawResource getCurrentResource() {
         return currentResource;
     }
 
     public void setIdCreek(String id) {
         this.idCreek = id;
-    }
-
-    public void setCrewSize(int size) {
-        this.crewSize = size;
     }
 
     public Map<RawResource, Integer> getStock() {

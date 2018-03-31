@@ -34,7 +34,7 @@ public class Move_toTest {
         craftedContracts = new ArrayList<>();
 
         rawContracts.add(new RawContract(RawResource.WOOD, 500));
-        crew = new Crew(map, 10, rawContracts, craftedContracts);
+        crew = new Crew(map, rawContracts, craftedContracts);
         crew.setIdCreek("idDepart");
         crew.setCoords(new Coordinates(0, 0));
     }

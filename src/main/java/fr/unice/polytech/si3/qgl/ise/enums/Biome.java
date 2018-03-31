@@ -3,10 +3,9 @@ package fr.unice.polytech.si3.qgl.ise.enums;
 import static fr.unice.polytech.si3.qgl.ise.enums.RawResource.*;
 
 /**
- Enum describing every biome and its unique id
+ * Enum describing every biome and its unique id
  */
-public enum Biome
-{
+public enum Biome {
     OCEAN("OCEAN", FISH),
     LAKE("LAKE", FISH),
     BEACH("BEACH", QUARTZ),
@@ -30,24 +29,21 @@ public enum Biome
     SUB_TROPICAL_DESERT("SUB_TROPICAL_DESERT", QUARTZ, ORE);
 
     /**
-     Unique id of a biome
+     * Unique id of a biome
      */
-    private String        id;
+    private String id;
     private RawResource[] resources;
 
-    Biome (String id, RawResource... resources)
-    {
+    Biome(String id, RawResource... resources) {
         this.id = id;
         this.resources = resources;
     }
 
-    public String getId ()
-    {
+    public String getId() {
         return id;
     }
 
-    public RawResource[] getResources ()
-    {
+    public RawResource[] getResources() {
         return resources;
     }
 }

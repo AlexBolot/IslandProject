@@ -14,7 +14,7 @@ public class ScanLineLoopAction extends Action {
     private Drone drone;
     private ArrayList<Action> actions;
 
-    public ScanLineLoopAction(Drone drone) {
+    ScanLineLoopAction(Drone drone) {
         actions = new ArrayList<>(Arrays.asList(new ScanLineAction(drone), new ChangeLineAction(drone)));
         this.drone = drone;
     }

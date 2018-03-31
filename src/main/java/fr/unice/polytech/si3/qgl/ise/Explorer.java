@@ -11,8 +11,6 @@ import fr.unice.polytech.si3.qgl.ise.parsing.Scan;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 
-import java.util.List;
-
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
 import static org.apache.logging.log4j.LogManager.getLogger;
 
@@ -45,31 +43,25 @@ public class Explorer implements IExplorerRaid {
             if (remainingBudget > 150) {
                 String decision;
 
-                if (drone.isFlying())
-                {
+                if (drone.isFlying()) {
                     decision = drone.takeDecision();
                     logger.info("Decision :\t" + decision);
                     if (!decision.isEmpty()) return decision;
                 }
 
                 if (crew == null) crew = new Crew(map,
-                                                  contractParser.getMen(),
-                                                  contractParser.getRawContracts(),
-                                                  contractParser.getCraftedContracts());
+                        contractParser.getRawContracts(),
+                        contractParser.getCraftedContracts());
 
                 decision = crew.takeDecision();
                 logger.info("Crew :\t\t" + decision);
 
                 return decision.isEmpty() ? new StopAction().apply() : decision;
-            }
-            else
-            {
+            } else {
                 logger.info("No more budget!");
                 return new StopAction(drone).apply();
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             logger.info(e.getMessage());
             return new StopAction(drone).apply();
         }
@@ -84,10 +76,8 @@ public class Explorer implements IExplorerRaid {
 
             remainingBudget -= data.getInt("cost");
 
-            if (drone.isFlying())
-            {
-                switch (drone.getLastAction())
-                {
+            if (drone.isFlying()) {
+                switch (drone.getLastAction()) {
                     case Scan:
                         drone.acknowledgeScan(new Scan(data.toString()));
                         break;
@@ -95,14 +85,10 @@ public class Explorer implements IExplorerRaid {
                         drone.acknowledgeEcho(new Echo(data.toString()));
                         break;
                 }
-            }
-            else
-            {
+            } else {
                 crew.acknowledgeResults(results);
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             logger.info(e.getMessage());
         }
     }

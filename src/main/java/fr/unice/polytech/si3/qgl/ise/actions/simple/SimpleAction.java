@@ -6,7 +6,7 @@ import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 public abstract class SimpleAction extends Action {
     private Drone drone;
 
-    protected SimpleAction(Drone drone) {
+    SimpleAction(Drone drone) {
         this.drone = drone;
     }
 

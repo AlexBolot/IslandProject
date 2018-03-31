@@ -10,7 +10,7 @@ public class LTurnAction extends DroneAction {
     private Step currentStep;
     private HeadingAction headingAction;
 
-    public LTurnAction(Drone drone) {
+    LTurnAction(Drone drone) {
         super(drone);
         currentStep = Turn1;
         headingAction = new HeadingAction(drone);

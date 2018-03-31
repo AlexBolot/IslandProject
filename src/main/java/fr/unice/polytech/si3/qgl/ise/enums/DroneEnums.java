@@ -31,8 +31,6 @@ public class DroneEnums {
         NORTH("N"),
         SOUTH("S");
 
-        private String value;
-
         static {
             NORTH.toTheRight = EAST;
             EAST.toTheRight = SOUTH;
@@ -45,13 +43,13 @@ public class DroneEnums {
             EAST.toTheLeft = NORTH;
         }
 
+        private String value;
         private NSEW toTheLeft;
+        private NSEW toTheRight;
 
         NSEW(String value) {
             this.value = value;
         }
-
-        private NSEW toTheRight;
 
         public static NSEW getFromValue(String value) {
             return Arrays.stream(NSEW.values())
@@ -68,14 +66,16 @@ public class DroneEnums {
             return toTheRight;
         }
 
-        public NSEW getToThe(ZQSD dir)
-        {
-            switch (dir)
-            {
-                case LEFT: return toTheLeft;
-                case RIGHT: return toTheRight;
-                case FRONT: return this;
-                case BACK: return toTheLeft.toTheLeft;
+        public NSEW getToThe(ZQSD dir) {
+            switch (dir) {
+                case LEFT:
+                    return toTheLeft;
+                case RIGHT:
+                    return toTheRight;
+                case FRONT:
+                    return this;
+                case BACK:
+                    return toTheLeft.toTheLeft;
             }
 
             throw new IllegalArgumentException("Direction does not exist");

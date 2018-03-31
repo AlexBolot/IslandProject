@@ -13,7 +13,8 @@ import java.util.List;
 import static fr.unice.polytech.si3.qgl.ise.actions.drone.ScanLineAction.Step.*;
 import static fr.unice.polytech.si3.qgl.ise.enums.Biome.OCEAN;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle;
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.*;
+import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.BORDER;
+import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 
 public class ScanLineAction extends DroneAction {
