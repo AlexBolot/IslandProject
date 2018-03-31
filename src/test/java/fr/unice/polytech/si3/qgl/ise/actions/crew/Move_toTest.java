@@ -8,7 +8,6 @@ import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
 import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -16,7 +15,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-@Ignore
 public class Move_toTest {
 
     Crew crew;
