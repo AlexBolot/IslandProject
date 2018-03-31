@@ -27,7 +27,9 @@ public class ScanLineLoopAction extends Action {
             if (!action.isFinished()) {
                 res = action.apply();
 
-                if (!res.isEmpty()) return res;
+                if (!res.isEmpty()) {
+                    return res;
+                }
             }
         }
 
