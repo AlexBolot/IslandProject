@@ -16,6 +16,6 @@ public abstract class CrewAction extends Action {
 
     public abstract String apply();
 
-    public abstract String acknowledgeResults(Crew crewToUpdate, String result);
+    public abstract String acknowledgeResults(String result);
 
 }

@@ -2,6 +2,8 @@ package fr.unice.polytech.si3.qgl.ise.factories;
 
 import org.json.JSONObject;
 
+import java.util.Map;
+
 public class JsonFactory {
 
     /**
@@ -30,6 +32,26 @@ public class JsonFactory {
 
             jsonReturn.put("parameters", params);
         }
+
+        return jsonReturn.toString();
+    }
+
+    public String createJsonString(String functionName, Map<?, ?> parameterAndValue) {
+
+        if (parameterAndValue == null)
+            throw new IllegalArgumentException("The parameters name and value are null");
+
+        JSONObject jsonReturn = new JSONObject();
+        jsonReturn.put("action", functionName);
+
+        JSONObject params = new JSONObject();
+
+        for (Map.Entry map : parameterAndValue.entrySet()) {
+
+            params.put(map.getKey().toString(), map.getValue().toString());
+        }
+
+        jsonReturn.put("parameters", params);
 
         return jsonReturn.toString();
     }

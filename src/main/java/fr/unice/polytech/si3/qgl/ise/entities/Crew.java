@@ -8,6 +8,7 @@ import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
 import fr.unice.polytech.si3.qgl.ise.actions.crew.Land;
 import fr.unice.polytech.si3.qgl.ise.actions.loop.MoveExploitLoopAction;
 import fr.unice.polytech.si3.qgl.ise.enums.Abundance;
+import fr.unice.polytech.si3.qgl.ise.enums.CraftedResource;
 import fr.unice.polytech.si3.qgl.ise.enums.Exploitability;
 import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
 import fr.unice.polytech.si3.qgl.ise.factories.JsonFactory;
@@ -33,6 +34,7 @@ public class Crew {
     private Map<RawResource, Tuple2<Abundance, Exploitability>> lastExplore;
     private List<Action> steps;
     private Map<RawResource, Integer> stock;
+    private Map<CraftedResource, Integer> craftedStock;
 
     private IslandMap map;
     private Coordinates coords;
@@ -56,6 +58,7 @@ public class Crew {
         this.knowExactPosition = false;
         this.crewSize = crewSize;
         this.stock = new EnumMap<>(RawResource.class);
+        this.craftedStock = new EnumMap<>(CraftedResource.class);
 
         Optional<RawContract> bestContract = choseBestRawContract();
         bestContract.ifPresent(rawContract -> currentResource = rawContract.getResource());
@@ -117,7 +120,7 @@ public class Crew {
 
     public void acknowledgeResults(String results) {
         if (lastAction instanceof CrewAction) {
-            ((CrewAction) lastAction).acknowledgeResults(this, results);
+            ((CrewAction) lastAction).acknowledgeResults(results);
         }
         //else would be only for stop action <=> do nothing
     }
@@ -125,6 +128,11 @@ public class Crew {
     public void addToStock(RawResource resource, int amount) {
         if (stock.containsKey(resource)) amount += stock.get(resource);
         stock.put(resource, amount);
+    }
+
+    public void addToCraftedStock(CraftedResource resource, int amount) {
+        if (craftedStock.containsKey(resource)) amount += craftedStock.get(resource);
+        craftedStock.put(resource, amount);
     }
 
     public IslandMap getMap() {
@@ -173,6 +181,10 @@ public class Crew {
 
     public List<CraftedContract> getCraftedContracts() {
         return craftedContracts;
+    }
+
+    public int getCraftedRessourceQuantity(CraftedResource resource) {
+        return craftedStock.get(resource);
     }
 }
 
