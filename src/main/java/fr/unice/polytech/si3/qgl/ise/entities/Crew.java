@@ -30,6 +30,9 @@ public class Crew {
     private IslandMap map;
     private Coordinates coords;
     private RawResource currentResource;
+    private List<RawResource> wantedResources = new ArrayList<>();
+    private List<RawContract> completedRawContracts = new ArrayList<>();
+    private List<CraftedContract> completedCraftedContracts = new ArrayList<>();
     private int currentQuantity;
 
     public Crew(IslandMap map, List<RawContract> rawContracts, List<CraftedContract> craftedContracts) {
@@ -45,6 +48,10 @@ public class Crew {
 
         idCreek = PathFinder.findNearestCreekOfResource(map, currentResource);
         coords = map.getCreeks().get(idCreek);
+
+        for (RawContract raw : rawContracts) {
+            wantedResources.add(raw.getResource());
+        }
 
         initActions();
     }
@@ -64,7 +71,7 @@ public class Crew {
      *
      * @return the contract
      */
-    private Optional<RawContract> choseBestRawContract() {
+    public Optional<RawContract> choseBestRawContract() {
         if (rawContracts.size() == 0)
             return Optional.empty();
         return getRawContractsLeft().stream().max(Comparator.comparingInt(RawContract::getQuantity));
@@ -113,6 +120,20 @@ public class Crew {
         craftedStock.put(resource, amount);
     }
 
+    public void finishRawContract(RawContract rawContract) {
+        completedRawContracts.add(rawContract);
+        for (int i = 0; i < rawContracts.size(); i++) {
+            if (rawContracts.get(i).getResource().equals(rawContract.getResource())) {
+                rawContracts.remove(i);
+                break;
+            }
+        }
+        wantedResources = new ArrayList<>();
+        for (RawContract raw : rawContracts) {
+            wantedResources.add(raw.getResource());
+        }
+    }
+
     public IslandMap getMap() {
         return map;
     }
@@ -151,6 +172,18 @@ public class Crew {
 
     public int getCraftedRessourceQuantity(CraftedResource resource) {
         return craftedStock.get(resource);
+    }
+
+    public List<RawResource> getWantedResources() {
+        return wantedResources;
+    }
+
+    public void setCurrentResource(RawResource currentResource) {
+        this.currentResource = currentResource;
+    }
+
+    public void setCurrentQuantity(int currentQuantity) {
+        this.currentQuantity = currentQuantity;
     }
 }
 
