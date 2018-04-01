@@ -23,11 +23,12 @@ public class PathFinder {
     }
 
     /**
+     * Assigns a score to a creek based on its proximity to the given resources
      *
-     * @param map
-     * @param creekId
-     * @param resources
-     * @return
+     * @param map       : the map containing the tiles
+     * @param creekId   : the creek we want to assign a score to
+     * @param resources : the resources we want to be near the creek
+     * @return a score for the creek
      */
     private static double calculateScore(IslandMap map, String creekId, List<RawResource> resources) {
         List<Biome> acceptableBiomes = new ArrayList<>();
@@ -45,14 +46,16 @@ public class PathFinder {
     }
 
     /**
+     * Searches for the best creek that is nearest to the given resources
      *
-     * @param map
-     * @param resources
-     * @return
+     * @param map       : the map containing the tiles
+     * @param resources : the resources we want to be near the best creek
+     * @return the id of the best creek, or an empty string if there is no such creek
      */
     public static String findBestCreek(IslandMap map, List<RawResource> resources) {
         return map.getCreeks().entrySet().stream()
                 .max(Comparator.comparingDouble(entry -> calculateScore(map, entry.getKey(), resources)))
+                .filter(entry -> calculateScore(map, entry.getKey(), resources) > 0)
                 .map(Map.Entry::getKey)
                 .orElse("");
     }
@@ -92,20 +95,5 @@ public class PathFinder {
                 .filter(Objects::nonNull)
                 .min(Comparator.comparingDouble(tileCoordinates -> calculateDistance(tileCoordinates, coordinates)))
                 .orElse(null);
-    }
-
-    /**
-     * Finds the nearest known creek to the given raw resource
-     *
-     * @param map      : the map containing the tiles and the creeks
-     * @param resource : the resource we want to find
-     * @return the id of the creek nearest to given resource, or an empty string if there is no such creek
-     */
-    public static String findNearestCreekOfResource(IslandMap map, RawResource resource) {
-        return map.getCreeks().entrySet().stream()
-                .filter(entry -> Objects.nonNull(findNearestTileOfResource(map, entry.getValue(), resource)))
-                .min(Comparator.comparingDouble(entry -> calculateDistance(entry.getValue(), findNearestTileOfResource(map, entry.getValue(), resource))))
-                .map(Map.Entry::getKey)
-                .orElse("");
     }
 }

@@ -43,24 +43,14 @@ public class Crew {
         bestContract.ifPresent(rawContract -> currentResource = rawContract.getResource());
         bestContract.ifPresent(rawContract -> currentQuantity = rawContract.getQuantity());
 
-        idCreek = PathFinder.findNearestCreekOfResource(map, currentResource);
-        coords = map.getCreeks().get(idCreek);
-
         for (RawContract raw : rawContracts) {
             wantedResources.add(raw.getResource());
         }
 
+        idCreek = PathFinder.findBestCreek(map, wantedResources);
+        coords = map.getCreeks().get(idCreek);
+
         initActions();
-    }
-
-
-    private List<RawContract> getRawContractsLeft() {
-        List<RawContract> contracts = new ArrayList<>();
-        for (RawContract contract : rawContracts) {
-            if (!stock.containsKey(contract.getResource()) || stock.get(contract.getResource()) < contract.getQuantity())
-                contracts.add(contract);
-        }
-        return contracts;
     }
 
     /**
@@ -71,7 +61,7 @@ public class Crew {
     public Optional<RawContract> choseBestRawContract() {
         if (rawContracts.isEmpty())
             return Optional.empty();
-        return getRawContractsLeft().stream().max(Comparator.comparingInt(RawContract::getQuantity));
+        return rawContracts.stream().max(Comparator.comparingInt(RawContract::getQuantity));
     }
 
     private void initActions() {
@@ -155,6 +145,10 @@ public class Crew {
         return stock;
     }
 
+    public Map<CraftedResource, Integer> getCraftedStock() {
+        return craftedStock;
+    }
+
     public int getCurrentQuantity() {
         return currentQuantity;
     }
@@ -181,6 +175,14 @@ public class Crew {
 
     public void setCurrentQuantity(int currentQuantity) {
         this.currentQuantity = currentQuantity;
+    }
+
+    public List<RawContract> getCompletedRawContracts() {
+        return completedRawContracts;
+    }
+
+    public List<CraftedContract> getCompletedCraftedContracts() {
+        return completedCraftedContracts;
     }
 }
 

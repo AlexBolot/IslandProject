@@ -16,6 +16,7 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 
 public class Explorer implements IExplorerRaid {
     private static final Logger logger = getLogger(Explorer.class);
+    private static final int LIMIT = 150;
     private Drone drone;
     private Crew crew;
     private IslandMap map;
@@ -50,7 +51,7 @@ public class Explorer implements IExplorerRaid {
         if (shouldStop) return new StopAction(drone).apply();
 
         try {
-            if (remainingBudget > 150) {
+            if (remainingBudget > LIMIT) {
                 String decision;
 
                 if (drone.isFlying()) {
@@ -117,10 +118,20 @@ public class Explorer implements IExplorerRaid {
         str2.append("Inventory :").append("\n");
         crew.getStock().forEach((key, value) -> str2.append(key).append(" - ").append(value).append("\n"));
 
+        crew.getCompletedRawContracts().forEach(rawContract -> {
+            str2.append("Raw contract completed : ").append(rawContract).append("\n");
+        });
+
+        crew.getCompletedCraftedContracts().forEach(craftedContract -> {
+            str2.append("Crafted contract completed : ").append(craftedContract).append("\n");
+        });
+
         crew.getRawContracts().forEach(rawContract -> {
-            if ((crew.getStock().containsKey(rawContract.getResource())) && crew.getStock().get(rawContract.getResource()) >= rawContract.getQuantity())
-                str2.append("Raw contract completed : ").append(rawContract).append("\n");
-            else str2.append("Raw contract failed : ").append(rawContract).append("\n");
+            str2.append("Raw contract failed : ").append(rawContract).append("\n");
+        });
+
+        crew.getCraftedContracts().forEach(craftedContract -> {
+            str2.append("Crafted contract failed : ").append(craftedContract).append("\n");
         });
 
         str2.append("Remaining points : ").append(remainingBudget).append("\n");

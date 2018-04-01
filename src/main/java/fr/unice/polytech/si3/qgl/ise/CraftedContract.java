@@ -33,4 +33,9 @@ public class CraftedContract {
     public Map<RawResource, Double> getRawQuantities() {
         return rawQuantities;
     }
+
+    @Override
+    public String toString() {
+        return quantity + " " + resource;
+    }
 }

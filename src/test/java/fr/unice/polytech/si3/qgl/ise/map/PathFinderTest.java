@@ -5,8 +5,7 @@ import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -75,12 +74,10 @@ public class PathFinderTest {
     }
 
     @Test
-    public void findNearestCreekOfResourceTest() {
-        assertEquals("", PathFinder.findNearestCreekOfResource(map, RawResource.FRUITS));
-        assertEquals("", PathFinder.findNearestCreekOfResource(map, RawResource.FISH));
-        assertEquals("id1", PathFinder.findNearestCreekOfResource(map, RawResource.WOOD));
-        assertEquals("id2", PathFinder.findNearestCreekOfResource(map, RawResource.FUR));
-        assertEquals("id2", PathFinder.findNearestCreekOfResource(map, RawResource.FLOWER));
-        assertEquals("id2", PathFinder.findNearestCreekOfResource(map, RawResource.ORE));
+    public void findBestCreekTest() {
+        assertEquals("", PathFinder.findBestCreek(map, new ArrayList<>(Arrays.asList(RawResource.FRUITS, RawResource.FISH))));
+        assertEquals("id1", PathFinder.findBestCreek(map, new ArrayList<>(Arrays.asList(RawResource.WOOD, RawResource.SUGAR_CANE))));
+        assertEquals("id2", PathFinder.findBestCreek(map, new ArrayList<>(Arrays.asList(RawResource.FLOWER, RawResource.ORE))));
+        assertEquals("id2", PathFinder.findBestCreek(map, new ArrayList<>(Arrays.asList(RawResource.FLOWER, RawResource.ORE, RawResource.WOOD, RawResource.FUR))));
     }
 }
