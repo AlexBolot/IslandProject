@@ -3,7 +3,7 @@ package fr.unice.polytech.si3.qgl.ise.actions.simple;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.factories.JsonFactory;
 
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action.Scan;
+import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action.SCAN;
 
 public class ScanAction extends SimpleAction {
     public ScanAction(Drone drone) {
@@ -12,7 +12,7 @@ public class ScanAction extends SimpleAction {
 
     @Override
     public String apply() {
-        getDrone().setLastAction(Scan);
+        getDrone().setLastAction(SCAN);
         return new JsonFactory().createJsonString("scan");
     }
 }

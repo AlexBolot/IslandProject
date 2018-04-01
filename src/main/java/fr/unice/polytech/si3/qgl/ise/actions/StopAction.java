@@ -3,7 +3,7 @@ package fr.unice.polytech.si3.qgl.ise.actions;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.factories.JsonFactory;
 
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action.Stop;
+import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action.STOP;
 
 public class StopAction extends Action {
     private Drone drone;
@@ -22,7 +22,7 @@ public class StopAction extends Action {
 
     @Override
     public String apply() {
-        if (drone != null) drone.setLastAction(Stop);
+        if (drone != null) drone.setLastAction(STOP);
         return new JsonFactory().createJsonString("stop");
     }
 }

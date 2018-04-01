@@ -7,7 +7,7 @@ import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
 import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 import scala.Tuple2;
 
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action.Fly;
+import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action.FLY;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.BACK;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
@@ -19,7 +19,7 @@ public class FlyAction extends SimpleAction {
 
     @Override
     public String apply() {
-        getDrone().setLastAction(Fly);
+        getDrone().setLastAction(FLY);
         //security if the drone wants to fly out of the map
         if (getDrone().getMargins().getGlobal(FRONT)._2 < 1)
             return new StopAction(getDrone()).apply();

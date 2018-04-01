@@ -7,12 +7,12 @@ import static fr.unice.polytech.si3.qgl.ise.actions.drone.LTurnAction.Step.*;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
 
 public class LTurnAction extends DroneAction {
+    private final HeadingAction headingAction;
     private Step currentStep;
-    private HeadingAction headingAction;
 
     LTurnAction(Drone drone) {
         super(drone);
-        currentStep = Turn1;
+        currentStep = TURN_1;
         headingAction = new HeadingAction(drone);
     }
 
@@ -26,17 +26,17 @@ public class LTurnAction extends DroneAction {
         Step nextStep = null;
 
         switch (currentStep) {
-            case Turn1:
+            case TURN_1:
                 res = headingAction.apply(direction);
-                nextStep = Turn2;
+                nextStep = TURN_2;
                 break;
 
-            case Turn2:
+            case TURN_2:
                 res = headingAction.apply(direction);
-                nextStep = Turn3;
+                nextStep = TURN_3;
                 break;
 
-            case Turn3:
+            case TURN_3:
                 res = headingAction.apply(ZQSD.getOpposite(direction));
                 this.finish();
                 break;
@@ -53,12 +53,12 @@ public class LTurnAction extends DroneAction {
     @Override
     public void reset() {
         super.reset();
-        currentStep = Turn1;
+        currentStep = TURN_1;
     }
 
     public enum Step {
-        Turn1,
-        Turn2,
-        Turn3
+        TURN_1,
+        TURN_2,
+        TURN_3
     }
 }

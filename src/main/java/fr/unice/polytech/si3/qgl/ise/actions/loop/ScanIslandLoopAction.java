@@ -7,10 +7,10 @@ import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
 
 public class ScanIslandLoopAction extends Action {
-    private Drone drone;
-    private GTurnAction gTurnAction;
-    private ScanLineLoopAction scanLineLoopAction;
-    private PassIslandAction passIslandAction;
+    private final Drone drone;
+    private final GTurnAction gTurnAction;
+    private final ScanLineLoopAction scanLineLoopAction;
+    private final PassIslandAction passIslandAction;
 
     public ScanIslandLoopAction(Drone drone) {
         this.drone = drone;

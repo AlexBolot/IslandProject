@@ -13,7 +13,7 @@ public enum RawResource {
     FLOWER("FLOWER"),
     FUR("FUR");
 
-    private String id;
+    private final String id;
 
     RawResource(String id) {
         this.id = id;

@@ -32,6 +32,6 @@ public class TransformTest {
         Crew crew = new Crew(new IslandMap(), new ArrayList<>(), new ArrayList<>());
         Transform action = new Transform(crew, ressourcesWithQuantity);
         action.acknowledgeResults("{ \"cost\": 5, \"extras\": { \"production\": 1, \"kind\": \"GLASS\" },\"status\": \"OK\" }");
-        assertEquals(1, crew.getCraftedRessourceQuantity(CraftedResource.GLASS));
+        assertEquals(1, crew.getCraftedResourceQuantity(CraftedResource.GLASS));
     }
 }

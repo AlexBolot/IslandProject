@@ -13,14 +13,14 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 
 public class SearchIslandAction extends DroneAction {
+    private final FlyAction flyAction;
+    private final EchoAction echoAction;
+    private final HeadingAction headingAction;
     private Step currentStep;
-    private FlyAction flyAction;
-    private EchoAction echoAction;
-    private HeadingAction headingAction;
 
     public SearchIslandAction(Drone drone) {
         super(drone);
-        currentStep = ChooseDirection;
+        currentStep = CHOOSE_DIRECTION;
         flyAction = new FlyAction(drone);
         echoAction = new EchoAction(drone);
         headingAction = new HeadingAction(drone);
@@ -31,25 +31,25 @@ public class SearchIslandAction extends DroneAction {
         return apply(currentStep);
     }
 
-    public String apply(Step step) {
+    private String apply(Step step) {
         String res;
         Step nextStep = null;
 
         switch (step) {
-            case ChooseDirection:
+            case CHOOSE_DIRECTION:
                 res = chooseDirection();
-                nextStep = EchoSide;
+                nextStep = ECHO_SIDE;
                 break;
 
-            case EchoSide:
+            case ECHO_SIDE:
                 res = echoAction.apply(ZQSD.getOpposite(getDrone().getLastTurn()));
-                nextStep = FlyFront;
+                nextStep = FLY_FRONT;
                 break;
 
-            case FlyFront:
+            case FLY_FRONT:
                 res = decideToFly();
 
-                if (!res.isEmpty()) nextStep = EchoSide;
+                if (!res.isEmpty()) nextStep = ECHO_SIDE;
                 else finish();
                 break;
 
@@ -93,12 +93,12 @@ public class SearchIslandAction extends DroneAction {
     @Override
     public void reset() {
         super.reset();
-        currentStep = ChooseDirection;
+        currentStep = CHOOSE_DIRECTION;
     }
 
     public enum Step {
-        ChooseDirection,
-        EchoSide,
-        FlyFront
+        CHOOSE_DIRECTION,
+        ECHO_SIDE,
+        FLY_FRONT
     }
 }

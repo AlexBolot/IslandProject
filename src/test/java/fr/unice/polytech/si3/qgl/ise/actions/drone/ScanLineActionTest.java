@@ -17,15 +17,13 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class ScanLineActionTest
-{
-    private Drone          drone;
+public class ScanLineActionTest {
+    private final JsonFactory jsonFact = new JsonFactory();
+    private Drone drone;
     private ScanLineAction scanLineAction;
-    private JsonFactory jsonFact = new JsonFactory();
 
     @Before
-    public void setUp ()
-    {
+    public void setUp() {
         drone = new Drone(new IslandMap(), NORTH);
 
         drone.getMargins().setGlobal(FRONT, BORDER, 50);
@@ -42,10 +40,8 @@ public class ScanLineActionTest
     }
 
     @Test
-    public void apply_SimpleCol ()
-    {
-        for (NSEW ori : NSEW.values())
-        {
+    public void apply_SimpleCol() {
+        for (NSEW ori : NSEW.values()) {
             drone.setOrientation(ori);
 
             String json = jsonFact.createJsonString("scan");
@@ -54,8 +50,7 @@ public class ScanLineActionTest
 
             int i = new Random().nextInt(2) + 1; //Rand between 1 and 3
 
-            for (int j = 0; j < i; j++)
-            {
+            for (int j = 0; j < i; j++) {
                 drone.acknowledgeScan(new Scan(
                         "{\"cost\": 2, \"extras\": { \"biomes\": [\"BEACH\", \"ALPINE\"], \"creeks\": [], \"sites\": []}, \"status\": \"OK\"}"));
 
@@ -88,10 +83,8 @@ public class ScanLineActionTest
     }
 
     @Test
-    public void apply_DoubleCol ()
-    {
-        for (NSEW ori : NSEW.values())
-        {
+    public void apply_DoubleCol() {
+        for (NSEW ori : NSEW.values()) {
             drone.setOrientation(ori);
 
             String json = jsonFact.createJsonString("scan");
@@ -118,8 +111,7 @@ public class ScanLineActionTest
 
             int i = new Random().nextInt(2) + 1; //Rand between 1 and 3
 
-            for (int j = i; j > 0; j--)
-            {
+            for (int j = i; j > 0; j--) {
                 drone.acknowledgeEcho(new Echo("{ \"cost\": 1, \"extras\": { \"range\": " + j + ", \"found\": \"GROUND\" }, \"status\": \"OK\" }"));
 
                 json = jsonFact.createJsonString("fly");

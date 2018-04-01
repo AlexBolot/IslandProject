@@ -1,5 +1,7 @@
 package fr.unice.polytech.si3.qgl.ise.enums;
 
+import java.util.Arrays;
+
 import static fr.unice.polytech.si3.qgl.ise.enums.RawResource.*;
 
 /**
@@ -12,8 +14,8 @@ public enum Biome {
     GRASSLAND("GRASSLAND", FUR),
 
     MANGROVE("MANGROVE", WOOD, FLOWER),
-    TROPICAL_RAIN_FOREST("TROPICAL_RAIN_FOREST", WOOD, FRUITS),
-    TROPICAL_SEASONAL_FOREST("TROPICAL_SEASONAL_FOREST", WOOD, FRUITS),
+    TROPICAL_RAIN_FOREST("TROPICAL_RAIN_FOREST", WOOD, FRUITS, SUGAR_CANE),
+    TROPICAL_SEASONAL_FOREST("TROPICAL_SEASONAL_FOREST", WOOD, FRUITS, SUGAR_CANE),
 
     TEMPERATE_DECIDUOUS_FOREST("TEMPERATE_DECIDUOUS_FOREST", WOOD),
     TEMPERATE_RAIN_FOREST("TEMPERATE_RAIN_FOREST", WOOD, FUR),
@@ -31,16 +33,19 @@ public enum Biome {
     /**
      * Unique id of a biome
      */
-    private String id;
-    private RawResource[] resources;
+    private final String id;
+    private final RawResource[] resources;
 
     Biome(String id, RawResource... resources) {
         this.id = id;
         this.resources = resources;
     }
 
-    public String getId() {
-        return id;
+    public static Biome getFromId(String id) {
+        return Arrays.stream(Biome.values())
+                .filter(biome -> biome.id.equals(id))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("This biome does not exist"));
     }
 
     public RawResource[] getResources() {

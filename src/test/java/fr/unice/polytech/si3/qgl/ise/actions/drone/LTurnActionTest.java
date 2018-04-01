@@ -13,15 +13,13 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.BORDER;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 import static org.junit.Assert.*;
 
-public class LTurnActionTest
-{
-    private Drone       drone;
+public class LTurnActionTest {
+    private final JsonFactory jsonFact = new JsonFactory();
+    private Drone drone;
     private LTurnAction lTurnAction;
-    private JsonFactory jsonFact = new JsonFactory();
 
     @Before
-    public void init ()
-    {
+    public void init() {
         drone = new Drone(new IslandMap(), NORTH);
 
         drone.getMargins().setGlobal(FRONT, BORDER, 50);
@@ -37,8 +35,7 @@ public class LTurnActionTest
         lTurnAction = new LTurnAction(drone);
     }
 
-    private String getOrientation (ZQSD direction)
-    {
+    private String getOrientation(ZQSD direction) {
         if (direction == RIGHT) return drone.getOrientation().getToTheRight().getValue();
 
         if (direction == LEFT) return drone.getOrientation().getToTheLeft().getValue();
@@ -47,12 +44,9 @@ public class LTurnActionTest
     }
 
     @Test
-    public void apply ()
-    {
-        for (NSEW ori : NSEW.values())
-        {
-            for (ZQSD dir : new ZQSD[]{RIGHT, LEFT})
-            {
+    public void apply() {
+        for (NSEW ori : NSEW.values()) {
+            for (ZQSD dir : new ZQSD[]{RIGHT, LEFT}) {
                 drone.setOrientation(ori);
                 drone.setLastEcho(dir);
 
@@ -76,8 +70,7 @@ public class LTurnActionTest
     }
 
     @Test
-    public void reset ()
-    {
+    public void reset() {
         while (!lTurnAction.isFinished()) lTurnAction.apply(LEFT);
 
         assertTrue(lTurnAction.isFinished());

@@ -9,13 +9,10 @@ import fr.unice.polytech.si3.qgl.ise.parsing.Echo;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.BORDER;
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.BACK;
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.LEFT;
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.RIGHT;
+import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
+import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
+import static org.junit.Assert.assertEquals;
 
 public class MarginTest {
     private Drone drone;

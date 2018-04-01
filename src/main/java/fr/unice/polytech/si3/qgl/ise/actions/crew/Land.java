@@ -7,7 +7,7 @@ import fr.unice.polytech.si3.qgl.ise.factories.JsonFactory;
 public class Land extends CrewAction {
 
 
-    private String idCreek;
+    private final String idCreek;
 
     public Land(Crew crewToUpdate, String idCreek) {
         super(crewToUpdate);

@@ -11,8 +11,8 @@ import java.util.Arrays;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 
 public class ScanLineLoopAction extends Action {
-    private Drone drone;
-    private ArrayList<Action> actions;
+    private final Drone drone;
+    private final ArrayList<Action> actions;
 
     ScanLineLoopAction(Drone drone) {
         actions = new ArrayList<>(Arrays.asList(new ScanLineAction(drone), new ChangeLineAction(drone)));

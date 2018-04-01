@@ -9,12 +9,11 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class EchoActionTest {
-    private Drone drone;
     private EchoAction echoAction;
 
     @Before
     public void init() {
-        drone = new Drone(new IslandMap(), DroneEnums.NSEW.NORTH);
+        Drone drone = new Drone(new IslandMap(), DroneEnums.NSEW.NORTH);
         echoAction = new EchoAction(drone);
     }
 

@@ -17,17 +17,14 @@ import java.util.*;
 
 public class Crew {
 
+    private final List<RawContract> rawContracts;
+    private final List<CraftedContract> craftedContracts;
+    private final Map<RawResource, Integer> stock;
+    private final Map<CraftedResource, Integer> craftedStock;
+    private final IslandMap map;
     private Action lastAction;
-
-    private boolean isLanded;
     private String idCreek;
-    private List<RawContract> rawContracts;
-    private List<CraftedContract> craftedContracts;
     private List<Action> steps;
-    private Map<RawResource, Integer> stock;
-    private Map<CraftedResource, Integer> craftedStock;
-
-    private IslandMap map;
     private Coordinates coords;
     private RawResource currentResource;
     private List<RawResource> wantedResources = new ArrayList<>();
@@ -72,7 +69,7 @@ public class Crew {
      * @return the contract
      */
     public Optional<RawContract> choseBestRawContract() {
-        if (rawContracts.size() == 0)
+        if (rawContracts.isEmpty())
             return Optional.empty();
         return getRawContractsLeft().stream().max(Comparator.comparingInt(RawContract::getQuantity));
     }
@@ -80,7 +77,7 @@ public class Crew {
     private void initActions() {
         steps = new ArrayList<>();
         steps.add(new Land(this, idCreek));
-        //steps.add(new Move_to(this, objective));
+        //steps.add(new MoveTo(this, objective));
         steps.add(new MoveExploitLoopAction(this));
         steps.add(new StopAction());
     }
@@ -170,7 +167,7 @@ public class Crew {
         return craftedContracts;
     }
 
-    public int getCraftedRessourceQuantity(CraftedResource resource) {
+    public int getCraftedResourceQuantity(CraftedResource resource) {
         return craftedStock.get(resource);
     }
 

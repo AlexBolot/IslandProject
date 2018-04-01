@@ -9,10 +9,10 @@ import java.util.Map;
 
 public class IslandMap {
     //FIXME Discuter de ces probabilités
-    public static double[] percentageOfLayerForUpdate = {100, 70, 60, 50, 40, 30, 20};
+    public static final double[] percentageOfLayerForUpdate = {100, 70, 60, 50, 40, 30, 20};
 
-    private Map<Coordinates, Tile> tiles;
-    private Map<String, Coordinates> creeks;
+    private final Map<Coordinates, Tile> tiles;
+    private final Map<String, Coordinates> creeks;
     private Tuple2<String, Coordinates> emergencySite;
 
     public IslandMap() {
@@ -29,7 +29,7 @@ public class IslandMap {
         creeks.put(creekId, coordinates);
     }
 
-    public void addCreeks(Coordinates coordinates, ArrayList<String> creekIds) {
+    public void addCreeks(Coordinates coordinates, List<String> creekIds) {
         creekIds.forEach(id -> addCreek(coordinates, id));
     }
 

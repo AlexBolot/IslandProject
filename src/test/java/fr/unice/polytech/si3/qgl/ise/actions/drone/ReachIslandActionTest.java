@@ -17,17 +17,15 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class ReachIslandActionTest
-{
-    private Drone             drone;
-    private Drone             drone2;
+public class ReachIslandActionTest {
+    private final JsonFactory jsonFact = new JsonFactory();
+    private Drone drone;
+    private Drone drone2;
     private ReachIslandAction reachIslandAction;
-    private LTurnAction       lTurnAction;
-    private JsonFactory jsonFact = new JsonFactory();
+    private LTurnAction lTurnAction;
 
     @Before
-    public void init ()
-    {
+    public void init() {
         drone = new Drone(new IslandMap(), NORTH);
         drone2 = new Drone(new IslandMap(), NORTH);
 
@@ -38,8 +36,7 @@ public class ReachIslandActionTest
         lTurnAction = new LTurnAction(drone2);
     }
 
-    private void setMargins (Drone drone)
-    {
+    private void setMargins(Drone drone) {
         drone.getMargins().setGlobal(FRONT, BORDER, 50);
         drone.getMargins().setGlobal(BACK, BORDER, 50);
         drone.getMargins().setGlobal(LEFT, BORDER, 50);
@@ -52,12 +49,9 @@ public class ReachIslandActionTest
     }
 
     @Test
-    public void apply ()
-    {
-        for (NSEW ori : NSEW.values())
-        {
-            for (ZQSD dir : new ZQSD[]{LEFT, RIGHT})
-            {
+    public void apply() {
+        for (NSEW ori : NSEW.values()) {
+            for (ZQSD dir : new ZQSD[]{LEFT, RIGHT}) {
                 drone.setOrientation(ori);
                 drone.setLastEcho(dir);
                 drone.setLastTurn(getOpposite(dir));
@@ -66,8 +60,7 @@ public class ReachIslandActionTest
                 drone2.setLastEcho(dir);
                 drone2.setLastTurn(getOpposite(dir));
 
-                while (!lTurnAction.isFinished())
-                {
+                while (!lTurnAction.isFinished()) {
                     assertEquals(lTurnAction.apply(), reachIslandAction.apply());
                 }
 
@@ -79,8 +72,7 @@ public class ReachIslandActionTest
 
                 drone.acknowledgeEcho(new Echo("{ \"cost\": 1, \"extras\": { \"range\": " + i + ", \"found\": \"GROUND\" }, \"status\": \"OK\" }"));
 
-                for (int j = 0; j <= i; j++)
-                {
+                for (int j = 0; j <= i; j++) {
                     json = jsonFact.createJsonString("fly");
                     result = reachIslandAction.apply();
                     assertEquals(json, result);

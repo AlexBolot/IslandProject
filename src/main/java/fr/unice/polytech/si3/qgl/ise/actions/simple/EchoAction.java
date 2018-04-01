@@ -4,7 +4,7 @@ import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
 import fr.unice.polytech.si3.qgl.ise.factories.JsonFactory;
 
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action.Echo;
+import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action.ECHO;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
 
 public class EchoAction extends SimpleAction {
@@ -37,7 +37,7 @@ public class EchoAction extends SimpleAction {
                 throw new IllegalArgumentException("Wrong direction to head to !");
         }
 
-        getDrone().setLastAction(Echo);
+        getDrone().setLastAction(ECHO);
         getDrone().setLastEcho(direction);
 
         return res;

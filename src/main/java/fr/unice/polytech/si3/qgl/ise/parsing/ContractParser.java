@@ -12,12 +12,12 @@ import java.util.List;
 
 public class ContractParser {
 
+    private static final String RESOURCE = "resource";
     private final int men;
     private final String heading;
     private final int budget;
-
-    private List<RawContract> rawContracts;
-    private List<CraftedContract> craftedContracts;
+    private final List<RawContract> rawContracts;
+    private final List<CraftedContract> craftedContracts;
 
     public ContractParser(String stringToParse) {
         JSONObject data = new JSONObject(stringToParse);
@@ -32,10 +32,10 @@ public class ContractParser {
     private void parseContracts(JSONArray contracts) {
         for (int i = 0; i < contracts.length(); ++i) {
             JSONObject obj = contracts.getJSONObject(i);
-            if (RawResource.contains(obj.getString("resource"))) {
-                rawContracts.add(new RawContract(RawResource.valueOf(obj.getString("resource")), obj.getInt("amount")));
+            if (RawResource.contains(obj.getString(RESOURCE))) {
+                rawContracts.add(new RawContract(RawResource.valueOf(obj.getString(RESOURCE)), obj.getInt("amount")));
             } else {
-                craftedContracts.add(new CraftedContract(CraftedResource.valueOf(obj.getString("resource")), obj.getInt("amount")));
+                craftedContracts.add(new CraftedContract(CraftedResource.valueOf(obj.getString(RESOURCE)), obj.getInt("amount")));
             }
         }
     }

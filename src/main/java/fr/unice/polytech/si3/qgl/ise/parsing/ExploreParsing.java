@@ -7,20 +7,19 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import scala.Tuple2;
 
-import java.util.HashMap;
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * Parses the data obtained through the echo command
  */
 public class ExploreParsing {
-    private int cost;
-    private HashMap<RawResource, Tuple2<Abundance, Exploitability>> resources;
+    private final Map<RawResource, Tuple2<Abundance, Exploitability>> resources;
 
     public ExploreParsing(String exploreResult) {
-        resources = new HashMap<>();
+        resources = new EnumMap<>(RawResource.class);
 
         JSONObject data = new JSONObject(exploreResult);
-        cost = data.getInt("cost");
         JSONObject extras = data.getJSONObject("extras");
         JSONArray resourcesJson = extras.getJSONArray("resources");
         for (int i = 0; i < resourcesJson.length(); i++) {
@@ -30,11 +29,7 @@ public class ExploreParsing {
         }
     }
 
-    public int getCost() {
-        return cost;
-    }
-
-    public HashMap<RawResource, Tuple2<Abundance, Exploitability>> getResources() {
+    public Map<RawResource, Tuple2<Abundance, Exploitability>> getResources() {
         return resources;
     }
 }

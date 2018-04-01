@@ -22,7 +22,7 @@ public class Runner {
         int x = 159;
         int y = 159;
         String heading = "NORTH";
-        int points = 100000;
+        int points = 15000;
         int crew = 7;
         long seed = 0xB8743F260B1D24EFL;
         List<String> resources = new ArrayList<>();
@@ -68,13 +68,11 @@ public class Runner {
                         amounts.add(Integer.valueOf(args[i + 1]));
                     }
                 } else {
-                    for (String arg : args) System.out.println(arg);
                     throw new IllegalArgumentException("Invalid arguments");
                 }
         }
 
         if (!mapLocation.toFile().exists()) {
-            System.out.println(System.getProperty("user.dir"));
             throw new IllegalArgumentException("Your map does not exist, aborting");
         }
 

@@ -14,16 +14,15 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 
 public class ChangeLineAction extends DroneAction {
+    private final FlyAction flyAction;
+    private final EchoAction echoAction;
+    private final HeadingAction headingAction;
     private Step currentStep;
-    private FlyAction flyAction;
-    private EchoAction echoAction;
-    private HeadingAction headingAction;
-
     private ZQSD generalDirection;
 
     public ChangeLineAction(Drone drone) {
         super(drone);
-        currentStep = EchoSide;
+        currentStep = ECHO_SIDE;
         flyAction = new FlyAction(drone);
         echoAction = new EchoAction(drone);
         headingAction = new HeadingAction(drone);
@@ -35,50 +34,50 @@ public class ChangeLineAction extends DroneAction {
         return apply(ZQSD.getOpposite(getDrone().getLastTurn()));
     }
 
-    public String apply(ZQSD direction) {
+    private String apply(ZQSD direction) {
         String res;
         Step nextStep = null;
 
         switch (currentStep) {
-            case EchoSide:
+            case ECHO_SIDE:
                 res = echoAction.apply(direction);
-                nextStep = FlyOrTurn;
+                nextStep = FLY_OR_TURN;
                 break;
 
-            case FlyOrTurn:
+            case FLY_OR_TURN:
                 generalDirection = direction;
                 res = flyOrTurn();
 
                 if (!res.isEmpty() && getDrone().getMargins().getGlobal(FRONT)._2 > 1) {
-                    nextStep = EchoSide;
+                    nextStep = ECHO_SIDE;
                     break;
                 } else {
                     res = headingAction.apply(generalDirection);
-                    nextStep = Turn2;
+                    nextStep = TURN_2;
                     break;
                 }
 
-            case Turn1:
+            case TURN_1:
                 generalDirection = direction;
 
                 res = headingAction.apply(generalDirection);
-                nextStep = Turn2;
+                nextStep = TURN_2;
                 break;
 
-            case Turn2:
+            case TURN_2:
                 res = headingAction.apply(generalDirection);
-                nextStep = EchoFront;
+                nextStep = ECHO_FRONT;
                 break;
 
-            case EchoFront:
+            case ECHO_FRONT:
                 res = echoAction.apply(FRONT);
-                nextStep = ReachIsland;
+                nextStep = REACH_ISLAND;
                 break;
 
-            case ReachIsland:
+            case REACH_ISLAND:
                 res = reachIsland();
 
-                if (!res.isEmpty()) nextStep = ReachIsland;
+                if (!res.isEmpty()) nextStep = REACH_ISLAND;
                 else finish();
                 break;
 
@@ -116,15 +115,15 @@ public class ChangeLineAction extends DroneAction {
     @Override
     public void reset() {
         super.reset();
-        currentStep = EchoSide;
+        currentStep = ECHO_SIDE;
     }
 
     public enum Step {
-        EchoSide,
-        FlyOrTurn,
-        Turn1,
-        Turn2,
-        EchoFront,
-        ReachIsland,
+        ECHO_SIDE,
+        FLY_OR_TURN,
+        TURN_1,
+        TURN_2,
+        ECHO_FRONT,
+        REACH_ISLAND,
     }
 }
