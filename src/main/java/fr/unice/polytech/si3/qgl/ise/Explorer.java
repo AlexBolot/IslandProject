@@ -21,24 +21,33 @@ public class Explorer implements IExplorerRaid {
     private IslandMap map;
     private int remainingBudget;
     private ContractParser contractParser;
+    private boolean acknowledgeError;
 
     @Override
     public void initialize(String contract) {
-        logger.debug("Initializing the Explorer");
-        logger.trace("Contract: " + contract);
+        try {
+            logger.debug("Initializing the Explorer");
+            logger.trace("Contract: " + contract);
 
-        contractParser = new ContractParser(contract);
+            contractParser = new ContractParser(contract);
 
-        String heading = contractParser.getHeading();
-        remainingBudget = contractParser.getBudget();
+            String heading = contractParser.getHeading();
+            remainingBudget = contractParser.getBudget();
 
-        NSEW orientation = NSEW.getFromValue(heading);
-        map = new IslandMap();
-        drone = new Drone(map, orientation);
+            NSEW orientation = NSEW.getFromValue(heading);
+            map = new IslandMap();
+            drone = new Drone(map, orientation);
+            acknowledgeError = false;
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+        }
+
     }
 
     @Override
     public String takeDecision() {
+        if (acknowledgeError) return new StopAction(drone).apply();
+
         try {
             if (remainingBudget > 150) {
                 String decision;
@@ -91,7 +100,9 @@ public class Explorer implements IExplorerRaid {
                 crew.acknowledgeResults(results);
             }
         } catch (Exception e) {
+            acknowledgeError = true;
             logger.info(e.getMessage());
+
         }
     }
 
