@@ -42,12 +42,12 @@ public class Move_toTest {
 
     @Test
     public void testDeplacement() {
-        CrewAction moveTo = new Move_to(crew, new Coordinates(10, 10));
+        CrewAction moveTo = new MoveTo(crew, new Coordinates(10, 10));
         while (!moveTo.isFinished()) {
             moveTo.apply();
         }
         assertEquals("The crew should be in 10,10 ", new Coordinates(10, 10), crew.getCoords());
-        moveTo = new Move_to(crew, new Coordinates(-10, -10));
+        moveTo = new MoveTo(crew, new Coordinates(-10, -10));
         while (!moveTo.isFinished()) {
             moveTo.apply();
         }

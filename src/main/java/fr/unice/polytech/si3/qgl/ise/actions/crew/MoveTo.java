@@ -7,11 +7,13 @@ import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
 
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW.*;
 
-public class Move_to extends CrewAction {
+public class MoveTo extends CrewAction {
 
+    private static final String MOVE_TO = "move_to";
+    private static final String DIRECTION = "direction";
     private final Coordinates coordinates;
 
-    public Move_to(Crew crewToUpdate, Coordinates coordinates) {
+    public MoveTo(Crew crewToUpdate, Coordinates coordinates) {
         super(crewToUpdate);
         this.coordinates = coordinates;
     }
@@ -40,19 +42,19 @@ public class Move_to extends CrewAction {
             //We have to go north
             if (crew.getCoords().getY() < coordinates.getY()) {
                 crew.setCoords(new Coordinates(crew.getCoords().getX(), crew.getCoords().getY() + 1));
-                return new JsonFactory().createJsonString("move_to", "direction", NORTH.getValue());
+                return new JsonFactory().createJsonString(MOVE_TO, DIRECTION, NORTH.getValue());
             } else if (crew.getCoords().getY() > coordinates.getY()) { //We go South
                 crew.setCoords(new Coordinates(crew.getCoords().getX(), crew.getCoords().getY() - 1));
-                return new JsonFactory().createJsonString("move_to", "direction", SOUTH.getValue());
+                return new JsonFactory().createJsonString(MOVE_TO, DIRECTION, SOUTH.getValue());
             }
             //If the x is good, we check for the X
             //We have to go east
             if (crew.getCoords().getX() < coordinates.getX()) {
                 crew.setCoords(new Coordinates(crew.getCoords().getX() + 1, crew.getCoords().getY()));
-                return new JsonFactory().createJsonString("move_to", "direction", EAST.getValue());
+                return new JsonFactory().createJsonString(MOVE_TO, DIRECTION, EAST.getValue());
             } else if (crew.getCoords().getX() > coordinates.getX()) {
                 crew.setCoords(new Coordinates(crew.getCoords().getX() - 1, crew.getCoords().getY()));
-                return new JsonFactory().createJsonString("move_to", "direction", WEST.getValue());
+                return new JsonFactory().createJsonString(MOVE_TO, DIRECTION, WEST.getValue());
             }
         }
 

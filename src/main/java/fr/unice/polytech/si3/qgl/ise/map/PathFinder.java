@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 public class PathFinder {
 
+    private PathFinder() { /*Empty private constructor to hide the implicit public one*/ }
+
     /**
      * Calculates the distance between two points on the map
      *

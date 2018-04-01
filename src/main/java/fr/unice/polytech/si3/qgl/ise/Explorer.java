@@ -78,11 +78,13 @@ public class Explorer implements IExplorerRaid {
 
             if (drone.isFlying()) {
                 switch (drone.getLastAction()) {
-                    case Scan:
+                    case SCAN:
                         drone.acknowledgeScan(new Scan(data.toString()));
                         break;
-                    case Echo:
+                    case ECHO:
                         drone.acknowledgeEcho(new Echo(data.toString()));
+                        break;
+                    default:
                         break;
                 }
             } else {
@@ -103,23 +105,11 @@ public class Explorer implements IExplorerRaid {
         str2.append("Inventory :").append("\n");
         crew.getStock().forEach((key, value) -> str2.append(key).append(" - ").append(value).append("\n"));
 
-
         crew.getRawContracts().forEach(rawContract -> {
             if ((crew.getStock().containsKey(rawContract.getResource())) && crew.getStock().get(rawContract.getResource()) >= rawContract.getQuantity())
                 str2.append("Raw contract completed : ").append(rawContract).append("\n");
             else str2.append("Raw contract failed : ").append(rawContract).append("\n");
         });
-
-
-        /*rawContracts.forEach(rawContract -> {
-            if (crew.getStock().get(rawContract.getResource()) >= rawContract.getQuantity())  str2.append("Raw contract completed : ").append(rawContract);
-            else str2.append("Raw contract failed : ").append(rawContract);
-        });
-
-        craftedContracts.forEach(craftedContract -> {
-            if (crew.getStock().get(craftedContract.getResource()) >= craftedContract.getQuantity())  str2.append("Raw contract completed : ").append(craftedContract);
-            else str2.append("Raw contract failed : ").append(craftedContract);
-        });*/
 
         str2.append("Remaining points : ").append(remainingBudget).append("\n");
 

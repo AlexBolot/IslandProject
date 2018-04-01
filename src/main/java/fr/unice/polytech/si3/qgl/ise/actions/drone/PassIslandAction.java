@@ -6,20 +6,20 @@ import fr.unice.polytech.si3.qgl.ise.actions.simple.FlyAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 
-import static fr.unice.polytech.si3.qgl.ise.actions.drone.PassIslandAction.Step.EchoSide;
-import static fr.unice.polytech.si3.qgl.ise.actions.drone.PassIslandAction.Step.FlyOrTurn;
+import static fr.unice.polytech.si3.qgl.ise.actions.drone.PassIslandAction.Step.ECHO_SIDE;
+import static fr.unice.polytech.si3.qgl.ise.actions.drone.PassIslandAction.Step.FLY_OR_TURN;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 
 public class PassIslandAction extends DroneAction {
-    private Step currentStep;
     private final FlyAction flyAction;
     private final EchoAction echoAction;
+    private Step currentStep;
     private boolean passing;
 
     public PassIslandAction(Drone drone) {
         super(drone);
-        currentStep = EchoSide;
+        currentStep = ECHO_SIDE;
         flyAction = new FlyAction(drone);
         echoAction = new EchoAction(drone);
         passing = true;
@@ -35,15 +35,15 @@ public class PassIslandAction extends DroneAction {
         Step nextStep = null;
 
         switch (step) {
-            case EchoSide:
+            case ECHO_SIDE:
                 res = echoAction.apply(getDrone().getLastTurn());
-                nextStep = FlyOrTurn;
+                nextStep = FLY_OR_TURN;
                 break;
 
-            case FlyOrTurn:
+            case FLY_OR_TURN:
                 res = decideToFly();
 
-                if (!res.isEmpty()) nextStep = EchoSide;
+                if (!res.isEmpty()) nextStep = ECHO_SIDE;
                 else finish();
                 break;
 
@@ -77,11 +77,11 @@ public class PassIslandAction extends DroneAction {
     @Override
     public void reset() {
         super.reset();
-        currentStep = EchoSide;
+        currentStep = ECHO_SIDE;
     }
 
     public enum Step {
-        EchoSide,
-        FlyOrTurn,
+        ECHO_SIDE,
+        FLY_OR_TURN,
     }
 }

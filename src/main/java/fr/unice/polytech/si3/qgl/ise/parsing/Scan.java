@@ -5,15 +5,16 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.IntStream;
 
 /**
  * Parses the data obtained through the scan command
  */
 public class Scan {
-    private final ArrayList<String> creeks;
-    private final ArrayList<String> emergencySites;
-    private final ArrayList<Biome> biomes;
+    private final List<String> creeks;
+    private final List<String> emergencySites;
+    private final List<Biome> biomes;
 
     public Scan(String scanResult) {
         creeks = new ArrayList<>();
@@ -37,15 +38,15 @@ public class Scan {
         biomes.add(Biome.valueOf(biome));
     }
 
-    public ArrayList<String> getCreeks() {
+    public List<String> getCreeks() {
         return creeks;
     }
 
-    public ArrayList<String> getEmergencySites() {
+    public List<String> getEmergencySites() {
         return emergencySites;
     }
 
-    public ArrayList<Biome> getBiomes() {
+    public List<Biome> getBiomes() {
         return biomes;
     }
 

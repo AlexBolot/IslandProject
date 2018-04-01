@@ -14,9 +14,9 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 import static org.junit.Assert.*;
 
 public class LTurnActionTest {
+    private final JsonFactory jsonFact = new JsonFactory();
     private Drone drone;
     private LTurnAction lTurnAction;
-    private final JsonFactory jsonFact = new JsonFactory();
 
     @Before
     public void init() {

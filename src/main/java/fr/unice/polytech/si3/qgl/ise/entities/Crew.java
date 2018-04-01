@@ -17,16 +17,14 @@ import java.util.*;
 
 public class Crew {
 
-    private Action lastAction;
-
-    private String idCreek;
     private final List<RawContract> rawContracts;
     private final List<CraftedContract> craftedContracts;
-    private List<Action> steps;
     private final Map<RawResource, Integer> stock;
     private final Map<CraftedResource, Integer> craftedStock;
-
     private final IslandMap map;
+    private Action lastAction;
+    private String idCreek;
+    private List<Action> steps;
     private Coordinates coords;
     private RawResource currentResource;
     private int currentQuantity;
@@ -64,7 +62,7 @@ public class Crew {
      * @return the contract
      */
     private Optional<RawContract> choseBestRawContract() {
-        if (rawContracts.size() == 0)
+        if (rawContracts.isEmpty())
             return Optional.empty();
         return getRawContractsLeft().stream().max(Comparator.comparingInt(RawContract::getQuantity));
     }
@@ -72,7 +70,7 @@ public class Crew {
     private void initActions() {
         steps = new ArrayList<>();
         steps.add(new Land(this, idCreek));
-        //steps.add(new Move_to(this, objective));
+        //steps.add(new MoveTo(this, objective));
         steps.add(new MoveExploitLoopAction(this));
         steps.add(new StopAction());
     }

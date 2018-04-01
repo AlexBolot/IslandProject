@@ -106,11 +106,11 @@ public class DroneEnums {
     }
 
     public enum Action {
-        Scan,
-        Fly,
-        Echo,
-        Heading,
-        Stop
+        SCAN,
+        FLY,
+        ECHO,
+        HEADING,
+        STOP
     }
 
     public enum SubState {

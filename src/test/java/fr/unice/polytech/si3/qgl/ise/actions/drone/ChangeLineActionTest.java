@@ -18,9 +18,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ChangeLineActionTest {
+    private final JsonFactory jsonFact = new JsonFactory();
     private Drone drone;
     private ChangeLineAction changeLineAction;
-    private final JsonFactory jsonFact = new JsonFactory();
 
     @Before
     public void init() {

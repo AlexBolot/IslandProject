@@ -18,11 +18,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ReachIslandActionTest {
+    private final JsonFactory jsonFact = new JsonFactory();
     private Drone drone;
     private Drone drone2;
     private ReachIslandAction reachIslandAction;
     private LTurnAction lTurnAction;
-    private final JsonFactory jsonFact = new JsonFactory();
 
     @Before
     public void init() {

@@ -16,15 +16,15 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.getOpposite;
 
 public class GTurnAction extends DroneAction {
-    private Step currentStep;
     private final FlyAction flyAction;
     private final EchoAction echoAction;
     private final HeadingAction headingAction;
+    private Step currentStep;
     private boolean turnNotBis;
 
     public GTurnAction(Drone drone) {
         super(drone);
-        currentStep = FlyFront_1;
+        currentStep = FLY_FRONT_1;
         flyAction = new FlyAction(drone);
         echoAction = new EchoAction(drone);
         headingAction = new HeadingAction(drone);
@@ -41,64 +41,64 @@ public class GTurnAction extends DroneAction {
         Step nextStep = null;
 
         switch (step) {
-            case FlyFront_1:
+            case FLY_FRONT_1:
                 res = decideToFly();
-                nextStep = Turn_1;
+                nextStep = TURN_1;
                 break;
 
-            case Turn_1:
+            case TURN_1:
                 res = headingAction.apply(getDrone().getLastTurn());
-                nextStep = EchoSide;
+                nextStep = ECHO_SIDE;
                 break;
 
-            case EchoSide:
+            case ECHO_SIDE:
                 res = echoAction.apply(getDrone().getLastTurn());
-                nextStep = FlyFront_2;
+                nextStep = FLY_FRONT_2;
                 break;
 
-            case FlyFront_2:
+            case FLY_FRONT_2:
                 Margin margins = getDrone().getMargins();
                 ZQSD lastTurn = getDrone().getLastTurn();
                 Tuple2<Obstacle, Integer> lastMargin = margins.getLocal(lastTurn);
                 if (lastMargin._1 == GROUND) {
-                    nextStep = Turn_2;
+                    nextStep = TURN_2;
                 } else {
-                    nextStep = Turn_2_bis;
+                    nextStep = TURN_2_BIS;
                 }
                 res = decideToFly();
                 break;
 
-            case Turn_2:
+            case TURN_2:
                 turnNotBis = true;
                 res = headingAction.apply(getDrone().getLastTurn());
-                nextStep = Turn_3;
+                nextStep = TURN_3;
                 break;
 
-            case Turn_2_bis:
+            case TURN_2_BIS:
                 res = headingAction.apply(getDrone().getLastTurn());
-                nextStep = EchoFront;
+                nextStep = ECHO_FRONT;
                 break;
 
-            case Turn_3:
+            case TURN_3:
                 res = headingAction.apply(getDrone().getLastTurn());
-                nextStep = Turn_4;
+                nextStep = TURN_4;
                 break;
 
-            case Turn_4:
+            case TURN_4:
                 res = headingAction.apply(getOpposite(getDrone().getLastTurn()));
-                nextStep = EchoFront;
+                nextStep = ECHO_FRONT;
                 break;
 
-            case EchoFront:
+            case ECHO_FRONT:
                 res = echoAction.apply(FRONT);
-                nextStep = Fly;
+                nextStep = FLY;
                 break;
 
-            case Fly:
+            case FLY:
                 int frontDist = getDrone().getMargins().getLocal(FRONT)._2;
                 if (frontDist > 0) {
                     res = flyAction.apply();
-                    nextStep = EchoFront;
+                    nextStep = ECHO_FRONT;
                 } else {
                     res = flyAction.apply();
                     if (turnNotBis) {
@@ -131,19 +131,19 @@ public class GTurnAction extends DroneAction {
     @Override
     public void reset() {
         super.reset();
-        currentStep = FlyFront_1;
+        currentStep = FLY_FRONT_1;
     }
 
     public enum Step {
-        FlyFront_1,
-        Turn_1,
-        EchoSide,
-        FlyFront_2,
-        Turn_2,
-        Turn_2_bis,
-        Turn_3,
-        Turn_4,
-        EchoFront,
-        Fly,
+        FLY_FRONT_1,
+        TURN_1,
+        ECHO_SIDE,
+        FLY_FRONT_2,
+        TURN_2,
+        TURN_2_BIS,
+        TURN_3,
+        TURN_4,
+        ECHO_FRONT,
+        FLY,
     }
 }

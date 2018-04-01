@@ -9,7 +9,7 @@ import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
 import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 import scala.Tuple2;
 
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action.Heading;
+import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action.HEADING;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 
@@ -41,7 +41,7 @@ public class HeadingAction extends SimpleAction {
 
         updateMargins(direction);
         getDrone().setLastTurn(direction);
-        getDrone().setLastAction(Heading);
+        getDrone().setLastAction(HEADING);
 
         return res;
     }

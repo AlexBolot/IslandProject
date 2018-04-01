@@ -5,20 +5,20 @@ import fr.unice.polytech.si3.qgl.ise.actions.simple.FlyAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 
-import static fr.unice.polytech.si3.qgl.ise.actions.drone.ReachIslandAction.Step.FlyToIsland;
-import static fr.unice.polytech.si3.qgl.ise.actions.drone.ReachIslandAction.Step.LTurn;
+import static fr.unice.polytech.si3.qgl.ise.actions.drone.ReachIslandAction.Step.FLY_TO_ISLAND;
+import static fr.unice.polytech.si3.qgl.ise.actions.drone.ReachIslandAction.Step.L_TURN;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 
 public class ReachIslandAction extends DroneAction {
-    private Step currentStep;
     private final FlyAction flyAction;
     private final EchoAction echoAction;
     private final LTurnAction lTurnAction;
+    private Step currentStep;
 
     public ReachIslandAction(Drone drone) {
         super(drone);
-        currentStep = LTurn;
+        currentStep = L_TURN;
         flyAction = new FlyAction(drone);
         echoAction = new EchoAction(drone);
         lTurnAction = new LTurnAction(drone);
@@ -34,22 +34,22 @@ public class ReachIslandAction extends DroneAction {
         Step nextStep = null;
 
         switch (step) {
-            case LTurn:
+            case L_TURN:
                 if (!lTurnAction.isFinished()) {
                     res = lTurnAction.apply();
-                    nextStep = LTurn;
+                    nextStep = L_TURN;
                     break;
                 }
 
-            case EchoFront:
+            case ECHO_FRONT:
                 res = echoAction.apply(FRONT);
-                nextStep = FlyToIsland;
+                nextStep = FLY_TO_ISLAND;
                 break;
 
-            case FlyToIsland:
+            case FLY_TO_ISLAND:
                 res = decideToFly();
                 if (res.isEmpty()) this.finish();
-                else nextStep = FlyToIsland;
+                else nextStep = FLY_TO_ISLAND;
                 break;
 
             default:
@@ -76,13 +76,13 @@ public class ReachIslandAction extends DroneAction {
     @Override
     public void reset() {
         super.reset();
-        currentStep = LTurn;
+        currentStep = L_TURN;
         lTurnAction.reset();
     }
 
     public enum Step {
-        LTurn,
-        EchoFront,
-        FlyToIsland
+        L_TURN,
+        ECHO_FRONT,
+        FLY_TO_ISLAND
     }
 }

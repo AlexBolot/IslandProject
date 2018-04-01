@@ -18,14 +18,14 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 
 public class ScanLineAction extends DroneAction {
-    private Step currentStep;
     private final FlyAction flyAction;
     private final ScanAction scanAction;
     private final EchoAction echoAction;
+    private Step currentStep;
 
     public ScanLineAction(Drone drone) {
         super(drone);
-        currentStep = Scan;
+        currentStep = SCAN;
         flyAction = new FlyAction(drone);
         scanAction = new ScanAction(drone);
         echoAction = new EchoAction(drone);
@@ -41,12 +41,12 @@ public class ScanLineAction extends DroneAction {
         Step nextStep;
 
         switch (step) {
-            case Scan:
+            case SCAN:
                 res = scanAction.apply();
-                nextStep = FlyOrTurn;
+                nextStep = FLY_OR_TURN;
                 break;
 
-            case FlyOrTurn:
+            case FLY_OR_TURN:
                 res = checkResult();
 
                 if (getDrone().getMargins().getGlobal(FRONT)._2 < 2) {
@@ -54,30 +54,30 @@ public class ScanLineAction extends DroneAction {
                     this.finish();
                 }
 
-                if (!res.isEmpty()) nextStep = Scan;
+                if (!res.isEmpty()) nextStep = SCAN;
                 else {
                     res = echoAction.apply(FRONT);
-                    nextStep = EchoFront;
+                    nextStep = ECHO_FRONT;
                 }
                 break;
 
-            case EchoFront:
+            case ECHO_FRONT:
                 res = flyAction.apply();
                 Tuple2<Obstacle, Integer> margin = getDrone().getMargins().getLocal(FRONT);
                 if (margin._1 == BORDER) {
                     this.finish();
                 }
-                nextStep = Reach;
+                nextStep = REACH;
                 break;
 
-            case Reach:
+            case REACH:
                 Tuple2<Obstacle, Integer> lastMargin = getDrone().getMargins().getLocal(FRONT);
                 if (lastMargin._1 == GROUND && lastMargin._2 > 0) {
                     res = flyAction.apply();
-                    nextStep = Reach;
+                    nextStep = REACH;
                 } else {
                     res = scanAction.apply();
-                    nextStep = FlyOrTurn;
+                    nextStep = FLY_OR_TURN;
                 }
                 break;
 
@@ -104,13 +104,13 @@ public class ScanLineAction extends DroneAction {
     @Override
     public void reset() {
         super.reset();
-        currentStep = Scan;
+        currentStep = SCAN;
     }
 
     public enum Step {
-        Scan,
-        FlyOrTurn,
-        EchoFront,
-        Reach,
+        SCAN,
+        FLY_OR_TURN,
+        ECHO_FRONT,
+        REACH,
     }
 }

@@ -14,7 +14,7 @@ public class Tile {
     private boolean isExplored = false;
 
     Tile() {
-        biomesPercentage = new HashMap<>();
+        biomesPercentage = new EnumMap<>(Biome.class);
         resourcesStats = new EnumMap<>(RawResource.class);
     }
 

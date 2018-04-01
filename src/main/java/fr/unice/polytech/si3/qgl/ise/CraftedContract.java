@@ -3,7 +3,7 @@ package fr.unice.polytech.si3.qgl.ise;
 import fr.unice.polytech.si3.qgl.ise.enums.CraftedResource;
 import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 public class CraftedContract {
@@ -14,7 +14,7 @@ public class CraftedContract {
     public CraftedContract(CraftedResource resource, Integer quantity) {
         this.quantity = quantity;
         this.resource = resource;
-        rawQuantities = new HashMap<>();
+        rawQuantities = new EnumMap<>(RawResource.class);
 
         //Calculate the total cost in RawRessource
         for (Map.Entry<RawResource, Double> cost : CraftedResource.getValueOf(resource.getId()).entrySet()) {

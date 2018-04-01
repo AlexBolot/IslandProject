@@ -21,7 +21,7 @@ import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,19 +31,19 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.SubState.INIT_ECHO_
 import static org.apache.logging.log4j.LogManager.getLogger;
 
 public class Drone {
-    private static final int movementUnit = 3;
+    private static final int MOVEMENT_UNIT = 3;
     private static final Logger logger = getLogger(Drone.class);
+    private final SubState subState;
+    private final IslandMap map;
+    private final Margin margins;
     private NSEW orientation;
     private ZQSD lastTurn;
     private ZQSD lastEcho;
     private DroneEnums.Action lastAction;
     private boolean isFlying;
     private boolean hasFoundIsland;
-    private final SubState subState;
-    private final IslandMap map;
     private Coordinates coords;
     private ArrayList<Action> steps;
-    private final Margin margins;
 
     public Drone(IslandMap map, NSEW orientation) {
         this.map = map;
@@ -57,7 +57,7 @@ public class Drone {
     }
 
     public static int getMovementUnit() {
-        return movementUnit;
+        return MOVEMENT_UNIT;
     }
 
     private void initSteps() {
@@ -110,7 +110,7 @@ public class Drone {
                 //On each tile
                 for (Tile tileOfLayer : layer) {
                     //With each biome
-                    Map<Biome, Double> toAdd = new HashMap<>();
+                    Map<Biome, Double> toAdd = new EnumMap<>(Biome.class);
                     for (Biome biome : scan.getBiomes()) {
                         toAdd.put(biome, IslandMap.percentageOfLayerForUpdate[numLayer]);
                     }

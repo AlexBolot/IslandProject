@@ -1,6 +1,6 @@
 package fr.unice.polytech.si3.qgl.ise.enums;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 /**
@@ -22,7 +22,7 @@ public enum CraftedResource {
     }
 
     public static Map<RawResource, Double> getValueOf(String id) {
-        Map<RawResource, Double> returnData = new HashMap<>();
+        Map<RawResource, Double> returnData = new EnumMap<>(RawResource.class);
         switch (id) {
             case "GLASS":
                 returnData.put(RawResource.QUARTZ, 10d);
@@ -42,6 +42,8 @@ public enum CraftedResource {
                 returnData.put(RawResource.SUGAR_CANE, 10d);
                 returnData.put(RawResource.FRUITS, 1d);
                 break;
+            default:
+                throw new IllegalArgumentException("Resource does not exist");
         }
         return returnData;
     }

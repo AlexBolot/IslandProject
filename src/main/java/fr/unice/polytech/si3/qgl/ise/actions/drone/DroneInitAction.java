@@ -8,12 +8,12 @@ import static fr.unice.polytech.si3.qgl.ise.actions.drone.DroneInitAction.Step.*
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 
 public class DroneInitAction extends DroneAction {
-    private Step currentStep;
     private final EchoAction echoAction;
+    private Step currentStep;
 
     public DroneInitAction(Drone drone) {
         super(drone);
-        currentStep = EchoFront;
+        currentStep = ECHO_FRONT;
         echoAction = new EchoAction(drone);
     }
 
@@ -27,24 +27,27 @@ public class DroneInitAction extends DroneAction {
         Step nextStep = null;
 
         switch (step) {
-            case EchoFront:
+            case ECHO_FRONT:
                 res = echoAction.apply(FRONT);
-                nextStep = EchoRight;
+                nextStep = ECHO_RIGHT;
                 break;
 
-            case EchoRight:
+            case ECHO_RIGHT:
                 res = echoAction.apply(RIGHT);
-                nextStep = EchoLeft;
+                nextStep = ECHO_LEFT;
                 break;
 
-            case EchoLeft:
+            case ECHO_LEFT:
                 res = echoAction.apply(LEFT);
-                this.finish();
+                nextStep = OZ_CHECK;
                 break;
 
-            case OzCheck:
+            case OZ_CHECK:
+                res = "";
                 if (getDrone().getMargins().getLocal(FRONT)._2 < 1 && getDrone().getMargins().getLocal(LEFT)._2 < 1 && getDrone().getMargins().getLocal(RIGHT)._2 < 1)
                     return new StopAction(getDrone()).apply();
+                this.finish();
+                break;
 
             default:
                 throw new IllegalStateException("Unkown step : " + step);
@@ -58,13 +61,13 @@ public class DroneInitAction extends DroneAction {
     @Override
     public void reset() {
         super.reset();
-        currentStep = EchoFront;
+        currentStep = ECHO_FRONT;
     }
 
     public enum Step {
-        EchoFront,
-        EchoRight,
-        EchoLeft,
-        OzCheck
+        ECHO_FRONT,
+        ECHO_RIGHT,
+        ECHO_LEFT,
+        OZ_CHECK
     }
 }

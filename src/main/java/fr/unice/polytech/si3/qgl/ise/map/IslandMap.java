@@ -29,7 +29,7 @@ public class IslandMap {
         creeks.put(creekId, coordinates);
     }
 
-    public void addCreeks(Coordinates coordinates, ArrayList<String> creekIds) {
+    public void addCreeks(Coordinates coordinates, List<String> creekIds) {
         creekIds.forEach(id -> addCreek(coordinates, id));
     }
 
