@@ -19,9 +19,9 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 
 public class ScanLineAction extends DroneAction {
     private Step currentStep;
-    private FlyAction flyAction;
-    private ScanAction scanAction;
-    private EchoAction echoAction;
+    private final FlyAction flyAction;
+    private final ScanAction scanAction;
+    private final EchoAction echoAction;
 
     public ScanLineAction(Drone drone) {
         super(drone);
@@ -36,7 +36,7 @@ public class ScanLineAction extends DroneAction {
         return apply(currentStep);
     }
 
-    public String apply(Step step) {
+    private String apply(Step step) {
         String res;
         Step nextStep;
 

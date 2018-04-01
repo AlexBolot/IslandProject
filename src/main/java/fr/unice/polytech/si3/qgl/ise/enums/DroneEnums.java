@@ -90,7 +90,7 @@ public class DroneEnums {
         GROUND("GROUND"),
         BORDER("OUT_OF_RANGE");
 
-        private String value;
+        private final String value;
 
         Obstacle(String value) {
             this.value = value;
@@ -103,9 +103,6 @@ public class DroneEnums {
                     .orElseThrow(() -> new IllegalArgumentException("This Obstacle does not exist"));
         }
 
-        public String getValue() {
-            return value;
-        }
     }
 
     public enum Action {

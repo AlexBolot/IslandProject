@@ -19,7 +19,6 @@ public class IslandMapTest {
 
     private IslandMap islandMap;
     private List<Tile> tiles;
-    private Drone drone;
 
     @Before
     public void init() {
@@ -111,9 +110,10 @@ public class IslandMapTest {
         assertEquals("The layer 7 must have 4 tiles", 4, expected.get(6).size());
     }
 
-    @Test @Ignore
+    @Test
+    @Ignore
     public void testTilesToUpdatesBiomes() {
-        drone = new Drone(islandMap, DroneEnums.NSEW.EAST);
+        Drone drone = new Drone(islandMap, DroneEnums.NSEW.EAST);
         //After acknoledwing, all tiles must have the biome in their list
         drone.acknowledgeScan(new Scan("{\"cost\":6,\"extras\":{\"creeks\":[],\"biomes\":[\"MANGROVE\"],\"sites\":[]},\"status\":\"OK\"}"));
         int size = 0;

@@ -1,5 +1,7 @@
 package fr.unice.polytech.si3.qgl.ise.enums;
 
+import java.util.Arrays;
+
 import static fr.unice.polytech.si3.qgl.ise.enums.RawResource.*;
 
 /**
@@ -31,16 +33,19 @@ public enum Biome {
     /**
      * Unique id of a biome
      */
-    private String id;
-    private RawResource[] resources;
+    private final String id;
+    private final RawResource[] resources;
 
     Biome(String id, RawResource... resources) {
         this.id = id;
         this.resources = resources;
     }
 
-    public String getId() {
-        return id;
+    public static Biome getFromId(String id) {
+        return Arrays.stream(Biome.values())
+                .filter(biome -> biome.id.equals(id))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("This biome does not exist"));
     }
 
     public RawResource[] getResources() {

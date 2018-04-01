@@ -13,8 +13,8 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
  * This class' aim is to remember the range between the drone and the different obstacles/borders
  */
 public class Margin {
-    private HashMap<ZQSD, Tuple2<Obstacle, Integer>> localMargins;
-    private HashMap<ZQSD, Tuple2<Obstacle, Integer>> globalMargins;
+    private final HashMap<ZQSD, Tuple2<Obstacle, Integer>> localMargins;
+    private final HashMap<ZQSD, Tuple2<Obstacle, Integer>> globalMargins;
 
     public Margin() {
         this.localMargins = new HashMap<>();

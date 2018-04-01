@@ -3,14 +3,14 @@ package fr.unice.polytech.si3.qgl.ise.actions.simple;
 import fr.unice.polytech.si3.qgl.ise.actions.Action;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 
-public abstract class SimpleAction extends Action {
-    private Drone drone;
+abstract class SimpleAction extends Action {
+    private final Drone drone;
 
     SimpleAction(Drone drone) {
         this.drone = drone;
     }
 
-    protected Drone getDrone() {
+    Drone getDrone() {
         return drone;
     }
 }

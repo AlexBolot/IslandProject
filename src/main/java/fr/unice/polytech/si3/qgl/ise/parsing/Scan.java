@@ -11,10 +11,9 @@ import java.util.stream.IntStream;
  * Parses the data obtained through the scan command
  */
 public class Scan {
-    private int cost;
-    private ArrayList<String> creeks;
-    private ArrayList<String> emergencySites;
-    private ArrayList<Biome> biomes;
+    private final ArrayList<String> creeks;
+    private final ArrayList<String> emergencySites;
+    private final ArrayList<Biome> biomes;
 
     public Scan(String scanResult) {
         creeks = new ArrayList<>();
@@ -22,8 +21,6 @@ public class Scan {
         biomes = new ArrayList<>();
 
         JSONObject data = new JSONObject(scanResult);
-
-        cost = data.getInt("cost");
 
         JSONObject extras = data.getJSONObject("extras");
 
@@ -52,7 +49,4 @@ public class Scan {
         return biomes;
     }
 
-    public int getCost() {
-        return cost;
-    }
 }

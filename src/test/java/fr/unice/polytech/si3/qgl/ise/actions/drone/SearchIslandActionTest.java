@@ -17,16 +17,14 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class SearchIslandActionTest
-{
-    private Drone              drone;
+public class SearchIslandActionTest {
+    private Drone drone;
     private SearchIslandAction searchIslandAction;
-    private DroneInitAction    droneInitAction;
-    private JsonFactory jsonFact = new JsonFactory();
+    private DroneInitAction droneInitAction;
+    private final JsonFactory jsonFact = new JsonFactory();
 
     @Before
-    public void setUp ()
-    {
+    public void setUp() {
         drone = new Drone(new IslandMap(), NORTH);
 
         drone.getMargins().setGlobal(FRONT, BORDER, 50);
@@ -44,12 +42,9 @@ public class SearchIslandActionTest
     }
 
     @Test
-    public void apply_FacingGround ()
-    {
-        for (NSEW ori : NSEW.values())
-        {
-            for (ZQSD dir : new ZQSD[]{LEFT, RIGHT})
-            {
+    public void apply_FacingGround() {
+        for (NSEW ori : NSEW.values()) {
+            for (ZQSD dir : new ZQSD[]{LEFT, RIGHT}) {
                 drone.setOrientation(ori);
 
                 //Front
@@ -81,8 +76,7 @@ public class SearchIslandActionTest
                 int i = new Random().nextInt(2) + 1; //Rand between 1 and 3
 
                 //noinspection Duplicates
-                for (int j = 0; j < i; j++)
-                {
+                for (int j = 0; j < i; j++) {
                     json = jsonFact.createJsonString("echo", "direction", drone.getOrientation().getToThe(getOpposite(dir)).getValue());
                     result = searchIslandAction.apply();
                     assertEquals(json, result);
@@ -112,12 +106,9 @@ public class SearchIslandActionTest
     }
 
     @Test
-    public void apply_FacingBorder ()
-    {
-        for (NSEW ori : NSEW.values())
-        {
-            for (ZQSD dir : new ZQSD[]{LEFT, RIGHT})
-            {
+    public void apply_FacingBorder() {
+        for (NSEW ori : NSEW.values()) {
+            for (ZQSD dir : new ZQSD[]{LEFT, RIGHT}) {
                 drone.setOrientation(ori);
 
                 //Front
@@ -149,8 +140,7 @@ public class SearchIslandActionTest
                 int i = new Random().nextInt(2) + 1; //Rand between 1 and 3
 
                 //noinspection Duplicates
-                for (int j = 0; j < i; j++)
-                {
+                for (int j = 0; j < i; j++) {
                     json = jsonFact.createJsonString("echo", "direction", drone.getOrientation().getToThe(getOpposite(dir)).getValue());
                     result = searchIslandAction.apply();
                     assertEquals(json, result);

@@ -17,15 +17,13 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class ChangeLineActionTest
-{
-    private Drone            drone;
+public class ChangeLineActionTest {
+    private Drone drone;
     private ChangeLineAction changeLineAction;
-    private JsonFactory jsonFact = new JsonFactory();
+    private final JsonFactory jsonFact = new JsonFactory();
 
     @Before
-    public void init ()
-    {
+    public void init() {
         drone = new Drone(new IslandMap(), NORTH);
 
         drone.getMargins().setGlobal(FRONT, BORDER, 50);
@@ -41,8 +39,7 @@ public class ChangeLineActionTest
         changeLineAction = new ChangeLineAction(drone);
     }
 
-    private String getOrientation (ZQSD direction)
-    {
+    private String getOrientation(ZQSD direction) {
         if (direction == RIGHT) return drone.getOrientation().getToTheLeft().getValue();
 
         if (direction == LEFT) return drone.getOrientation().getToTheRight().getValue();
@@ -51,12 +48,9 @@ public class ChangeLineActionTest
     }
 
     @Test
-    public void apply_EasyWay ()
-    {
-        for (NSEW ori : NSEW.values())
-        {
-            for (ZQSD dir : new ZQSD[]{LEFT, RIGHT})
-            {
+    public void apply_EasyWay() {
+        for (NSEW ori : NSEW.values()) {
+            for (ZQSD dir : new ZQSD[]{LEFT, RIGHT}) {
                 drone.setOrientation(ori);
                 drone.setLastTurn(dir);
 
@@ -95,12 +89,9 @@ public class ChangeLineActionTest
     }
 
     @Test
-    public void apply_MultiReachIsland ()
-    {
-        for (NSEW ori : NSEW.values())
-        {
-            for (ZQSD dir : new ZQSD[]{LEFT, RIGHT})
-            {
+    public void apply_MultiReachIsland() {
+        for (NSEW ori : NSEW.values()) {
+            for (ZQSD dir : new ZQSD[]{LEFT, RIGHT}) {
                 drone.setOrientation(ori);
                 drone.setLastTurn(dir);
 
@@ -126,8 +117,7 @@ public class ChangeLineActionTest
 
                 drone.acknowledgeEcho(new Echo("{ \"cost\": 1, \"extras\": { \"range\": " + i + ", \"found\": \"GROUND\" }, \"status\": \"OK\" }"));
 
-                for (int j = 0; j <= i; j++)
-                {
+                for (int j = 0; j <= i; j++) {
                     json = jsonFact.createJsonString("fly");
                     result = changeLineAction.apply();
                     assertEquals(json, result);
@@ -144,12 +134,9 @@ public class ChangeLineActionTest
     }
 
     @Test
-    public void apply_MultiPassIsland ()
-    {
-        for (NSEW ori : NSEW.values())
-        {
-            for (ZQSD dir : new ZQSD[]{LEFT, RIGHT})
-            {
+    public void apply_MultiPassIsland() {
+        for (NSEW ori : NSEW.values()) {
+            for (ZQSD dir : new ZQSD[]{LEFT, RIGHT}) {
                 drone.setOrientation(ori);
                 drone.setLastTurn(dir);
 
@@ -159,8 +146,7 @@ public class ChangeLineActionTest
 
                 int i = new Random().nextInt(2) + 1; //Rand between 1 and 3
 
-                for (int j = 0; j < i; j++)
-                {
+                for (int j = 0; j < i; j++) {
                     drone.acknowledgeEcho(new Echo(
                             "{ \"cost\": 1, \"extras\": { \"range\": 0, \"found\": \"GROUND\" }, \"status\": \"OK\" }"));
 

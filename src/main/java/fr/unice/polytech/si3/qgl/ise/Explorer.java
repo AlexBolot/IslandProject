@@ -15,7 +15,7 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
 import static org.apache.logging.log4j.LogManager.getLogger;
 
 public class Explorer implements IExplorerRaid {
-    private static Logger logger = getLogger(Explorer.class);
+    private static final Logger logger = getLogger(Explorer.class);
     private Drone drone;
     private Crew crew;
     private IslandMap map;

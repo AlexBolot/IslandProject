@@ -15,9 +15,9 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 
 public class ChangeLineAction extends DroneAction {
     private Step currentStep;
-    private FlyAction flyAction;
-    private EchoAction echoAction;
-    private HeadingAction headingAction;
+    private final FlyAction flyAction;
+    private final EchoAction echoAction;
+    private final HeadingAction headingAction;
 
     private ZQSD generalDirection;
 
@@ -35,7 +35,7 @@ public class ChangeLineAction extends DroneAction {
         return apply(ZQSD.getOpposite(getDrone().getLastTurn()));
     }
 
-    public String apply(ZQSD direction) {
+    private String apply(ZQSD direction) {
         String res;
         Step nextStep = null;
 

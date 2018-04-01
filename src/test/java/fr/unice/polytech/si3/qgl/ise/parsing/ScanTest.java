@@ -11,12 +11,11 @@ import static org.junit.Assert.assertEquals;
  */
 public class ScanTest {
 
-    private String dataIn;
     private Scan scan;
 
     @Before
     public void setup() {
-        dataIn = "{\"cost\": 2, \"extras\": { \"biomes\": " +
+        String dataIn = "{\"cost\": 2, \"extras\": { \"biomes\": " +
                 "[\"OCEAN\", \"LAKE\", \"BEACH\", \"GRASSLAND\", " +
                 "\"MANGROVE\", \"TROPICAL_RAIN_FOREST\", \"TROPICAL_SEASONAL_FOREST\", " +
                 "\"TEMPERATE_DECIDUOUS_FOREST\", \"TEMPERATE_RAIN_FOREST\", \"TEMPERATE_DESERT\", " +

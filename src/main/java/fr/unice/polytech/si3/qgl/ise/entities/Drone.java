@@ -32,18 +32,18 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 
 public class Drone {
     private static final int movementUnit = 3;
-    private static Logger logger = getLogger(Drone.class);
+    private static final Logger logger = getLogger(Drone.class);
     private NSEW orientation;
     private ZQSD lastTurn;
     private ZQSD lastEcho;
     private DroneEnums.Action lastAction;
     private boolean isFlying;
     private boolean hasFoundIsland;
-    private SubState subState;
-    private IslandMap map;
+    private final SubState subState;
+    private final IslandMap map;
     private Coordinates coords;
     private ArrayList<Action> steps;
-    private Margin margins;
+    private final Margin margins;
 
     public Drone(IslandMap map, NSEW orientation) {
         this.map = map;
@@ -124,9 +124,7 @@ public class Drone {
 
             currentTile.getBiomesPercentage().clear();
 
-            scan.getBiomes().forEach(biome -> {
-                currentTile.getBiomesPercentage().put(biome, 100d);
-            });
+            scan.getBiomes().forEach(biome -> currentTile.getBiomesPercentage().put(biome, 100d));
         }
     }
 

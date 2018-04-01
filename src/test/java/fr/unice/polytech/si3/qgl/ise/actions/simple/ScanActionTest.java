@@ -8,13 +8,11 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class ScanActionTest {
-    private Drone drone;
-    private ScanAction scanAction;
 
     @Test
     public void correct() {
-        drone = new Drone(new IslandMap(), DroneEnums.NSEW.NORTH);
-        scanAction = new ScanAction(drone);
+        Drone drone = new Drone(new IslandMap(), DroneEnums.NSEW.NORTH);
+        ScanAction scanAction = new ScanAction(drone);
         String result = scanAction.apply();
         assertEquals("{\"action\":\"scan\"}", result);
     }

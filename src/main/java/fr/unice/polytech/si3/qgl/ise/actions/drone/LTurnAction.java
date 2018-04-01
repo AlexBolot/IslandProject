@@ -8,7 +8,7 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
 
 public class LTurnAction extends DroneAction {
     private Step currentStep;
-    private HeadingAction headingAction;
+    private final HeadingAction headingAction;
 
     LTurnAction(Drone drone) {
         super(drone);

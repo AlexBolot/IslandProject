@@ -7,9 +7,9 @@ import org.json.JSONObject;
  * Parses the data obtained through the echo command
  */
 public class Echo {
-    private int cost;
-    private int range;
-    private Obstacle obstacle;
+    private final int cost;
+    private final int range;
+    private final Obstacle obstacle;
 
     public Echo(String echoResult) {
         JSONObject data = new JSONObject(echoResult);

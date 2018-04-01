@@ -19,15 +19,14 @@ public class Crew {
 
     private Action lastAction;
 
-    private boolean isLanded;
     private String idCreek;
-    private List<RawContract> rawContracts;
-    private List<CraftedContract> craftedContracts;
+    private final List<RawContract> rawContracts;
+    private final List<CraftedContract> craftedContracts;
     private List<Action> steps;
-    private Map<RawResource, Integer> stock;
-    private Map<CraftedResource, Integer> craftedStock;
+    private final Map<RawResource, Integer> stock;
+    private final Map<CraftedResource, Integer> craftedStock;
 
-    private IslandMap map;
+    private final IslandMap map;
     private Coordinates coords;
     private RawResource currentResource;
     private int currentQuantity;

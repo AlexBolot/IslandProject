@@ -13,8 +13,8 @@ public enum CraftedResource {
     LEATHER("LEATHER", "3Fu"),
     RUM("RUM", "10Su+1Fr");
 
-    private String id;
-    private String recipe;
+    private final String id;
+    private final String recipe;
 
     CraftedResource(String id, String recipe) {
         this.id = id;

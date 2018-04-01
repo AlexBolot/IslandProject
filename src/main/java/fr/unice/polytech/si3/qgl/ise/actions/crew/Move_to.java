@@ -9,7 +9,7 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW.*;
 
 public class Move_to extends CrewAction {
 
-    private Coordinates coordinates;
+    private final Coordinates coordinates;
 
     public Move_to(Crew crewToUpdate, Coordinates coordinates) {
         super(crewToUpdate);

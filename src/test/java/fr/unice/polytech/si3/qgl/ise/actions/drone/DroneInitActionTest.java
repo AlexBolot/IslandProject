@@ -12,15 +12,13 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.BORDER;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 import static org.junit.Assert.assertEquals;
 
-public class DroneInitActionTest
-{
-    private Drone           drone;
+public class DroneInitActionTest {
+    private Drone drone;
     private DroneInitAction droneInitAction;
-    private JsonFactory jsonFact = new JsonFactory();
+    private final JsonFactory jsonFact = new JsonFactory();
 
     @Before
-    public void setUp ()
-    {
+    public void setUp() {
         drone = new Drone(new IslandMap(), NORTH);
 
         drone.getMargins().setGlobal(FRONT, BORDER, 50);
@@ -37,10 +35,8 @@ public class DroneInitActionTest
     }
 
     @Test
-    public void apply ()
-    {
-        for (NSEW ori : NSEW.values())
-        {
+    public void apply() {
+        for (NSEW ori : NSEW.values()) {
             drone.setOrientation(ori);
 
             String json = jsonFact.createJsonString("echo", "direction", drone.getOrientation().getValue());

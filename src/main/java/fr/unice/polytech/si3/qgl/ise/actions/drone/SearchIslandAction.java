@@ -14,9 +14,9 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 
 public class SearchIslandAction extends DroneAction {
     private Step currentStep;
-    private FlyAction flyAction;
-    private EchoAction echoAction;
-    private HeadingAction headingAction;
+    private final FlyAction flyAction;
+    private final EchoAction echoAction;
+    private final HeadingAction headingAction;
 
     public SearchIslandAction(Drone drone) {
         super(drone);
@@ -31,7 +31,7 @@ public class SearchIslandAction extends DroneAction {
         return apply(currentStep);
     }
 
-    public String apply(Step step) {
+    private String apply(Step step) {
         String res;
         Step nextStep = null;
 

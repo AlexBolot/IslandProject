@@ -3,34 +3,24 @@ package fr.unice.polytech.si3.qgl.ise.parsing;
 import fr.unice.polytech.si3.qgl.ise.enums.Abundance;
 import fr.unice.polytech.si3.qgl.ise.enums.Exploitability;
 import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
-import org.junit.Before;
 import org.junit.Test;
 import scala.Tuple2;
 
 import java.util.Random;
-
-import static fr.unice.polytech.si3.qgl.ise.enums.RawResource.*;
-import static fr.unice.polytech.si3.qgl.ise.enums.Abundance.*;
-import static fr.unice.polytech.si3.qgl.ise.enums.Exploitability.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ExploreParsingTest {
 
-    private ExploreParsing exploreParsing;
-    private RawResource rawResource;
-    private Abundance abundance;
-    private Exploitability exploitability;
-
 
     @Test
     public void parsingTest() {
         for (int i = 0; i < 100; i++) {
-            rawResource = generateResource();
-            abundance = generateAbundance();
-            exploitability = generateExploitability();
-            exploreParsing = new ExploreParsing(generateData(rawResource, abundance, exploitability));
+            RawResource rawResource = generateResource();
+            Abundance abundance = generateAbundance();
+            Exploitability exploitability = generateExploitability();
+            ExploreParsing exploreParsing = new ExploreParsing(generateData(rawResource, abundance, exploitability));
             assertTrue(exploreParsing.getResources().containsKey(rawResource));
             assertEquals(new Tuple2<>(abundance, exploitability), exploreParsing.getResources().get(rawResource));
         }

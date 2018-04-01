@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CraftedContract {
-    private Integer quantity;
-    private CraftedResource resource;
-    private Map<RawResource, Double> rawQuantities;
+    private final Integer quantity;
+    private final CraftedResource resource;
+    private final Map<RawResource, Double> rawQuantities;
 
     public CraftedContract(CraftedResource resource, Integer quantity) {
         this.quantity = quantity;

@@ -10,7 +10,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 public class Transform extends CrewAction {
-    private HashMap<RawResource, Integer> resourceWithQuantity;
+    private final HashMap<RawResource, Integer> resourceWithQuantity;
     private int producted;
 
     public Transform(Crew crewToUpdate, HashMap<RawResource, Integer> resourceWithQuantity) {

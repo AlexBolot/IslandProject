@@ -9,10 +9,10 @@ import java.util.Map;
 
 public class IslandMap {
     //FIXME Discuter de ces probabilités
-    public static double[] percentageOfLayerForUpdate = {100, 70, 60, 50, 40, 30, 20};
+    public static final double[] percentageOfLayerForUpdate = {100, 70, 60, 50, 40, 30, 20};
 
-    private Map<Coordinates, Tile> tiles;
-    private Map<String, Coordinates> creeks;
+    private final Map<Coordinates, Tile> tiles;
+    private final Map<String, Coordinates> creeks;
     private Tuple2<String, Coordinates> emergencySite;
 
     public IslandMap() {

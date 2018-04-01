@@ -17,19 +17,16 @@ import static org.junit.Assert.assertEquals;
 
 public class Move_toTest {
 
-    Crew crew;
-    CrewAction moveTo;
-    IslandMap map;
-    List<RawContract> rawContracts;
-    List<CraftedContract> craftedContracts;
+    private Crew crew;
+    private IslandMap map;
 
     @Before
     public void setup() {
         map = new IslandMap();
         map.addCreek(new Coordinates(0, 0), "idDepart");
 
-        rawContracts = new ArrayList<>();
-        craftedContracts = new ArrayList<>();
+        List<RawContract> rawContracts = new ArrayList<>();
+        List<CraftedContract> craftedContracts = new ArrayList<>();
 
         rawContracts.add(new RawContract(RawResource.WOOD, 500));
         crew = new Crew(map, rawContracts, craftedContracts);
@@ -45,7 +42,7 @@ public class Move_toTest {
 
     @Test
     public void testDeplacement() {
-        moveTo = new Move_to(crew, new Coordinates(10, 10));
+        CrewAction moveTo = new Move_to(crew, new Coordinates(10, 10));
         while (!moveTo.isFinished()) {
             moveTo.apply();
         }

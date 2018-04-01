@@ -12,9 +12,9 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 
 public class ReachIslandAction extends DroneAction {
     private Step currentStep;
-    private FlyAction flyAction;
-    private EchoAction echoAction;
-    private LTurnAction lTurnAction;
+    private final FlyAction flyAction;
+    private final EchoAction echoAction;
+    private final LTurnAction lTurnAction;
 
     public ReachIslandAction(Drone drone) {
         super(drone);
@@ -29,7 +29,7 @@ public class ReachIslandAction extends DroneAction {
         return apply(currentStep);
     }
 
-    public String apply(Step step) {
+    private String apply(Step step) {
         String res;
         Step nextStep = null;
 

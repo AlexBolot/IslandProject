@@ -9,7 +9,7 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 
 public class DroneInitAction extends DroneAction {
     private Step currentStep;
-    private EchoAction echoAction;
+    private final EchoAction echoAction;
 
     public DroneInitAction(Drone drone) {
         super(drone);
@@ -22,7 +22,7 @@ public class DroneInitAction extends DroneAction {
         return apply(currentStep);
     }
 
-    public String apply(Step step) {
+    private String apply(Step step) {
         String res;
         Step nextStep = null;
 

@@ -9,18 +9,13 @@ import scala.Tuple2;
 import java.util.*;
 
 public class Tile {
-    private Map<Biome, Double> biomesPercentage;
+    private final Map<Biome, Double> biomesPercentage;
     private Map<RawResource, Tuple2<Abundance, Exploitability>> resourcesStats;
     private boolean isExplored = false;
 
     Tile() {
         biomesPercentage = new HashMap<>();
         resourcesStats = new EnumMap<>(RawResource.class);
-    }
-
-    public Tile(Tile tile) {
-        biomesPercentage = new HashMap<>();
-        resourcesStats = new EnumMap<>(tile.resourcesStats);
     }
 
     Tile(Map<Biome, Double> possibleBiomes) {

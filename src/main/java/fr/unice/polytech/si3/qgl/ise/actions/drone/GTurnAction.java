@@ -17,9 +17,9 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.getOpposite;
 
 public class GTurnAction extends DroneAction {
     private Step currentStep;
-    private FlyAction flyAction;
-    private EchoAction echoAction;
-    private HeadingAction headingAction;
+    private final FlyAction flyAction;
+    private final EchoAction echoAction;
+    private final HeadingAction headingAction;
     private boolean turnNotBis;
 
     public GTurnAction(Drone drone) {
@@ -36,7 +36,7 @@ public class GTurnAction extends DroneAction {
         return apply(currentStep);
     }
 
-    public String apply(Step step) {
+    private String apply(Step step) {
         String res;
         Step nextStep = null;
 

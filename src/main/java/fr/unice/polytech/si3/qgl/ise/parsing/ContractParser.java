@@ -16,8 +16,8 @@ public class ContractParser {
     private final String heading;
     private final int budget;
 
-    private List<RawContract> rawContracts;
-    private List<CraftedContract> craftedContracts;
+    private final List<RawContract> rawContracts;
+    private final List<CraftedContract> craftedContracts;
 
     public ContractParser(String stringToParse) {
         JSONObject data = new JSONObject(stringToParse);
