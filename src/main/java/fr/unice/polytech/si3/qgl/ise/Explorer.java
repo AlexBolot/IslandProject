@@ -21,7 +21,7 @@ public class Explorer implements IExplorerRaid {
     private IslandMap map;
     private int remainingBudget;
     private ContractParser contractParser;
-    private boolean acknowledgeError;
+    private boolean shouldStop;
 
     @Override
     public void initialize(String contract) {
@@ -37,8 +37,9 @@ public class Explorer implements IExplorerRaid {
             NSEW orientation = NSEW.getFromValue(heading);
             map = new IslandMap();
             drone = new Drone(map, orientation);
-            acknowledgeError = false;
+            shouldStop = false;
         } catch (Exception e) {
+            shouldStop = true;
             logger.info(e.getMessage());
         }
 
@@ -46,7 +47,7 @@ public class Explorer implements IExplorerRaid {
 
     @Override
     public String takeDecision() {
-        if (acknowledgeError) return new StopAction(drone).apply();
+        if (shouldStop) return new StopAction(drone).apply();
 
         try {
             if (remainingBudget > 150) {
@@ -100,7 +101,7 @@ public class Explorer implements IExplorerRaid {
                 crew.acknowledgeResults(results);
             }
         } catch (Exception e) {
-            acknowledgeError = true;
+            shouldStop = true;
             logger.info(e.getMessage());
 
         }
