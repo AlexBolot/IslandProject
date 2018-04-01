@@ -9,33 +9,25 @@ import org.junit.Test;
 
 import java.util.Random;
 
+import static fr.unice.polytech.si3.qgl.ise.actions.drone.TestingUtils.setMargins;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW.NORTH;
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.BORDER;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
+import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.LEFT;
+import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.RIGHT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ChangeLineActionTest {
-    private final JsonFactory jsonFact = new JsonFactory();
     private Drone drone;
     private ChangeLineAction changeLineAction;
+    private final JsonFactory jsonFact = new JsonFactory();
 
     @Before
-    public void init() {
+    public void setUp()
+    {
         drone = new Drone(new IslandMap(), NORTH);
-
-        drone.getMargins().setGlobal(FRONT, BORDER, 50);
-        drone.getMargins().setGlobal(BACK, BORDER, 50);
-        drone.getMargins().setGlobal(LEFT, BORDER, 50);
-        drone.getMargins().setGlobal(RIGHT, BORDER, 50);
-
-        drone.getMargins().setLocal(FRONT, BORDER, 50);
-        drone.getMargins().setLocal(BACK, BORDER, 50);
-        drone.getMargins().setLocal(LEFT, BORDER, 50);
-        drone.getMargins().setLocal(RIGHT, BORDER, 50);
-
+        setMargins(drone, 50);
         changeLineAction = new ChangeLineAction(drone);
     }
 
@@ -83,7 +75,7 @@ public class ChangeLineActionTest {
 
                 assertTrue(changeLineAction.isFinished());
 
-                changeLineAction.reset();
+                setUp();
             }
         }
     }
@@ -128,7 +120,7 @@ public class ChangeLineActionTest {
 
                 assertTrue(changeLineAction.isFinished());
 
-                changeLineAction.reset();
+                setUp();
             }
         }
     }
@@ -184,7 +176,7 @@ public class ChangeLineActionTest {
 
                 assertTrue(changeLineAction.isFinished());
 
-                changeLineAction.reset();
+                setUp();
             }
         }
     }

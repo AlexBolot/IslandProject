@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW.NORTH;
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.BORDER;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 import static org.junit.Assert.*;
 
@@ -19,19 +18,10 @@ public class LTurnActionTest {
     private LTurnAction lTurnAction;
 
     @Before
-    public void init() {
+    public void setUp()
+    {
         drone = new Drone(new IslandMap(), NORTH);
-
-        drone.getMargins().setGlobal(FRONT, BORDER, 50);
-        drone.getMargins().setGlobal(BACK, BORDER, 50);
-        drone.getMargins().setGlobal(LEFT, BORDER, 50);
-        drone.getMargins().setGlobal(RIGHT, BORDER, 50);
-
-        drone.getMargins().setLocal(FRONT, BORDER, 50);
-        drone.getMargins().setLocal(BACK, BORDER, 50);
-        drone.getMargins().setLocal(LEFT, BORDER, 50);
-        drone.getMargins().setLocal(RIGHT, BORDER, 50);
-
+        TestingUtils.setMargins(drone, 50);
         lTurnAction = new LTurnAction(drone);
     }
 
@@ -64,19 +54,8 @@ public class LTurnActionTest {
 
                 assertTrue(lTurnAction.isFinished());
 
-                lTurnAction.reset();
-            }
+                setUp();
+}
         }
-    }
-
-    @Test
-    public void reset() {
-        while (!lTurnAction.isFinished()) lTurnAction.apply(LEFT);
-
-        assertTrue(lTurnAction.isFinished());
-
-        lTurnAction.reset();
-
-        assertFalse(lTurnAction.isFinished());
     }
 }

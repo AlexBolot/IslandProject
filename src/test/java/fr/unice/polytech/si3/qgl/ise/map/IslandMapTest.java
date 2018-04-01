@@ -86,8 +86,7 @@ public class IslandMapTest {
     public void testGetTileWhenExists() {
         Tile expected = new Tile();
         islandMap.addTile(new Coordinates(50, 50), expected);
-        assertTrue("The returned Tile must be a reference, not a copy",
-                expected == islandMap.getTile(new Coordinates(50, 50)));
+        assertSame("The returned Tile must be a reference, not a copy", expected, islandMap.getTile(new Coordinates(50, 50)));
     }
 
     @Test

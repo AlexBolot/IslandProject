@@ -11,8 +11,8 @@ import org.junit.Test;
 
 import java.util.Random;
 
+import static fr.unice.polytech.si3.qgl.ise.actions.drone.TestingUtils.setMargins;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW.NORTH;
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.BORDER;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -26,17 +26,7 @@ public class SearchIslandActionTest {
     @Before
     public void setUp() {
         drone = new Drone(new IslandMap(), NORTH);
-
-        drone.getMargins().setGlobal(FRONT, BORDER, 50);
-        drone.getMargins().setGlobal(BACK, BORDER, 50);
-        drone.getMargins().setGlobal(LEFT, BORDER, 50);
-        drone.getMargins().setGlobal(RIGHT, BORDER, 50);
-
-        drone.getMargins().setLocal(FRONT, BORDER, 50);
-        drone.getMargins().setLocal(BACK, BORDER, 50);
-        drone.getMargins().setLocal(LEFT, BORDER, 50);
-        drone.getMargins().setLocal(RIGHT, BORDER, 50);
-
+        setMargins(drone, 50);
         searchIslandAction = new SearchIslandAction(drone);
         droneInitAction = new DroneInitAction(drone);
     }
@@ -99,8 +89,7 @@ public class SearchIslandActionTest {
                 assertTrue(searchIslandAction.apply().isEmpty());
                 assertTrue(searchIslandAction.isFinished());
 
-                droneInitAction.reset();
-                searchIslandAction.reset();
+                setUp();
             }
         }
     }
@@ -163,8 +152,7 @@ public class SearchIslandActionTest {
                 assertTrue(searchIslandAction.apply().isEmpty());
                 assertTrue(searchIslandAction.isFinished());
 
-                droneInitAction.reset();
-                searchIslandAction.reset();
+                setUp();
             }
         }
     }

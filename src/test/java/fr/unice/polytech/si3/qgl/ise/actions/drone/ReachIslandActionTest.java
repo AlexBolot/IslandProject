@@ -10,8 +10,8 @@ import org.junit.Test;
 
 import java.util.Random;
 
+import static fr.unice.polytech.si3.qgl.ise.actions.drone.TestingUtils.setMargins;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW.NORTH;
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.BORDER;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 import static org.junit.Assert.assertEquals;
@@ -25,27 +25,15 @@ public class ReachIslandActionTest {
     private LTurnAction lTurnAction;
 
     @Before
-    public void init() {
+    public void setUp()
+    {
         drone = new Drone(new IslandMap(), NORTH);
-        drone2 = new Drone(new IslandMap(), NORTH);
-
-        setMargins(drone);
-        setMargins(drone2);
-
+        setMargins(drone, 50);
         reachIslandAction = new ReachIslandAction(drone);
+
+        drone2 = new Drone(new IslandMap(), NORTH);
+        setMargins(drone2, 50);
         lTurnAction = new LTurnAction(drone2);
-    }
-
-    private void setMargins(Drone drone) {
-        drone.getMargins().setGlobal(FRONT, BORDER, 50);
-        drone.getMargins().setGlobal(BACK, BORDER, 50);
-        drone.getMargins().setGlobal(LEFT, BORDER, 50);
-        drone.getMargins().setGlobal(RIGHT, BORDER, 50);
-
-        drone.getMargins().setLocal(FRONT, BORDER, 50);
-        drone.getMargins().setLocal(BACK, BORDER, 50);
-        drone.getMargins().setLocal(LEFT, BORDER, 50);
-        drone.getMargins().setLocal(RIGHT, BORDER, 50);
     }
 
     @Test
@@ -81,8 +69,7 @@ public class ReachIslandActionTest {
                 assertTrue(reachIslandAction.apply().isEmpty());
                 assertTrue(reachIslandAction.isFinished());
 
-                reachIslandAction.reset();
-                lTurnAction.reset();
+                setUp();
             }
         }
     }
