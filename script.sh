@@ -41,6 +41,6 @@ for f in scriptResults/*/island.log; do
 	echo >> ${resPath}
 done
 
+mkdir -p CustomerValue
 today=`date +%Y-%m-%d.%H:%M:%S`
-
 cp ${resPath} CustomerValue/${today}.log
