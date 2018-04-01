@@ -25,9 +25,9 @@ public class MoveTo extends CrewAction {
 
     private boolean setLastAction() {
         //The action is the last when whe are 1 tile close
-        Coordinates crewCoords = getCrewToUpdate().getCoords();
-//        if ((crewCoords.getX() == coordinates.getX() && Ydiff1) || (crewCoords.getY() == coordinates.getY() && Xdiff1))
-        if (caseToReachFrom(crewCoords) == 1)
+        Coordinates crewCoordinates = getCrewToUpdate().getCoordinates();
+//        if ((crewCoordinates.getX() == coordinates.getX() && Ydiff1) || (crewCoordinates.getY() == coordinates.getY() && Xdiff1))
+        if (caseToReachFrom(crewCoordinates) == 1)
             finish();
 
         return this.isFinished();
@@ -40,20 +40,20 @@ public class MoveTo extends CrewAction {
         //We update the state of the action
         if (setLastAction() || !isFinished()) {
             //We have to go north
-            if (crew.getCoords().getY() < coordinates.getY()) {
-                crew.setCoords(new Coordinates(crew.getCoords().getX(), crew.getCoords().getY() + 1));
+            if (crew.getCoordinates().getY() < coordinates.getY()) {
+                crew.setCoordinates(new Coordinates(crew.getCoordinates().getX(), crew.getCoordinates().getY() + 1));
                 return new JsonFactory().createJsonString(MOVE_TO, DIRECTION, NORTH.getValue());
-            } else if (crew.getCoords().getY() > coordinates.getY()) { //We go South
-                crew.setCoords(new Coordinates(crew.getCoords().getX(), crew.getCoords().getY() - 1));
+            } else if (crew.getCoordinates().getY() > coordinates.getY()) { //We go South
+                crew.setCoordinates(new Coordinates(crew.getCoordinates().getX(), crew.getCoordinates().getY() - 1));
                 return new JsonFactory().createJsonString(MOVE_TO, DIRECTION, SOUTH.getValue());
             }
             //If the x is good, we check for the X
             //We have to go east
-            if (crew.getCoords().getX() < coordinates.getX()) {
-                crew.setCoords(new Coordinates(crew.getCoords().getX() + 1, crew.getCoords().getY()));
+            if (crew.getCoordinates().getX() < coordinates.getX()) {
+                crew.setCoordinates(new Coordinates(crew.getCoordinates().getX() + 1, crew.getCoordinates().getY()));
                 return new JsonFactory().createJsonString(MOVE_TO, DIRECTION, EAST.getValue());
-            } else if (crew.getCoords().getX() > coordinates.getX()) {
-                crew.setCoords(new Coordinates(crew.getCoords().getX() - 1, crew.getCoords().getY()));
+            } else if (crew.getCoordinates().getX() > coordinates.getX()) {
+                crew.setCoordinates(new Coordinates(crew.getCoordinates().getX() - 1, crew.getCoordinates().getY()));
                 return new JsonFactory().createJsonString(MOVE_TO, DIRECTION, WEST.getValue());
             }
         }

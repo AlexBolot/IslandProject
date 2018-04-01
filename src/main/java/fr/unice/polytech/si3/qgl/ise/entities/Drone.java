@@ -42,12 +42,12 @@ public class Drone {
     private DroneEnums.Action lastAction;
     private boolean isFlying;
     private boolean hasFoundIsland;
-    private Coordinates coords;
+    private Coordinates coordinates;
     private ArrayList<Action> steps;
 
     public Drone(IslandMap map, NSEW orientation) {
         this.map = map;
-        this.coords = new Coordinates(0, 0);
+        this.coordinates = new Coordinates(0, 0);
         this.isFlying = true;
         this.subState = INIT_ECHO_FRONT;
         this.orientation = orientation;
@@ -101,12 +101,12 @@ public class Drone {
     //region ===== Getters =====
 
     public void acknowledgeScan(Scan scan) {
-        if (!scan.getCreeks().isEmpty()) map.addCreeks(coords, scan.getCreeks());
-        if (!scan.getEmergencySites().isEmpty()) map.addSite(coords, scan.getEmergencySites().get(0));
+        if (!scan.getCreeks().isEmpty()) map.addCreeks(coordinates, scan.getCreeks());
+        if (!scan.getEmergencySites().isEmpty()) map.addSite(coordinates, scan.getEmergencySites().get(0));
         if (!scan.getBiomes().isEmpty()) {
             //For each layer
             int numLayer = 0;
-            for (List<Tile> layer : map.getTileToUpdateFrom(coords.getX(), coords.getY())) {
+            for (List<Tile> layer : map.getTileToUpdateFrom(coordinates.getX(), coordinates.getY())) {
                 //On each tile
                 for (Tile tileOfLayer : layer) {
                     //With each biome
@@ -120,7 +120,7 @@ public class Drone {
                 break;
             }
 
-            Tile currentTile = map.getTile(coords);
+            Tile currentTile = map.getTile(coordinates);
 
             currentTile.getBiomesPercentage().clear();
 
@@ -152,12 +152,12 @@ public class Drone {
         this.lastAction = lastAction;
     }
 
-    public Coordinates getCoords() {
-        return coords;
+    public Coordinates getCoordinates() {
+        return coordinates;
     }
 
-    public void setCoords(Coordinates coords) {
-        this.coords = coords;
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
 
     public ZQSD getLastTurn() {

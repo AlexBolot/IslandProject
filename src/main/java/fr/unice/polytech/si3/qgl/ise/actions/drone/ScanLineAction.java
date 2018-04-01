@@ -91,7 +91,7 @@ public class ScanLineAction extends DroneAction {
     }
 
     private String checkResult() {
-        Tile tile = getDrone().getMap().getTile(getDrone().getCoords());
+        Tile tile = getDrone().getMap().getTile(getDrone().getCoordinates());
         List<Biome> biomes = tile.getPossibleBiomes();
 
         String res = "";

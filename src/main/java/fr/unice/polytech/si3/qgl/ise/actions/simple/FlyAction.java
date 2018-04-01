@@ -29,33 +29,33 @@ public class FlyAction extends SimpleAction {
 
     private String fly() {
         int unit = Drone.getMovementUnit();
-        int oldX = getDrone().getCoords().getX();
-        int oldY = getDrone().getCoords().getY();
+        int oldX = getDrone().getCoordinates().getX();
+        int oldY = getDrone().getCoordinates().getY();
 
-        Coordinates newCoords;
+        Coordinates newCoordinates;
 
         switch (getDrone().getOrientation()) {
             case EAST:
-                newCoords = new Coordinates(oldX + unit, oldY);
+                newCoordinates = new Coordinates(oldX + unit, oldY);
                 break;
 
             case WEST:
-                newCoords = new Coordinates(oldX - unit, oldY);
+                newCoordinates = new Coordinates(oldX - unit, oldY);
                 break;
 
             case NORTH:
-                newCoords = new Coordinates(oldX, oldY + unit);
+                newCoordinates = new Coordinates(oldX, oldY + unit);
                 break;
 
             case SOUTH:
-                newCoords = new Coordinates(oldX, oldY - unit);
+                newCoordinates = new Coordinates(oldX, oldY - unit);
                 break;
 
             default:
                 throw new IllegalStateException("Something went wrong while turning right");
         }
 
-        getDrone().setCoords(newCoords);
+        getDrone().setCoordinates(newCoordinates);
         updateMargins();
 
         return new JsonFactory().createJsonString("fly");

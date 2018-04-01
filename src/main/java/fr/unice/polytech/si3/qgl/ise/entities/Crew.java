@@ -25,7 +25,7 @@ public class Crew {
     private Action lastAction;
     private String idCreek;
     private List<Action> steps;
-    private Coordinates coords;
+    private Coordinates coordinates;
     private RawResource currentResource;
     private List<RawResource> wantedResources = new ArrayList<>();
     private List<RawContract> completedRawContracts = new ArrayList<>();
@@ -39,16 +39,12 @@ public class Crew {
         this.stock = new EnumMap<>(RawResource.class);
         this.craftedStock = new EnumMap<>(CraftedResource.class);
 
-        Optional<RawContract> bestContract = choseBestRawContract();
-        bestContract.ifPresent(rawContract -> currentResource = rawContract.getResource());
-        bestContract.ifPresent(rawContract -> currentQuantity = rawContract.getQuantity());
-
         for (RawContract raw : rawContracts) {
             wantedResources.add(raw.getResource());
         }
 
         idCreek = PathFinder.findBestCreek(map, wantedResources);
-        coords = map.getCreeks().get(idCreek);
+        coordinates = map.getCreeks().get(idCreek);
 
         initActions();
     }
@@ -125,12 +121,12 @@ public class Crew {
         return map;
     }
 
-    public Coordinates getCoords() {
-        return coords;
+    public Coordinates getCoordinates() {
+        return coordinates;
     }
 
-    public void setCoords(Coordinates coords) {
-        this.coords = coords;
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
 
     public RawResource getCurrentResource() {

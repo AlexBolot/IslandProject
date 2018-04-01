@@ -52,26 +52,26 @@ public class HeadingAction extends SimpleAction {
             return new StopAction(getDrone()).apply();
 
         int unit = Drone.getMovementUnit();
-        int oldX = getDrone().getCoords().getX();
-        int oldY = getDrone().getCoords().getY();
+        int oldX = getDrone().getCoordinates().getX();
+        int oldY = getDrone().getCoordinates().getY();
 
-        Coordinates newCoords;
+        Coordinates newCoordinates;
 
         switch (getDrone().getOrientation()) {
             case EAST:
-                newCoords = new Coordinates(oldX + unit, oldY - unit);
+                newCoordinates = new Coordinates(oldX + unit, oldY - unit);
                 break;
 
             case WEST:
-                newCoords = new Coordinates(oldX - unit, oldY + unit);
+                newCoordinates = new Coordinates(oldX - unit, oldY + unit);
                 break;
 
             case NORTH:
-                newCoords = new Coordinates(oldX + unit, oldY + unit);
+                newCoordinates = new Coordinates(oldX + unit, oldY + unit);
                 break;
 
             case SOUTH:
-                newCoords = new Coordinates(oldX - unit, oldY - unit);
+                newCoordinates = new Coordinates(oldX - unit, oldY - unit);
                 break;
 
             default:
@@ -80,7 +80,7 @@ public class HeadingAction extends SimpleAction {
 
         NSEW newOri = getDrone().getOrientation().getToTheRight();
 
-        getDrone().setCoords(newCoords);
+        getDrone().setCoordinates(newCoordinates);
         getDrone().setOrientation(newOri);
 
         return new JsonFactory().createJsonString("heading", "direction", newOri.getValue());
@@ -92,26 +92,26 @@ public class HeadingAction extends SimpleAction {
             return new StopAction(getDrone()).apply();
 
         int unit = Drone.getMovementUnit();
-        int oldX = getDrone().getCoords().getX();
-        int oldY = getDrone().getCoords().getY();
+        int oldX = getDrone().getCoordinates().getX();
+        int oldY = getDrone().getCoordinates().getY();
 
-        Coordinates newCoords;
+        Coordinates newCoordinates;
 
         switch (getDrone().getOrientation()) {
             case EAST:
-                newCoords = new Coordinates(oldX + unit, oldY + unit);
+                newCoordinates = new Coordinates(oldX + unit, oldY + unit);
                 break;
 
             case WEST:
-                newCoords = new Coordinates(oldX - unit, oldY - unit);
+                newCoordinates = new Coordinates(oldX - unit, oldY - unit);
                 break;
 
             case NORTH:
-                newCoords = new Coordinates(oldX - unit, oldY + unit);
+                newCoordinates = new Coordinates(oldX - unit, oldY + unit);
                 break;
 
             case SOUTH:
-                newCoords = new Coordinates(oldX + unit, oldY - unit);
+                newCoordinates = new Coordinates(oldX + unit, oldY - unit);
                 break;
 
             default:
@@ -120,7 +120,7 @@ public class HeadingAction extends SimpleAction {
 
         NSEW newOri = getDrone().getOrientation().getToTheLeft();
 
-        getDrone().setCoords(newCoords);
+        getDrone().setCoordinates(newCoordinates);
         getDrone().setOrientation(newOri);
 
         return new JsonFactory().createJsonString("heading", "direction", newOri.getValue());

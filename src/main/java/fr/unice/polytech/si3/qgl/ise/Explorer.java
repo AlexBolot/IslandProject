@@ -73,7 +73,7 @@ public class Explorer implements IExplorerRaid {
                 return new StopAction(drone).apply();
             }
         } catch (Exception e) {
-            logger.info(e.getMessage());
+            logger.error(e.getMessage());
             return new StopAction(drone).apply();
         }
     }
@@ -103,40 +103,45 @@ public class Explorer implements IExplorerRaid {
             }
         } catch (Exception e) {
             shouldStop = true;
-            logger.info(e.getMessage());
+            logger.error(e.getMessage());
 
         }
     }
 
     @Override
     public String deliverFinalReport() {
-        StringBuilder str2 = new StringBuilder();
+        try {
+            StringBuilder str2 = new StringBuilder();
 
-        str2.append("Report:").append("\n");
+            str2.append("Report:").append("\n");
 
-        str2.append("Creeks found: ").append(drone.getMap().getCreeks().size()).append("\n");
-        str2.append("Inventory :").append("\n");
-        crew.getStock().forEach((key, value) -> str2.append(key).append(" - ").append(value).append("\n"));
+            str2.append("Creeks found: ").append(drone.getMap().getCreeks().size()).append("\n");
 
-        crew.getCompletedRawContracts().forEach(rawContract -> {
-            str2.append("Raw contract completed : ").append(rawContract).append("\n");
-        });
+            str2.append("Points earned: ").append(crew.getCompletedRawContracts().size() + crew.getCompletedCraftedContracts().size()*2).append("\n");
 
-        crew.getCompletedCraftedContracts().forEach(craftedContract -> {
-            str2.append("Crafted contract completed : ").append(craftedContract).append("\n");
-        });
+            str2.append("Raw Contracts: ").append(crew.getCompletedRawContracts().size()).append("/").append(crew.getCompletedRawContracts().size() + crew.getRawContracts().size()).append("\n");
 
-        crew.getRawContracts().forEach(rawContract -> {
-            str2.append("Raw contract failed : ").append(rawContract).append("\n");
-        });
+            str2.append("Crafted Contracts: ").append(crew.getCompletedCraftedContracts().size()).append("/").append(crew.getCompletedCraftedContracts().size() + crew.getCraftedContracts().size()).append("\n");
 
-        crew.getCraftedContracts().forEach(craftedContract -> {
-            str2.append("Crafted contract failed : ").append(craftedContract).append("\n");
-        });
+            str2.append("Inventory:").append("\n");
 
-        str2.append("Remaining points : ").append(remainingBudget).append("\n");
+            crew.getStock().forEach((key, value) -> str2.append(key).append(" - ").append(value).append("\n"));
 
-        logger.info(str2.toString());
+            crew.getCompletedRawContracts().forEach(rawContract -> str2.append("Raw contract completed: ").append(rawContract).append("\n"));
+
+            crew.getCompletedCraftedContracts().forEach(craftedContract -> str2.append("Crafted contract completed: ").append(craftedContract).append("\n"));
+
+            crew.getRawContracts().forEach(rawContract -> str2.append("Raw contract failed: ").append(rawContract).append("\n"));
+
+            crew.getCraftedContracts().forEach(craftedContract -> str2.append("Crafted contract failed: ").append(craftedContract).append("\n"));
+
+            str2.append("Remaining points: ").append(remainingBudget).append("\n");
+
+            logger.info(str2.toString());
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
 
         return "Did everyone see that? Because we will not be doing it again!";
     }

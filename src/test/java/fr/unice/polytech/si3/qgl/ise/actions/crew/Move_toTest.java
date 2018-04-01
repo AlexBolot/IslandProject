@@ -31,13 +31,13 @@ public class Move_toTest {
         rawContracts.add(new RawContract(RawResource.WOOD, 500));
         crew = new Crew(map, rawContracts, craftedContracts);
         crew.setIdCreek("idDepart");
-        crew.setCoords(new Coordinates(0, 0));
+        crew.setCoordinates(new Coordinates(0, 0));
     }
 
     @Test
     public void testSetup() {
         assertEquals("The map should have one creek", 1, map.getCreeks().size());
-        assertEquals("The setup is not ok", new Coordinates(0, 0), crew.getCoords());
+        assertEquals("The setup is not ok", new Coordinates(0, 0), crew.getCoordinates());
     }
 
     @Test
@@ -46,11 +46,11 @@ public class Move_toTest {
         while (!moveTo.isFinished()) {
             moveTo.apply();
         }
-        assertEquals("The crew should be in 10,10 ", new Coordinates(10, 10), crew.getCoords());
+        assertEquals("The crew should be in 10,10 ", new Coordinates(10, 10), crew.getCoordinates());
         moveTo = new MoveTo(crew, new Coordinates(-10, -10));
         while (!moveTo.isFinished()) {
             moveTo.apply();
         }
-        assertEquals("The crew should be in -10,-10 ", new Coordinates(-10, -10), crew.getCoords());
+        assertEquals("The crew should be in -10,-10 ", new Coordinates(-10, -10), crew.getCoordinates());
     }
 }
