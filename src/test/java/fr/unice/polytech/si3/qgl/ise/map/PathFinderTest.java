@@ -54,17 +54,6 @@ public class PathFinderTest {
     }
 
     @Test
-    public void findNearestCreekTest() {
-        Coordinates coordinates = new Coordinates(-2, 44);
-
-        assertEquals("id2", PathFinder.findNearestCreek(map.getCreeks(), coordinates));
-
-        map.addCreek(new Coordinates(-2, 42), "id4");
-
-        assertEquals("id4", PathFinder.findNearestCreek(map.getCreeks(), coordinates));
-    }
-
-    @Test
     public void findNearestTileOfBiomeTest() {
         assertEquals(null, PathFinder.findNearestTileOfBiome(map, new Coordinates(0, 0), Biome.SHRUBLAND));
         assertEquals(new Coordinates(15, -34), PathFinder.findNearestTileOfBiome(map, new Coordinates(-20, -26), Biome.TAIGA));

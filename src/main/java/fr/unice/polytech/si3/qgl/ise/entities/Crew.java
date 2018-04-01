@@ -146,7 +146,7 @@ public class Crew {
         return craftedContracts;
     }
 
-    public int getCraftedRessourceQuantity(CraftedResource resource) {
+    public int getCraftedResourceQuantity(CraftedResource resource) {
         return craftedStock.get(resource);
     }
 }

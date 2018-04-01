@@ -23,15 +23,36 @@ public class PathFinder {
     }
 
     /**
-     * Searches for the creek nearest to the given point on the island from what's recorded by the drone
      *
-     * @param creeks      : map containing the recorded creeks (ids and coordinates)
-     * @param coordinates : one point on the map
-     * @return the id of the creek nearest to the given po int, or an empty string if there is no creek
+     * @param map
+     * @param creekId
+     * @param resources
+     * @return
      */
-    public static String findNearestCreek(Map<String, Coordinates> creeks, Coordinates coordinates) {
-        return creeks.entrySet().stream()
-                .min(Comparator.comparingDouble(entry -> calculateDistance(entry.getValue(), coordinates)))
+    private static double calculateScore(IslandMap map, String creekId, List<RawResource> resources) {
+        List<Biome> acceptableBiomes = new ArrayList<>();
+
+        for (RawResource resource : resources) {
+            acceptableBiomes.addAll(Arrays.stream(Biome.values())
+                    .filter(biome -> Arrays.asList(biome.getResources()).contains(resource))
+                    .collect(Collectors.toList()));
+        }
+
+        return map.getMap().entrySet().stream()
+                .filter(entry -> !Collections.disjoint(entry.getValue().getPossibleBiomes(), acceptableBiomes))
+                .mapToDouble(entry -> 1 / (calculateDistance(map.getCreeks().get(creekId), entry.getKey())))
+                .sum();
+    }
+
+    /**
+     *
+     * @param map
+     * @param resources
+     * @return
+     */
+    public static String findBestCreek(IslandMap map, List<RawResource> resources) {
+        return map.getCreeks().entrySet().stream()
+                .max(Comparator.comparingDouble(entry -> calculateScore(map, entry.getKey(), resources)))
                 .map(Map.Entry::getKey)
                 .orElse("");
     }
