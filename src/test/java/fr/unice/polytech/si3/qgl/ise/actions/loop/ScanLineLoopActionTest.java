@@ -4,10 +4,14 @@ import fr.unice.polytech.si3.qgl.ise.actions.drone.ChangeLineAction;
 import fr.unice.polytech.si3.qgl.ise.actions.drone.ScanLineAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums;
-import fr.unice.polytech.si3.qgl.ise.factories.JsonFactory;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
+import fr.unice.polytech.si3.qgl.ise.parsing.Echo;
+import fr.unice.polytech.si3.qgl.ise.parsing.Scan;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.Random;
 
 import static fr.unice.polytech.si3.qgl.ise.actions.drone.TestingUtils.setMargins;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW.NORTH;
@@ -21,7 +25,8 @@ public class ScanLineLoopActionTest {
     private ScanLineLoopAction scanLineLoopAction;
     private ScanLineAction scanLineAction;
     private ChangeLineAction changeLineAction;
-    private JsonFactory jsonFact = new JsonFactory();
+
+    private int islandWidth;
 
     @Before
     public void setUp() {
@@ -48,10 +53,14 @@ public class ScanLineLoopActionTest {
                 drone2.setLastTurn(getOpposite(dir));
 
                 while (!scanLineLoopAction.isFinished()) {
+                    islandWidth = new Random().nextInt(5) + 5;
 
                     while (!scanLineAction.isFinished()) {
                         assertEquals(scanLineAction.apply(), scanLineLoopAction.apply());
+                        acknowledgeAsNeeded_1();
                     }
+
+                    assertTrue(scanLineAction.isFinished());
 
                     while (!changeLineAction.isFinished()) {
                         assertEquals(changeLineAction.apply(), scanLineLoopAction.apply());
@@ -66,5 +75,35 @@ public class ScanLineLoopActionTest {
                 setUp();
             }
         }
+    }
+
+    private void acknowledgeAsNeeded_1() {
+        switch (drone.getLastAction()) {
+            case SCAN:
+                if (islandWidth >= 0) {
+                    scanGround(drone, drone2);
+                } else {
+                    scanOcean(drone, drone2);
+                }
+                break;
+            case FLY:
+                islandWidth--;
+                break;
+            case ECHO:
+                echoBorder(drone, drone2);
+                break;
+        }
+    }
+
+    private void echoBorder(Drone... drones) {
+        Arrays.stream(drones).forEach(drone -> drone.acknowledgeEcho(new Echo("{ \"cost\": 1, \"extras\": { \"range\": 40, \"found\": \"OUT_OF_RANGE\" }, \"status\": \"OK\" }")));
+    }
+
+    private void scanOcean(Drone... drones) {
+        Arrays.stream(drones).forEach(drone -> drone.acknowledgeScan(new Scan("{\"cost\": 2, \"extras\": { \"biomes\": [ \"OCEAN\" ], \"creeks\": [], \"sites\": []}, \"status\": \"OK\"}")));
+    }
+
+    private void scanGround(Drone... drones) {
+        Arrays.stream(drones).forEach(drone -> drone.acknowledgeScan(new Scan("{\"cost\": 2, \"extras\": { \"biomes\": [ \"SHRUBLAND\", \"ALPINE\" ], \"creeks\": [], \"sites\": []}, \"status\": \"OK\"}")));
     }
 }
