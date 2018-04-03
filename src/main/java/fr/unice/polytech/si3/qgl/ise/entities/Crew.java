@@ -22,14 +22,14 @@ public class Crew {
     private final Map<RawResource, Integer> stock;
     private final Map<CraftedResource, Integer> craftedStock;
     private final IslandMap map;
+    private final List<RawContract> completedRawContracts = new ArrayList<>();
+    private final List<CraftedContract> completedCraftedContracts = new ArrayList<>();
     private Action lastAction;
     private String idCreek;
     private List<Action> steps;
     private Coordinates coordinates;
     private RawResource currentResource;
     private List<RawResource> wantedResources = new ArrayList<>();
-    private final List<RawContract> completedRawContracts = new ArrayList<>();
-    private final List<CraftedContract> completedCraftedContracts = new ArrayList<>();
     private int currentQuantity;
 
     public Crew(IslandMap map, List<RawContract> rawContracts, List<CraftedContract> craftedContracts) {
@@ -63,7 +63,6 @@ public class Crew {
     private void initActions() {
         steps = new ArrayList<>();
         steps.add(new Land(this, idCreek));
-        //steps.add(new MoveTo(this, objective));
         steps.add(new MoveExploitLoopAction(this));
         steps.add(new StopAction());
     }
@@ -133,6 +132,10 @@ public class Crew {
         return currentResource;
     }
 
+    public void setCurrentResource(RawResource currentResource) {
+        this.currentResource = currentResource;
+    }
+
     public void setIdCreek(String id) {
         this.idCreek = id;
     }
@@ -149,6 +152,10 @@ public class Crew {
         return currentQuantity;
     }
 
+    public void setCurrentQuantity(int currentQuantity) {
+        this.currentQuantity = currentQuantity;
+    }
+
     public List<RawContract> getRawContracts() {
         return rawContracts;
     }
@@ -163,14 +170,6 @@ public class Crew {
 
     public List<RawResource> getWantedResources() {
         return wantedResources;
-    }
-
-    public void setCurrentResource(RawResource currentResource) {
-        this.currentResource = currentResource;
-    }
-
-    public void setCurrentQuantity(int currentQuantity) {
-        this.currentQuantity = currentQuantity;
     }
 
     public List<RawContract> getCompletedRawContracts() {

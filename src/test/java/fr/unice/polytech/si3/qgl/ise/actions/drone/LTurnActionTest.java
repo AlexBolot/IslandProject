@@ -10,7 +10,8 @@ import org.junit.Test;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW.NORTH;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class LTurnActionTest {
     private final JsonFactory jsonFact = new JsonFactory();
@@ -18,8 +19,7 @@ public class LTurnActionTest {
     private LTurnAction lTurnAction;
 
     @Before
-    public void setUp()
-    {
+    public void setUp() {
         drone = new Drone(new IslandMap(), NORTH);
         TestingUtils.setMargins(drone, 50);
         lTurnAction = new LTurnAction(drone);
@@ -55,7 +55,7 @@ public class LTurnActionTest {
                 assertTrue(lTurnAction.isFinished());
 
                 setUp();
-}
+            }
         }
     }
 }

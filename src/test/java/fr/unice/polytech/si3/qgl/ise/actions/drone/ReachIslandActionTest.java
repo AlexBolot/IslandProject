@@ -25,8 +25,7 @@ public class ReachIslandActionTest {
     private LTurnAction lTurnAction;
 
     @Before
-    public void setUp()
-    {
+    public void setUp() {
         drone = new Drone(new IslandMap(), NORTH);
         setMargins(drone, 50);
         reachIslandAction = new ReachIslandAction(drone);

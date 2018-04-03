@@ -117,7 +117,7 @@ public class Explorer implements IExplorerRaid {
 
             str2.append("Creeks found: ").append(drone.getMap().getCreeks().size()).append("\n");
 
-            str2.append("Points earned: ").append(crew.getCompletedRawContracts().size() + crew.getCompletedCraftedContracts().size()*2).append("\n");
+            str2.append("Points earned: ").append(crew.getCompletedRawContracts().size() + crew.getCompletedCraftedContracts().size() * 2).append("\n");
 
             str2.append("Raw Contracts: ").append(crew.getCompletedRawContracts().size()).append("/").append(crew.getCompletedRawContracts().size() + crew.getRawContracts().size()).append("\n");
 

@@ -12,9 +12,9 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW.NORTH;
 import static org.junit.Assert.assertEquals;
 
 public class DroneInitActionTest {
+    private final JsonFactory jsonFact = new JsonFactory();
     private Drone drone;
     private DroneInitAction droneInitAction;
-    private final JsonFactory jsonFact = new JsonFactory();
 
     @Before
     public void setUp() {

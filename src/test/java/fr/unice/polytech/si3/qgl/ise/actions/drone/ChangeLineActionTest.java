@@ -19,13 +19,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class ChangeLineActionTest {
+    private final JsonFactory jsonFact = new JsonFactory();
     private Drone drone;
     private ChangeLineAction changeLineAction;
-    private final JsonFactory jsonFact = new JsonFactory();
 
     @Before
-    public void setUp()
-    {
+    public void setUp() {
         drone = new Drone(new IslandMap(), NORTH);
         setMargins(drone, 50);
         changeLineAction = new ChangeLineAction(drone);

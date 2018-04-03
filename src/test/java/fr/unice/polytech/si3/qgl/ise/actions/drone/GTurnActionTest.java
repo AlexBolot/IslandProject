@@ -8,13 +8,14 @@ import org.junit.Test;
 
 import java.util.Random;
 
-import static fr.unice.polytech.si3.qgl.ise.actions.drone.TestingUtils.*;
+import static fr.unice.polytech.si3.qgl.ise.actions.drone.TestingUtils.setMargins;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW.NORTH;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.BORDER;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
+import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.LEFT;
+import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.RIGHT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

@@ -5,7 +5,10 @@ import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -45,9 +48,9 @@ public class PathFinderTest {
 
     @Test
     public void calculateDistanceTest() {
-        assertEquals(0.0, PathFinder.calculateDistance(new Coordinates(0, 0), new Coordinates(0, 0)), 0);
-        assertEquals(5.0, PathFinder.calculateDistance(new Coordinates(0, 3), new Coordinates(4, 0)), 0);
-        assertEquals(5.0, PathFinder.calculateDistance(new Coordinates(0, -3), new Coordinates(-4, 0)), 0);
+        assertEquals(0, PathFinder.calculateDistance(new Coordinates(0, 0), new Coordinates(0, 0)), 0);
+        assertEquals(5, PathFinder.calculateDistance(new Coordinates(0, 3), new Coordinates(4, 0)), 0);
+        assertEquals(5, PathFinder.calculateDistance(new Coordinates(0, -3), new Coordinates(-4, 0)), 0);
         assertEquals(1.41421356, PathFinder.calculateDistance(new Coordinates(0, 1), new Coordinates(1, 0)), 0.00000001);
         assertEquals(93.14504817756, PathFinder.calculateDistance(new Coordinates(-30, -13), new Coordinates(-6, 77)), 0.00000000001);
     }
