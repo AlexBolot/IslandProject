@@ -18,9 +18,9 @@ public class MoveTo extends CrewAction {
         this.coordinates = coordinates;
     }
 
-    private int caseToReachFrom(Coordinates coord) {
-        return Math.abs(Math.abs(coord.getX()) + Math.abs(coordinates.getX()))
-                + Math.abs(Math.abs(coord.getY()) + Math.abs(coordinates.getY()));
+    private int caseToReachFrom(Coordinates coordinates) {
+        return Math.abs(Math.abs(coordinates.getX()) + Math.abs(this.coordinates.getX()))
+                + Math.abs(Math.abs(coordinates.getY()) + Math.abs(this.coordinates.getY()));
     }
 
     private boolean setLastAction() {

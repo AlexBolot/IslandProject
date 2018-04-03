@@ -64,7 +64,7 @@ public class IslandMap {
      *
      * @param x center of the 3*3 drone map
      * @param y center of the 3*3 drone map
-     * @return List of List of tile correspondings of layers to update
+     * @return a list of lists of tiles corresponding to layers to update
      */
     public List<List<Tile>> getTileToUpdateFrom(int x, int y) {
         List<List<Tile>> layers = new ArrayList<>();

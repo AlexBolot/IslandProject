@@ -131,10 +131,10 @@ public class DroneEnums {
         SCAN_STEP_1,
         SCAN_STEP_2,
 
-        CHANGELINE_TURN1,
-        CHANGELINE_TURN2,
-        CHANGELINE_ECHO_FRONT,
-        CHANGELINE_DONE,
+        CHANGE_LINE_TURN_1,
+        CHANGE_LINE_TURN_2,
+        CHANGE_LINE_ECHO_FRONT,
+        CHANGE_LINE_DONE,
 
         PASS_ISLAND_STEP_1,
         PASS_ISLAND_STEP_2,

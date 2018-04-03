@@ -82,7 +82,7 @@ public class ChangeLineAction extends DroneAction {
                 break;
 
             default:
-                throw new IllegalStateException("Unkown step : " + currentStep);
+                throw new IllegalStateException("Unknown step : " + currentStep);
         }
 
         currentStep = nextStep;

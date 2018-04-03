@@ -16,7 +16,7 @@ public class CraftedContract {
         this.resource = resource;
         rawQuantities = new EnumMap<>(RawResource.class);
 
-        //Calculate the total cost in RawRessource
+        //Calculate the total cost in RawResource
         for (Map.Entry<RawResource, Double> cost : CraftedResource.getValueOf(resource.getId()).entrySet()) {
             rawQuantities.put(cost.getKey(), cost.getValue() * quantity);
         }

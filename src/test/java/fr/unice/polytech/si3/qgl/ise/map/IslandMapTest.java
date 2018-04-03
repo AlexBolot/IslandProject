@@ -113,7 +113,7 @@ public class IslandMapTest {
     @Ignore
     public void testTilesToUpdatesBiomes() {
         Drone drone = new Drone(islandMap, DroneEnums.NSEW.EAST);
-        //After acknoledwing, all tiles must have the biome in their list
+        //After acknowledging, all tiles must have the biome in their list
         drone.acknowledgeScan(new Scan("{\"cost\":6,\"extras\":{\"creeks\":[],\"biomes\":[\"MANGROVE\"],\"sites\":[]},\"status\":\"OK\"}"));
         int size = 0;
         for (List<Tile> layer : islandMap.getTileToUpdateFrom(0, 0)) {

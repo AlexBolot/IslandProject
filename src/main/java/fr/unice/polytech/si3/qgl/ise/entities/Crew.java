@@ -28,8 +28,8 @@ public class Crew {
     private Coordinates coordinates;
     private RawResource currentResource;
     private List<RawResource> wantedResources = new ArrayList<>();
-    private List<RawContract> completedRawContracts = new ArrayList<>();
-    private List<CraftedContract> completedCraftedContracts = new ArrayList<>();
+    private final List<RawContract> completedRawContracts = new ArrayList<>();
+    private final List<CraftedContract> completedCraftedContracts = new ArrayList<>();
     private int currentQuantity;
 
     public Crew(IslandMap map, List<RawContract> rawContracts, List<CraftedContract> craftedContracts) {
@@ -50,7 +50,7 @@ public class Crew {
     }
 
     /**
-     * Chose the contract with the less ressource to collect
+     * Chooses the contract with the least resources to collect
      *
      * @return the contract
      */

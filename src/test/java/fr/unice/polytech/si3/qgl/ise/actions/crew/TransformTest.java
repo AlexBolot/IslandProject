@@ -16,10 +16,10 @@ public class TransformTest {
 
     @Test
     public void testApply() {
-        HashMap<RawResource, Integer> ressourcesWithQuantity = new HashMap<>();
-        ressourcesWithQuantity.put(RawResource.WOOD, 100);
-        ressourcesWithQuantity.put(RawResource.QUARTZ, 20);
-        Transform action = new Transform(new Crew(new IslandMap(), new ArrayList<>(), new ArrayList<>()), ressourcesWithQuantity);
+        HashMap<RawResource, Integer> resourcesWithQuantity = new HashMap<>();
+        resourcesWithQuantity.put(RawResource.WOOD, 100);
+        resourcesWithQuantity.put(RawResource.QUARTZ, 20);
+        Transform action = new Transform(new Crew(new IslandMap(), new ArrayList<>(), new ArrayList<>()), resourcesWithQuantity);
         JSONObject actionString = new JSONObject(action.apply());
         assertEquals("transform", actionString.getString("action"));
         assertEquals(100, actionString.getJSONObject("parameters").getInt(RawResource.WOOD.name()));
@@ -28,9 +28,9 @@ public class TransformTest {
 
     @Test
     public void testAcknowledgeResults() {
-        HashMap<RawResource, Integer> ressourcesWithQuantity = new HashMap<>();
+        HashMap<RawResource, Integer> resourcesWithQuantity = new HashMap<>();
         Crew crew = new Crew(new IslandMap(), new ArrayList<>(), new ArrayList<>());
-        Transform action = new Transform(crew, ressourcesWithQuantity);
+        Transform action = new Transform(crew, resourcesWithQuantity);
         action.acknowledgeResults("{ \"cost\": 5, \"extras\": { \"production\": 1, \"kind\": \"GLASS\" },\"status\": \"OK\" }");
         assertEquals(1, crew.getCraftedResourceQuantity(CraftedResource.GLASS));
     }

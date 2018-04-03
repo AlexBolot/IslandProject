@@ -21,7 +21,7 @@ public class LTurnAction extends DroneAction {
         return apply(getDrone().getLastEcho());
     }
 
-    public String apply(ZQSD direction) {
+    private String apply(ZQSD direction) {
         String res;
         Step nextStep = null;
 
@@ -42,7 +42,7 @@ public class LTurnAction extends DroneAction {
                 break;
 
             default:
-                throw new IllegalStateException("Unkown step : " + currentStep);
+                throw new IllegalStateException("Unknown step : " + currentStep);
         }
 
         currentStep = nextStep;

@@ -15,7 +15,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class Move_toTest {
+public class MoveToTest {
 
     private Crew crew;
     private IslandMap map;
@@ -41,7 +41,7 @@ public class Move_toTest {
     }
 
     @Test
-    public void testDeplacement() {
+    public void moveTest() {
         CrewAction moveTo = new MoveTo(crew, new Coordinates(10, 10));
         while (!moveTo.isFinished()) {
             moveTo.apply();

@@ -54,7 +54,7 @@ public class SearchIslandAction extends DroneAction {
                 break;
 
             default:
-                throw new IllegalStateException("Unkown step : " + step);
+                throw new IllegalStateException("Unknown step : " + step);
         }
 
         currentStep = nextStep;
