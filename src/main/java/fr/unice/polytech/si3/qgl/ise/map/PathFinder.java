@@ -41,7 +41,7 @@ public class PathFinder {
 
         return map.getMap().entrySet().stream()
                 .filter(entry -> !Collections.disjoint(entry.getValue().getPossibleBiomes(), acceptableBiomes))
-                .mapToDouble(entry -> 1 / Math.pow(calculateDistance(map.getCreeks().get(creekId), entry.getKey()), 0.5))
+                .mapToDouble(entry -> 1 / calculateDistance(map.getCreeks().get(creekId), entry.getKey()))
                 .sum();
     }
 
