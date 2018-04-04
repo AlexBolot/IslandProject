@@ -16,7 +16,7 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 
 public class Explorer implements IExplorerRaid {
     private static final Logger logger = getLogger(Explorer.class);
-    private static final int LIMIT = 500;
+    private static final int LIMIT = 250;
     private Drone drone;
     private Crew crew;
     private IslandMap map;
