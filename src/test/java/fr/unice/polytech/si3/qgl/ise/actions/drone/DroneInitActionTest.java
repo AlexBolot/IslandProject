@@ -40,6 +40,9 @@ public class DroneInitActionTest {
             result = droneInitAction.apply();
             assertEquals(json, result);
 
+            setMargins(drone, 0);
+            assertEquals("{\"action\":\"stop\"}", droneInitAction.apply());
+
             setUp();
         }
     }
