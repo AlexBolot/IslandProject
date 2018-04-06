@@ -10,6 +10,7 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.BORDER;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class HeadingActionTest {
     private Drone drone;
@@ -48,7 +49,12 @@ public class HeadingActionTest {
         String result = headingAction.apply(LEFT);
         assertEquals("{\"action\":\"heading\",\"parameters\":{\"direction\":\"W\"}}", result);
         drone.getMargins().setLocal(FRONT, GROUND, 1);
-        result = headingAction.apply(RIGHT);
-        assertEquals("{\"action\":\"stop\"}", result);
+
+        try {
+            headingAction.apply(RIGHT);
+            fail();
+        } catch (IllegalStateException ise) {
+            assertEquals("Not enough margin left !", ise.getMessage());
+        }
     }
 }

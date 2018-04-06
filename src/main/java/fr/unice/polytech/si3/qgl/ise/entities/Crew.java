@@ -31,6 +31,7 @@ public class Crew {
     private RawResource currentResource;
     private List<RawResource> wantedResources = new ArrayList<>();
     private int currentQuantity;
+    private boolean isLanded;
 
     public Crew(IslandMap map, List<RawContract> rawContracts, List<CraftedContract> craftedContracts) {
         this.map = map;
@@ -38,6 +39,7 @@ public class Crew {
         this.craftedContracts = craftedContracts;
         this.stock = new EnumMap<>(RawResource.class);
         this.craftedStock = new EnumMap<>(CraftedResource.class);
+        this.isLanded = false;
 
         for (RawContract raw : rawContracts) {
             wantedResources.add(raw.getResource());
@@ -73,7 +75,7 @@ public class Crew {
         for (Action step : steps) {
             lastAction = step;
 
-            if (lastAction.isFinished()) continue;
+            if (lastAction.isFinished() || (lastAction instanceof Land && this.isLanded)) continue;
 
             res = lastAction.apply();
 
@@ -140,6 +142,10 @@ public class Crew {
         this.idCreek = id;
     }
 
+    public String getIdCreek() {
+        return this.idCreek;
+    }
+
     public Map<RawResource, Integer> getStock() {
         return stock;
     }
@@ -178,6 +184,10 @@ public class Crew {
 
     public List<CraftedContract> getCompletedCraftedContracts() {
         return completedCraftedContracts;
+    }
+
+    public void land() {
+        this.isLanded = true;
     }
 }
 

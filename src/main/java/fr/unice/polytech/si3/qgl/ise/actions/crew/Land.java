@@ -6,12 +6,12 @@ import fr.unice.polytech.si3.qgl.ise.factories.JsonFactory;
 
 public class Land extends CrewAction {
 
-
     private final String idCreek;
 
     public Land(Crew crewToUpdate, String idCreek) {
         super(crewToUpdate);
         this.idCreek = idCreek;
+        this.getCrewToUpdate().land();
     }
 
     @Override

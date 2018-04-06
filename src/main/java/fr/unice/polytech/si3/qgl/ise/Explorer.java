@@ -1,6 +1,7 @@
 package fr.unice.polytech.si3.qgl.ise;
 
 import eu.ace_design.island.bot.IExplorerRaid;
+import fr.unice.polytech.si3.qgl.ise.actions.EmergencyAction;
 import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Crew;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
@@ -48,7 +49,7 @@ public class Explorer implements IExplorerRaid {
 
     @Override
     public String takeDecision() {
-        if (shouldStop) return new StopAction(drone).apply();
+        if (shouldStop) return triggerEmergecy();
 
         try {
             if (remainingBudget > LIMIT) {
@@ -60,9 +61,7 @@ public class Explorer implements IExplorerRaid {
                     if (!decision.isEmpty()) return decision;
                 }
 
-                if (crew == null) crew = new Crew(map,
-                        contractParser.getRawContracts(),
-                        contractParser.getCraftedContracts());
+                if (crew == null) initCrew();
 
                 decision = crew.takeDecision();
                 logger.info("Crew :\t\t" + decision);
@@ -74,7 +73,7 @@ public class Explorer implements IExplorerRaid {
             }
         } catch (Exception e) {
             logger.error(e.getMessage());
-            return new StopAction(drone).apply();
+            return triggerEmergecy();
         }
     }
 
@@ -104,7 +103,6 @@ public class Explorer implements IExplorerRaid {
         } catch (Exception e) {
             shouldStop = true;
             logger.error(e.getMessage());
-
         }
     }
 
@@ -144,5 +142,19 @@ public class Explorer implements IExplorerRaid {
         }
 
         return "Did everyone see that? Because we will not be doing it again!";
+    }
+
+    private void initCrew() {
+        crew = new Crew(map, contractParser.getRawContracts(), contractParser.getCraftedContracts());
+    }
+
+    private String triggerEmergecy() {
+        try {
+            if (crew == null) initCrew();
+            return new EmergencyAction(drone, crew).apply();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return new StopAction(drone).apply();
+        }
     }
 }

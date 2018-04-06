@@ -1,6 +1,5 @@
 package fr.unice.polytech.si3.qgl.ise.actions.drone;
 
-import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
 import fr.unice.polytech.si3.qgl.ise.actions.simple.EchoAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 
@@ -45,7 +44,7 @@ public class DroneInitAction extends DroneAction {
             case OZ_CHECK:
                 res = "";
                 if (getDrone().getMargins().getLocal(FRONT)._2 < 1 && getDrone().getMargins().getLocal(LEFT)._2 < 1 && getDrone().getMargins().getLocal(RIGHT)._2 < 1)
-                    return new StopAction(getDrone()).apply();
+                    throw new IllegalStateException("Wait, this is not QGL, this is OZ island !");
                 this.finish();
                 break;
 

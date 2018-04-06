@@ -1,6 +1,5 @@
 package fr.unice.polytech.si3.qgl.ise.actions.simple;
 
-import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
@@ -49,7 +48,7 @@ public class HeadingAction extends SimpleAction {
     private String turnRight() {
         //security if the drone wants to head out of the map
         if (getDrone().getMargins().getGlobal(FRONT)._2 < 1 || getDrone().getMargins().getGlobal(RIGHT)._2 < 1)
-            return new StopAction(getDrone()).apply();
+            throw new IllegalStateException("Not enough margin left !");
 
         int unit = Drone.getMovementUnit();
         int oldX = getDrone().getCoordinates().getX();
@@ -89,7 +88,7 @@ public class HeadingAction extends SimpleAction {
     private String turnLeft() {
         //security if the drone wants to head out of the map
         if (getDrone().getMargins().getGlobal(FRONT)._2 < 1 || getDrone().getMargins().getGlobal(LEFT)._2 < 1)
-            return new StopAction(getDrone()).apply();
+            throw new IllegalStateException("Not enough margin left !");
 
         int unit = Drone.getMovementUnit();
         int oldX = getDrone().getCoordinates().getX();

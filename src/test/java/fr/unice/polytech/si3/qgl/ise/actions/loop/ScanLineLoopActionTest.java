@@ -57,7 +57,7 @@ public class ScanLineLoopActionTest {
 
                     while (!scanLineAction.isFinished()) {
                         assertEquals(scanLineAction.apply(), scanLineLoopAction.apply());
-                        acknowledgeAsNeeded_1();
+                        acknowledgeAsNeeded();
                     }
 
                     assertTrue(scanLineAction.isFinished());
@@ -77,7 +77,7 @@ public class ScanLineLoopActionTest {
         }
     }
 
-    private void acknowledgeAsNeeded_1() {
+    private void acknowledgeAsNeeded() {
         switch (drone.getLastAction()) {
             case SCAN:
                 if (islandWidth >= 0) {

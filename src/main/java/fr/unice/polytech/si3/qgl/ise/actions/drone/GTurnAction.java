@@ -1,6 +1,5 @@
 package fr.unice.polytech.si3.qgl.ise.actions.drone;
 
-import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
 import fr.unice.polytech.si3.qgl.ise.actions.simple.EchoAction;
 import fr.unice.polytech.si3.qgl.ise.actions.simple.FlyAction;
 import fr.unice.polytech.si3.qgl.ise.actions.simple.HeadingAction;
@@ -123,7 +122,7 @@ public class GTurnAction extends DroneAction {
         int frontDist = getDrone().getMargins().getLocal(FRONT)._2;
 
         if (frontDist > 1) res = flyAction.apply();
-        else res = new StopAction(getDrone()).apply();
+        else throw new IllegalStateException("Not enough margin left !");
 
         return res;
     }

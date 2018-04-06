@@ -106,6 +106,7 @@ public class Drone {
         if (!scan.getBiomes().isEmpty()) {
             //For each layer
             int numLayer = 0;
+            //noinspection LoopStatementThatDoesntLoop
             for (List<Tile> layer : map.getTileToUpdateFrom(coordinates.getX(), coordinates.getY())) {
                 //On each tile
                 for (Tile tileOfLayer : layer) {
@@ -130,6 +131,10 @@ public class Drone {
 
     public boolean isFlying() {
         return isFlying;
+    }
+
+    public void stopFlying() {
+        this.isFlying = false;
     }
 
     public Margin getMargins() {
