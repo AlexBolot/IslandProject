@@ -39,9 +39,8 @@ public class Crew {
         this.stock = new EnumMap<>(RawResource.class);
         this.craftedStock = new EnumMap<>(CraftedResource.class);
 
-        for (RawContract raw : rawContracts) {
-            wantedResources.add(raw.getResource());
-        }
+        computeWantedResources();
+        chooseNewFocus();
 
         idCreek = PathFinder.findBestCreek(map, wantedResources);
         coordinates = map.getCreeks().get(idCreek);
@@ -54,10 +53,16 @@ public class Crew {
      *
      * @return the contract
      */
-    public Optional<RawContract> choseBestRawContract() {
+    private Optional<RawContract> choseBestRawContract() {
         if (rawContracts.isEmpty())
             return Optional.empty();
         return rawContracts.stream().max(Comparator.comparingInt(RawContract::getQuantity));
+    }
+
+    private Optional<CraftedContract> choseBestCraftedContract() {
+        if (craftedContracts.isEmpty())
+            return Optional.empty();
+        return craftedContracts.stream().max(Comparator.comparingInt(CraftedContract::getRemainingQuantity));
     }
 
     private void initActions() {
@@ -97,12 +102,55 @@ public class Crew {
         stock.put(resource, amount);
     }
 
+    public void removeFromStock(RawResource resource, int amount) {
+        //this if should be useless, it's just here for security precaution
+        if (stock.containsKey(resource)) {
+            int newStock = stock.get(resource) - amount;
+            stock.put(resource, newStock);
+        }
+    }
+
     public void addToCraftedStock(CraftedResource resource, int amount) {
         if (craftedStock.containsKey(resource)) amount += craftedStock.get(resource);
         craftedStock.put(resource, amount);
     }
 
-    public void finishRawContract(RawContract rawContract) {
+    private void chooseNewFocus() {
+        currentResource = null;
+        currentQuantity = 0;
+
+        Optional<RawContract> bestContract = choseBestRawContract();
+        bestContract.ifPresent(rawContract -> currentResource = rawContract.getResource());
+        bestContract.ifPresent(rawContract -> currentQuantity = rawContract.getQuantity());
+        if (currentResource == null) {
+            Optional<CraftedContract> bestCraftedContract = choseBestCraftedContract();
+            if (bestCraftedContract.isPresent()) {
+                Map<RawResource, Double> resources = bestCraftedContract.get().getRemainingRawQuantities();
+                for (RawResource rawResource : resources.keySet()) {
+                    int realStock;
+                    if (stock.containsKey(rawResource)) {
+                        realStock = stock.get(rawResource);
+                        for (RawContract rawContract : completedRawContracts) {
+                            if (rawContract.getResource().equals(rawResource)) {
+                                realStock = realStock - rawContract.getQuantity();
+                            }
+                        }
+                        if (realStock < resources.get(rawResource)) {
+                            currentResource = rawResource;
+                            currentQuantity = resources.get(rawResource).intValue();
+                            return;
+                        }
+                    } else {
+                        currentResource = rawResource;
+                        currentQuantity = resources.get(rawResource).intValue();
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    private void finishRawContract(RawContract rawContract) {
         completedRawContracts.add(rawContract);
         for (int i = 0; i < rawContracts.size(); i++) {
             if (rawContracts.get(i).getResource().equals(rawContract.getResource())) {
@@ -110,9 +158,83 @@ public class Crew {
                 break;
             }
         }
+        computeWantedResources();
+    }
+
+    private void finishCraftedContract(CraftedContract craftedContract) {
+        completedCraftedContracts.add(craftedContract);
+        for (int i = 0; i < craftedContracts.size(); i++) {
+            if (craftedContracts.get(i).getResource().equals(craftedContract.getResource())) {
+                craftedContracts.remove(i);
+                break;
+            }
+        }
+        computeWantedResources();
+    }
+
+    public void tryToFinishContracts() {
+        RawContract raw;
+        int size = rawContracts.size();
+        for (int i = 0; i < size; i++) {
+            raw = rawContracts.get(i);
+            RawResource rawResource = raw.getResource();
+            int rawQuantity = raw.getQuantity();
+            if (stock.containsKey(rawResource) && stock.get(rawResource) >= rawQuantity) {
+                size--;
+                i--;
+                finishRawContract(raw);
+            }
+        }
+        for (CraftedContract craft : craftedContracts) {
+            CraftedResource craftedResource = craft.getResource();
+            int craftedQuantity = craft.getQuantity();
+            if (craftedStock.get(craftedResource) >= craftedQuantity) {
+                finishCraftedContract(craft);
+            }
+        }
+
+        chooseNewFocus();
+    }
+
+    public Map<RawResource, Double> tryCrafting() {
+        for (CraftedContract craft : craftedContracts) {
+            boolean test = true;
+            Map<RawResource, Double> remainingResources = craft.getRemainingRawQuantities();
+            for (RawResource rawResource : remainingResources.keySet()) {
+                int realStock;
+                if (stock.containsKey(rawResource) && stock.get(rawResource) >= remainingResources.get(rawResource)) {
+                    realStock = stock.get(rawResource);
+                    for (RawContract rawContract : completedRawContracts) {
+                        if (rawContract.getResource().equals(rawResource)) {
+                            realStock = realStock - rawContract.getQuantity();
+                        }
+                    }
+                    test = realStock >= remainingResources.get(rawResource);
+                } else {
+                    test = false;
+                }
+                if (!test) {
+                    break;
+                }
+            }
+            if (test) {
+                return remainingResources;
+            }
+        }
+        return null;
+    }
+
+    private void computeWantedResources() {
         wantedResources = new ArrayList<>();
         for (RawContract raw : rawContracts) {
             wantedResources.add(raw.getResource());
+        }
+        for (CraftedContract craft : craftedContracts) {
+            for (RawResource raw : craft.getRawQuantities().keySet()) {
+                if (!wantedResources.contains(raw)) {
+                    wantedResources.add(raw);
+                }
+            }
         }
     }
 
