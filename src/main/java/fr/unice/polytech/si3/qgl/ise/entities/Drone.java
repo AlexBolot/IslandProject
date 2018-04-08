@@ -113,19 +113,18 @@ public class Drone {
                     //With each biome
                     Map<Biome, Double> toAdd = new EnumMap<>(Biome.class);
                     for (Biome biome : scan.getBiomes()) {
-                        toAdd.put(biome, IslandMap.percentageOfLayerForUpdate[numLayer]);
+                        toAdd.put(biome, IslandMap.getPercentageOfLayerForUpdate()[numLayer]);
                     }
                     tileOfLayer.addBiomesPercentage(toAdd);
                 }
                 ++numLayer;
-                break;
             }
 
-            Tile currentTile = map.getTile(coordinates);
+//            Tile currentTile = map.getTile(coordinates);
 
-            currentTile.getBiomesPercentage().clear();
-
-            scan.getBiomes().forEach(biome -> currentTile.getBiomesPercentage().put(biome, 100d));
+//            currentTile.getBiomesPercentage().clear();
+//
+//            scan.getBiomes().forEach(biome -> currentTile.getBiomesPercentage().put(biome, 100d));
         }
     }
 

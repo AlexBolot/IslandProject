@@ -4,10 +4,10 @@
 ## État courant du projet
 
   - Ticketing: _[4]_
-  - Versioning: _[4]_
+  - Versioning: _[5]_
   - Qualité Objet: _[4]_
-  - Tests: _[3]_
-  - Confiance dans le code: _[5]_
+  - Tests: _[4]_
+  - Confiance dans le code: _[4]_
 
 ## Semainier
 
@@ -48,3 +48,11 @@
     - _Meilleure organisation : livraison prête à J-1_
  - Points Négatifs
     - _Mauvais choix du contrat à remplir (trop ambitieux)_
+    
+### Semaine 14
+ - Points positifs
+    - _Champion battu \o/_
+    - _Remplissage de deux contrats et ajout de valeur client sur les îles précédentes_
+    - _Meilleure couverture de test et désodorisation du code_
+  Points négatifs
+    - _Les tests peuvent être améliorés_

@@ -49,7 +49,10 @@ public class Tile {
         for (Map.Entry<Biome, Double> biome : biomesPercentage.entrySet()) {
             if (this.biomesPercentage.containsKey(biome.getKey())) {
                 //FIXME Define calculation of new probability
-                this.biomesPercentage.put(biome.getKey(), this.biomesPercentage.get(biome.getKey()) + biome.getValue());
+                //The new probability is the older + the % of the rest to reach 100
+                double alreadyHave = this.biomesPercentage.get(biome.getKey());
+                double layerProb = biome.getValue();
+                this.biomesPercentage.put(biome.getKey(), alreadyHave + (((100d - alreadyHave) * layerProb) / 100d));
             } else {
                 this.biomesPercentage.put(biome.getKey(), biome.getValue());
             }
