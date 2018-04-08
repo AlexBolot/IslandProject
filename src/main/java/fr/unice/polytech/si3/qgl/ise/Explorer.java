@@ -44,7 +44,6 @@ public class Explorer implements IExplorerRaid {
             shouldStop = true;
             logger.info(e.getMessage());
         }
-
     }
 
     @Override

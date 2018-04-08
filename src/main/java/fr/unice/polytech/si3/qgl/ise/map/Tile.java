@@ -45,14 +45,17 @@ public class Tile {
         return biomesPercentage;
     }
 
+    public double getBiomePercentage(Biome biome) {
+        return biomesPercentage.containsKey(biome) ? biomesPercentage.get(biome) : 0;
+    }
+
     public void addBiomesPercentage(Map<Biome, Double> biomesPercentage) {
         for (Map.Entry<Biome, Double> biome : biomesPercentage.entrySet()) {
             if (this.biomesPercentage.containsKey(biome.getKey())) {
-                //FIXME Define calculation of new probability
-                //The new probability is the older + the % of the rest to reach 100
-                double alreadyHave = this.biomesPercentage.get(biome.getKey());
+                double oldValue = this.biomesPercentage.get(biome.getKey());
                 double layerProb = biome.getValue();
-                this.biomesPercentage.put(biome.getKey(), alreadyHave + (((100d - alreadyHave) * layerProb) / 100d));
+                double increment = (((100d - oldValue) * layerProb) / 100d);
+                this.biomesPercentage.put(biome.getKey(), oldValue + increment);
             } else {
                 this.biomesPercentage.put(biome.getKey(), biome.getValue());
             }

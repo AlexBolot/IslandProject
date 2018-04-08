@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 public class PathFinder {
 
+    private static final double minimalPrecentage = 50;
+
     private PathFinder() { /*Empty private constructor to hide the implicit public one*/ }
 
     /**
@@ -71,6 +73,7 @@ public class PathFinder {
     public static Coordinates findNearestTileOfBiome(IslandMap map, Coordinates coordinates, Biome biome) {
         return map.getMap().entrySet().stream()
                 .filter(entry -> entry.getValue().getPossibleBiomes().contains(biome))
+                .filter(entry -> entry.getValue().getBiomePercentage(biome) > minimalPrecentage)
                 .filter(entry -> !entry.getValue().isExplored())
                 .min(Comparator.comparingDouble(entry -> calculateDistance(entry.getKey(), coordinates)))
                 .map(Map.Entry::getKey)

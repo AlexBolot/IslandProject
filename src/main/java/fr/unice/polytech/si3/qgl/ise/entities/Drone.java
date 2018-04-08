@@ -98,8 +98,6 @@ public class Drone {
         if (obstacle == BORDER) margins.setGlobal(lastEcho, obstacle, range);
     }
 
-    //region ===== Getters =====
-
     public void acknowledgeScan(Scan scan) {
         if (!scan.getCreeks().isEmpty()) map.addCreeks(coordinates, scan.getCreeks());
         if (!scan.getEmergencySites().isEmpty()) map.addSite(coordinates, scan.getEmergencySites().get(0));
@@ -119,14 +117,10 @@ public class Drone {
                 }
                 ++numLayer;
             }
-
-//            Tile currentTile = map.getTile(coordinates);
-
-//            currentTile.getBiomesPercentage().clear();
-//
-//            scan.getBiomes().forEach(biome -> currentTile.getBiomesPercentage().put(biome, 100d));
         }
     }
+
+    //region =============== Getters and Setters ===============
 
     public boolean isFlying() {
         return isFlying;
