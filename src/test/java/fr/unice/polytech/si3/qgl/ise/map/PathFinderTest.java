@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class PathFinderTest {
 
@@ -57,23 +58,22 @@ public class PathFinderTest {
 
     @Test
     public void findNearestTileOfBiomeTest() {
-        assertEquals(null, PathFinder.findNearestTileOfBiome(map, new Coordinates(0, 0), Biome.SHRUBLAND));
+        assertNull(PathFinder.findNearestTileOfBiome(map, new Coordinates(0, 0), Biome.SHRUBLAND));
+        assertNull(PathFinder.findNearestTileOfBiome(map, new Coordinates(0, 0), Biome.TUNDRA));
+
         assertEquals(new Coordinates(15, -34), PathFinder.findNearestTileOfBiome(map, new Coordinates(-20, -26), Biome.TAIGA));
-        assertEquals(new Coordinates(15, -34), PathFinder.findNearestTileOfBiome(map, new Coordinates(0, 0), Biome.TUNDRA));
         assertEquals(new Coordinates(13, 39), PathFinder.findNearestTileOfBiome(map, new Coordinates(0, 0), Biome.ALPINE));
         assertEquals(new Coordinates(23, -40), PathFinder.findNearestTileOfBiome(map, new Coordinates(39, -45), Biome.GLACIER));
     }
 
     @Test
     public void findNearestTileOfResourceTest() {
-        assertEquals(null, PathFinder.findNearestTileOfResource(map, new Coordinates(24, -42), RawResource.FRUITS));
-        assertEquals(null, PathFinder.findNearestTileOfResource(map, new Coordinates(-17, 2), RawResource.FISH));
+        assertNull(PathFinder.findNearestTileOfResource(map, new Coordinates(24, -42), RawResource.FRUITS));
+        assertNull(PathFinder.findNearestTileOfResource(map, new Coordinates(-17, 2), RawResource.FISH));
         assertEquals(new Coordinates(15, -34), PathFinder.findNearestTileOfResource(map, new Coordinates(6, -14), RawResource.WOOD));
         map.getTile(new Coordinates(15, -34)).setExplored(true);
-        assertEquals(new Coordinates(13, 39), PathFinder.findNearestTileOfResource(map, new Coordinates(0, 0), RawResource.FUR));
         assertEquals(new Coordinates(13, 39), PathFinder.findNearestTileOfResource(map, new Coordinates(0, 0), RawResource.FLOWER));
         map.getTile(new Coordinates(13, 39)).setExplored(true);
-        assertEquals(new Coordinates(23, -40), PathFinder.findNearestTileOfResource(map, new Coordinates(0, 0), RawResource.ORE));
     }
 
     @Test

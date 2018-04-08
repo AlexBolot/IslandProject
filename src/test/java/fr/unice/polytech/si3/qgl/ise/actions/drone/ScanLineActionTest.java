@@ -40,8 +40,7 @@ public class ScanLineActionTest {
             int i = new Random().nextInt(2) + 1; //Rand between 1 and 3
 
             for (int j = 0; j < i; j++) {
-                drone.acknowledgeScan(new Scan(
-                        "{\"cost\": 2, \"extras\": { \"biomes\": [\"BEACH\", \"ALPINE\"], \"creeks\": [], \"sites\": []}, \"status\": \"OK\"}"));
+                drone.acknowledgeScan(new Scan("{\"cost\": 2, \"extras\": { \"biomes\": [\"BEACH\", \"ALPINE\"], \"creeks\": [], \"sites\": []}, \"status\": \"OK\"}"));
 
                 json = jsonFact.createJsonString("fly");
                 result = scanLineAction.apply();
@@ -52,8 +51,7 @@ public class ScanLineActionTest {
                 assertEquals(json, result);
             }
 
-            drone.acknowledgeScan(new Scan(
-                    "{\"cost\": 2, \"extras\": { \"biomes\": [\"OCEAN\"], \"creeks\": [], \"sites\": []}, \"status\": \"OK\"}"));
+            drone.acknowledgeScan(new Scan("{\"cost\": 2, \"extras\": { \"biomes\": [\"OCEAN\"], \"creeks\": [], \"sites\": []}, \"status\": \"OK\"}"));
 
             json = jsonFact.createJsonString("echo", "direction", drone.getOrientation().getValue());
             result = scanLineAction.apply();
@@ -80,8 +78,7 @@ public class ScanLineActionTest {
             String result = scanLineAction.apply();
             assertEquals(json, result);
 
-            drone.acknowledgeScan(new Scan(
-                    "{\"cost\": 2, \"extras\": { \"biomes\": [\"BEACH\", \"ALPINE\"], \"creeks\": [], \"sites\": []}, \"status\": \"OK\"}"));
+            drone.acknowledgeScan(new Scan("{\"cost\": 2, \"extras\": { \"biomes\": [\"BEACH\", \"ALPINE\"], \"creeks\": [], \"sites\": []}, \"status\": \"OK\"}"));
 
             json = jsonFact.createJsonString("fly");
             result = scanLineAction.apply();
@@ -91,8 +88,7 @@ public class ScanLineActionTest {
             result = scanLineAction.apply();
             assertEquals(json, result);
 
-            drone.acknowledgeScan(new Scan(
-                    "{\"cost\": 2, \"extras\": { \"biomes\": [\"OCEAN\"], \"creeks\": [], \"sites\": []}, \"status\": \"OK\"}"));
+            drone.acknowledgeScan(new Scan("{\"cost\": 2, \"extras\": { \"biomes\": [\"OCEAN\"], \"creeks\": [], \"sites\": []}, \"status\": \"OK\"}"));
 
             json = jsonFact.createJsonString("echo", "direction", drone.getOrientation().getValue());
             result = scanLineAction.apply();
@@ -112,8 +108,7 @@ public class ScanLineActionTest {
             result = scanLineAction.apply();
             assertEquals(json, result);
 
-            drone.acknowledgeScan(new Scan(
-                    "{\"cost\": 2, \"extras\": { \"biomes\": [\"OCEAN\"], \"creeks\": [], \"sites\": []}, \"status\": \"OK\"}"));
+            drone.acknowledgeScan(new Scan("{\"cost\": 2, \"extras\": { \"biomes\": [\"OCEAN\"], \"creeks\": [], \"sites\": []}, \"status\": \"OK\"}"));
 
             json = jsonFact.createJsonString("echo", "direction", drone.getOrientation().getValue());
             result = scanLineAction.apply();

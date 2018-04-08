@@ -96,7 +96,7 @@ public class ScanLineAction extends DroneAction {
 
         String res = "";
 
-        if (biomes.stream().anyMatch(biome -> biome != OCEAN)) res = flyAction.apply();
+        if (biomes.stream().anyMatch(biome -> biome != OCEAN && tile.getBiomePercentage(biome) == 100)) res = flyAction.apply();
 
         return res;
     }

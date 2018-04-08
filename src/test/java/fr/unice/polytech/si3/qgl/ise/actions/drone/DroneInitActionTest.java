@@ -10,6 +10,7 @@ import static fr.unice.polytech.si3.qgl.ise.actions.drone.TestingUtils.setMargin
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW.NORTH;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class DroneInitActionTest {
     private final JsonFactory jsonFact = new JsonFactory();
@@ -40,10 +41,31 @@ public class DroneInitActionTest {
             result = droneInitAction.apply();
             assertEquals(json, result);
 
-            setMargins(drone, 0);
-            assertEquals("{\"action\":\"stop\"}", droneInitAction.apply());
+            assertTrue(droneInitAction.apply().isEmpty());
+            assertTrue(droneInitAction.isFinished());
 
             setUp();
         }
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void apply_OZ() {
+        setMargins(drone, 0);
+
+        String json = jsonFact.createJsonString("echo", "direction", drone.getOrientation().getValue());
+        String result = droneInitAction.apply();
+        assertEquals(json, result);
+
+        json = jsonFact.createJsonString("echo", "direction", drone.getOrientation().getToTheRight().getValue());
+        result = droneInitAction.apply();
+        assertEquals(json, result);
+
+        json = jsonFact.createJsonString("echo", "direction", drone.getOrientation().getToTheLeft().getValue());
+        result = droneInitAction.apply();
+        assertEquals(json, result);
+
+        assertTrue(droneInitAction.apply().isEmpty());
+
+        setUp();
     }
 }
