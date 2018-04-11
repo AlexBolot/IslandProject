@@ -42,7 +42,7 @@ public class Explorer implements IExplorerRaid {
             shouldStop = false;
         } catch (Exception e) {
             shouldStop = true;
-            logger.info(e.getMessage());
+            logger.error("Error in init : ", e);
         }
     }
 
@@ -71,7 +71,7 @@ public class Explorer implements IExplorerRaid {
                 return new StopAction(drone).apply();
             }
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error("Error in takeDecision :", e);
             return triggerEmergecy();
         }
     }
@@ -101,7 +101,7 @@ public class Explorer implements IExplorerRaid {
             }
         } catch (Exception e) {
             shouldStop = true;
-            logger.error(e.getMessage());
+            logger.error("Error in acknowledgeResults :", e);
         }
     }
 
@@ -137,7 +137,7 @@ public class Explorer implements IExplorerRaid {
             logger.info(str2.toString());
 
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error("Error in final report :", e);
         }
 
         return "Did everyone see that? Because we will not be doing it again!";
@@ -152,7 +152,7 @@ public class Explorer implements IExplorerRaid {
             if (crew == null) initCrew();
             return new EmergencyAction(drone, crew).apply();
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error("Error in triggerEmergency :", e);
             return new StopAction(drone).apply();
         }
     }
