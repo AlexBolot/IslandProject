@@ -20,6 +20,10 @@ public class IslandMap {
         emergencySite = null;
     }
 
+    public static double[] getPercentageOfLayerForUpdate() {
+        return percentageOfLayerForUpdate;
+    }
+
     public void addTile(Coordinates coordinates, Tile tile) {
         tiles.put(coordinates, tile);
     }
@@ -172,9 +176,5 @@ public class IslandMap {
         layers.add(layer7);
         //endregion
         return layers;
-    }
-
-    public static double[] getPercentageOfLayerForUpdate() {
-        return percentageOfLayerForUpdate;
     }
 }

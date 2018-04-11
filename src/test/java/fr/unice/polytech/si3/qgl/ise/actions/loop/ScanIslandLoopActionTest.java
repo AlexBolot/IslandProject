@@ -66,10 +66,9 @@ public class ScanIslandLoopActionTest {
 
                 context.resetWidth();
 
-                while (!passIslandAction.isFinished())
-                {
+                while (!passIslandAction.isFinished()) {
                     String applyRes = passIslandAction.apply();
-                    if(applyRes.isEmpty()) break;
+                    if (applyRes.isEmpty()) break;
                     String apply = scanIslandLoopAction.apply();
                     assertEquals(applyRes, scanIslandLoopAction.apply());
                     acknowledgePassIsland(context);
@@ -110,15 +109,11 @@ public class ScanIslandLoopActionTest {
     }
 
     private void acknowledgePassIsland(Context context) {
-        if(drone.getLastAction() == ECHO)
-        {
-            if(context.islandWidth >=0)
-            {
+        if (drone.getLastAction() == ECHO) {
+            if (context.islandWidth >= 0) {
                 echoGround(drone, drone2);
                 context.islandWidth--;
-            }
-            else
-            {
+            } else {
                 echoBorder(drone, drone2);
             }
         }

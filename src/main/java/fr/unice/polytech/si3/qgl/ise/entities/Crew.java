@@ -244,12 +244,12 @@ public class Crew {
         this.currentResource = currentResource;
     }
 
-    public void setIdCreek(String id) {
-        this.idCreek = id;
-    }
-
     public String getIdCreek() {
         return this.idCreek;
+    }
+
+    public void setIdCreek(String id) {
+        this.idCreek = id;
     }
 
     public Map<RawResource, Integer> getStock() {
