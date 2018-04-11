@@ -190,7 +190,7 @@ public class Crew {
         for (CraftedContract craft : craftedContracts) {
             CraftedResource craftedResource = craft.getResource();
             int craftedQuantity = craft.getQuantity();
-            if (craftedStock.get(craftedResource) >= craftedQuantity) {
+            if (craftedStock.containsKey(craftedResource) && craftedStock.get(craftedResource) >= craftedQuantity) {
                 finishCraftedContract(craft);
             }
         }
