@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class PathFinder {
 
-    private static final double minimalPrecentage = 50;
+    private static final double minimalPrecentage = 80;
 
     private PathFinder() { /*Empty private constructor to hide the implicit public one*/ }
 
