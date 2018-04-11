@@ -152,49 +152,33 @@ public class Crew {
         }
     }
 
-    private void finishRawContract(RawContract rawContract) {
-        completedRawContracts.add(rawContract);
-        for (int i = 0; i < rawContracts.size(); i++) {
-            if (rawContracts.get(i).getResource().equals(rawContract.getResource())) {
-                rawContracts.remove(i);
-                break;
-            }
-        }
-        computeWantedResources();
-    }
-
-    private void finishCraftedContract(CraftedContract craftedContract) {
-        completedCraftedContracts.add(craftedContract);
-        for (int i = 0; i < craftedContracts.size(); i++) {
-            if (craftedContracts.get(i).getResource().equals(craftedContract.getResource())) {
-                craftedContracts.remove(i);
-                break;
-            }
-        }
-        computeWantedResources();
-    }
-
     public void tryToFinishContracts() {
-        RawContract raw;
-        int size = rawContracts.size();
-        for (int i = 0; i < size; i++) {
-            raw = rawContracts.get(i);
-            RawResource rawResource = raw.getResource();
-            int rawQuantity = raw.getQuantity();
-            if (stock.containsKey(rawResource) && stock.get(rawResource) >= rawQuantity) {
-                size--;
-                i--;
-                finishRawContract(raw);
-            }
-        }
-        for (CraftedContract craft : craftedContracts) {
-            CraftedResource craftedResource = craft.getResource();
-            int craftedQuantity = craft.getQuantity();
-            if (craftedStock.containsKey(craftedResource) && craftedStock.get(craftedResource) >= craftedQuantity) {
-                finishCraftedContract(craft);
-            }
-        }
 
+        rawContracts.removeIf(rawContract -> {
+            RawResource resource = rawContract.getResource();
+            int quantity = rawContract.getQuantity();
+
+            boolean completed = stock.containsKey(resource) && stock.get(resource) >= quantity;
+
+            if (completed)
+                completedRawContracts.add(rawContract);
+
+            return completed;
+        });
+
+        craftedContracts.removeIf(craftedContract -> {
+            CraftedResource resource = craftedContract.getResource();
+            int quantity = craftedContract.getQuantity();
+
+            boolean completed = craftedStock.containsKey(resource) && craftedStock.get(resource) >= quantity;
+
+            if (completed)
+                completedCraftedContracts.add(craftedContract);
+
+            return completed;
+        });
+
+        computeWantedResources();
         chooseNewFocus();
     }
 

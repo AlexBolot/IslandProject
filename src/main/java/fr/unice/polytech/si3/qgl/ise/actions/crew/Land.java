@@ -11,12 +11,12 @@ public class Land extends CrewAction {
     public Land(Crew crewToUpdate, String idCreek) {
         super(crewToUpdate);
         this.idCreek = idCreek;
-        this.getCrewToUpdate().land();
     }
 
     @Override
     public String apply() {
         this.finish();
+        getCrewToUpdate().land();
         return new JsonFactory().createJsonString("land", "creek", idCreek, "people", 1 + "");
     }
 
