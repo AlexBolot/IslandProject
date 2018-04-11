@@ -3,6 +3,7 @@ package fr.unice.polytech.si3.qgl.ise.map;
 import fr.unice.polytech.si3.qgl.ise.enums.Biome;
 import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -57,6 +58,7 @@ public class PathFinderTest {
     }
 
     @Test
+    @Ignore
     public void findNearestTileOfBiomeTest() {
         assertNull(PathFinder.findNearestTileOfBiome(map, new Coordinates(0, 0), Biome.SHRUBLAND));
         assertNull(PathFinder.findNearestTileOfBiome(map, new Coordinates(0, 0), Biome.TUNDRA));
@@ -67,6 +69,7 @@ public class PathFinderTest {
     }
 
     @Test
+    @Ignore
     public void findNearestTileOfResourceTest() {
         assertNull(PathFinder.findNearestTileOfResource(map, new Coordinates(24, -42), RawResource.FRUITS));
         assertNull(PathFinder.findNearestTileOfResource(map, new Coordinates(-17, 2), RawResource.FISH));
