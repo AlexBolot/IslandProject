@@ -179,6 +179,7 @@ public class Crew {
         });
 
         computeWantedResources();
+
         chooseNewFocus();
     }
 
