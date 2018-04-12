@@ -19,24 +19,22 @@ public class Runner {
 
         int argc = args.length;
         Path mapLocation;
-        int x = 159;
-        int y = 159;
-        String heading = "NORTH";
-        int points = 15000;
-        int crew = 7;
-        long seed = 0xB8743F260B1D24EFL;
+        int x = 1;
+        int y = 1;
+        String heading = "EAST";
+        int points = 10000;
+        int crew = 4;
+        long seed = 0xFB9DDB405E0071F8L;
         List<String> resources = new ArrayList<>();
         resources.add("WOOD");
         resources.add("SUGAR_CANE");
-        resources.add("QUARTZ");
-        resources.add("RUM");
-        resources.add("ORE");
+        resources.add("GLASS");
+        resources.add("FUR");
         List<Integer> amounts = new ArrayList<>();
-        amounts.add(7000);
+        amounts.add(500);
         amounts.add(400);
-        amounts.add(20);
-        amounts.add(5);
-        amounts.add(4);
+        amounts.add(15);
+        amounts.add(500);
 
         switch (argc) {
             case 7:
