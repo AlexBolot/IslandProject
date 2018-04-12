@@ -1,14 +1,19 @@
 package fr.unice.polytech.si3.qgl.ise.map;
 
+import fr.unice.polytech.si3.qgl.ise.Explorer;
 import fr.unice.polytech.si3.qgl.ise.enums.Biome;
 import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.apache.logging.log4j.LogManager.getLogger;
+
 public class PathFinder {
 
     private static final double MINIMAL_PERCENTAGE = 80;
+    private static final Logger logger = getLogger(Explorer.class);
 
     private PathFinder() { /*Empty private constructor to hide the implicit public one*/ }
 
@@ -43,7 +48,7 @@ public class PathFinder {
 
         return map.getMap().entrySet().stream()
                 .filter(entry -> !Collections.disjoint(entry.getValue().getPossibleBiomes(), acceptableBiomes))
-                .mapToDouble(entry -> 1 / calculateDistance(map.getCreeks().get(creekId), entry.getKey()))
+                .mapToDouble(entry -> 1 / (calculateDistance(entry.getKey(), map.getCreeks().get(creekId)) + 1))
                 .sum();
     }
 
@@ -72,7 +77,6 @@ public class PathFinder {
      */
     public static Coordinates findNearestTileOfBiome(IslandMap map, Coordinates coordinates, Biome biome) {
         return map.getMap().entrySet().stream()
-                .filter(entry -> entry.getValue().getPossibleBiomes().contains(biome))
                 .filter(entry -> entry.getValue().getBiomePercentage(biome) > MINIMAL_PERCENTAGE)
                 .filter(entry -> !entry.getValue().isExplored())
                 .min(Comparator.comparingDouble(entry -> calculateDistance(entry.getKey(), coordinates)))
