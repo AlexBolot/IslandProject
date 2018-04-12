@@ -3,10 +3,10 @@
 
 ## État courant du projet
 
-  - Ticketing: _[4]_
+  - Ticketing: _[3]_
   - Versioning: _[5]_
   - Qualité Objet: _[4]_
-  - Tests: _[4]_
+  - Tests: _[3]_
   - Confiance dans le code: _[4]_
 
 ## Semainier
@@ -54,5 +54,12 @@
     - _Champion battu \o/_
     - _Remplissage de deux contrats et ajout de valeur client sur les îles précédentes_
     - _Meilleure couverture de test et désodorisation du code_
-  Points négatifs
+ - Points négatifs
     - _Les tests peuvent être améliorés_
+    
+### Semaine 15
+ - Points positifs
+    - _Contrat manufacturé sur la rétrospective_
+ - Points négatifs
+    - _Baisse dans le classement_
+    - _Baisse d'efficacité dûe à la dualité entre contracts_
