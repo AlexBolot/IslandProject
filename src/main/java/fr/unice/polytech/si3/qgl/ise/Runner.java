@@ -91,7 +91,7 @@ public class Runner {
 
         AfterRunBench afterRunBench = new AfterRunBench();
         afterRunBench.fill();
-        afterRunBench.computeContracts();
+        afterRunBench.compute();
         afterRunBench.display();
     }
 }

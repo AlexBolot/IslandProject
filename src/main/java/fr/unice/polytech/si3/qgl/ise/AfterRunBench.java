@@ -16,16 +16,16 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 
 public class AfterRunBench {
 
-    private static final Logger logger = getLogger(AfterRunBench.class);
+    private static final Logger logger = getLogger("fr.unice.polytech.si3.qgl.ise.Explorer");
     private Map<String, Long> inventory = new HashMap<>();
     private Map<String, Long> contracts = new HashMap<>();
     private Map<String, Long> rawContracts = new HashMap<>();
     private Map<String, Long> craftedContracts = new HashMap<>();
     private Map<String, Long> completedRawContracts = new HashMap<>();
     private Map<String, Long> completedCraftedContracts = new HashMap<>();
-    private Map<String, Integer> actions = new HashMap<>();
+    private Map<String, Long> actionsCost = new HashMap<>();
     private List<String> creeks = new ArrayList<>();
-    private long remainingPoints;
+    private long remainingPoints, droneCost = 0L, crewCost = 0L;
     private File jsonLog = new File("Explorer_ise.json");
     private JSONParser jsonParser = new JSONParser();
 
@@ -88,11 +88,11 @@ public class AfterRunBench {
                             }
                         }
 
-                        if (!actions.containsKey(action)) {
-                            actions.put(action, 1);
+                        if (!actionsCost.containsKey(action)) {
+                            actionsCost.put(action, cost);
                         } else {
-                            int formerNumberOfActions = actions.get(action);
-                            actions.put(action, formerNumberOfActions + 1);
+                            long formerCost = actionsCost.get(action);
+                            actionsCost.put(action, formerCost + cost);
                         }
 
                     }
@@ -103,20 +103,28 @@ public class AfterRunBench {
         }
     }
 
-    public void computeContracts() {
+    public void compute() {
         contracts.forEach((resource, amount) -> {
             if (resource.equals("GLASS") || resource.equals("INGOT") || resource.equals("LEATHER") || resource.equals("PLANK") || resource.equals("RUM")) {
-                if (inventory.get(resource) >= amount) {
+                if (inventory.containsKey(resource) && inventory.get(resource) >= amount) {
                     completedCraftedContracts.put(resource, amount);
                 } else {
                     craftedContracts.put(resource, amount);
                 }
             } else {
-                if (inventory.get(resource) >= amount) {
+                if (inventory.containsKey(resource) && inventory.get(resource) >= amount) {
                     completedRawContracts.put(resource, amount);
                 } else {
                     rawContracts.put(resource, amount);
                 }
+            }
+        });
+
+        actionsCost.forEach((action, cost) -> {
+            if (action.equals("fly") || action.equals("heading") || action.equals("echo") || action.equals("scan")) {
+                droneCost += cost;
+            } else {
+                crewCost += cost;
             }
         });
     }
@@ -147,6 +155,10 @@ public class AfterRunBench {
         craftedContracts.forEach((resource, amount) -> stringBuilder.append("Crafted contract failed: ").append(resource).append(" - ").append(amount).append("\n"));
 
         stringBuilder.append("Remaining points: ").append(remainingPoints).append("\n");
+
+        stringBuilder.append("Cost distribution: Drone: ").append(droneCost).append("/").append(droneCost + crewCost).append(" | Crew: ").append(crewCost).append("/").append(droneCost + crewCost).append("\n");
+
+        actionsCost.forEach((action, cost) -> stringBuilder.append(action).append(" - ").append(cost).append("\n"));
 
         logger.info(stringBuilder.toString());
     }
