@@ -110,7 +110,6 @@ public class IslandMapTest {
     }
 
     @Test
-    @Ignore
     public void testTilesToUpdatesBiomes() {
         Drone drone = new Drone(islandMap, DroneEnums.NSEW.EAST);
         //After acknowledging, all tiles must have the biome in their list

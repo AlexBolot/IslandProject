@@ -107,39 +107,6 @@ public class Explorer implements IExplorerRaid {
 
     @Override
     public String deliverFinalReport() {
-        try {
-            StringBuilder str2 = new StringBuilder();
-
-            str2.append("Report:").append("\n");
-
-            str2.append("Creeks found: ").append(drone.getMap().getCreeks().size()).append("\n");
-
-            str2.append("Points earned: ").append(crew.getCompletedRawContracts().size() + crew.getCompletedCraftedContracts().size() * 2).append("\n");
-
-            str2.append("Raw Contracts: ").append(crew.getCompletedRawContracts().size()).append("/").append(crew.getCompletedRawContracts().size() + crew.getRawContracts().size()).append("\n");
-
-            str2.append("Crafted Contracts: ").append(crew.getCompletedCraftedContracts().size()).append("/").append(crew.getCompletedCraftedContracts().size() + crew.getCraftedContracts().size()).append("\n");
-
-            str2.append("Inventory:").append("\n");
-
-            crew.getStock().forEach((key, value) -> str2.append(key).append(" - ").append(value).append("\n"));
-
-            crew.getCompletedRawContracts().forEach(rawContract -> str2.append("Raw contract completed: ").append(rawContract).append("\n"));
-
-            crew.getCompletedCraftedContracts().forEach(craftedContract -> str2.append("Crafted contract completed: ").append(craftedContract).append("\n"));
-
-            crew.getRawContracts().forEach(rawContract -> str2.append("Raw contract failed: ").append(rawContract).append("\n"));
-
-            crew.getCraftedContracts().forEach(craftedContract -> str2.append("Crafted contract failed: ").append(craftedContract).append("\n"));
-
-            str2.append("Remaining points: ").append(remainingBudget).append("\n");
-
-            logger.info(str2.toString());
-
-        } catch (Exception e) {
-            logger.error("Error in final report :", e);
-        }
-
         return "Did everyone see that? Because we will not be doing it again!";
     }
 
