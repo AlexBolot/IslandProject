@@ -20,8 +20,8 @@ public class Transform extends CrewAction {
 
     @Override
     public String apply() {
-        for (RawResource rawResource : resourceWithQuantity.keySet()) {
-            getCrewToUpdate().removeFromStock(rawResource, resourceWithQuantity.get(rawResource));
+        for (Map.Entry<RawResource, Integer> entry : resourceWithQuantity.entrySet()) {
+            getCrewToUpdate().removeFromStock(entry.getKey(), entry.getValue());
         }
         return new JsonFactory().createJsonString("transform", resourceWithQuantity);
     }

@@ -10,7 +10,6 @@ import fr.unice.polytech.si3.qgl.ise.enums.Biome;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle;
-import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.SubState;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
 import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
@@ -18,7 +17,6 @@ import fr.unice.polytech.si3.qgl.ise.map.Tile;
 import fr.unice.polytech.si3.qgl.ise.parsing.Echo;
 import fr.unice.polytech.si3.qgl.ise.parsing.Scan;
 import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
-import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -27,13 +25,9 @@ import java.util.Map;
 
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.BORDER;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.SubState.INIT_ECHO_FRONT;
-import static org.apache.logging.log4j.LogManager.getLogger;
 
 public class Drone {
     private static final int MOVEMENT_UNIT = 3;
-    private static final Logger logger = getLogger(Drone.class);
-    private final SubState subState;
     private final IslandMap map;
     private final Margin margins;
     private NSEW orientation;
@@ -49,7 +43,6 @@ public class Drone {
         this.map = map;
         this.coordinates = new Coordinates(0, 0);
         this.isFlying = true;
-        this.subState = INIT_ECHO_FRONT;
         this.orientation = orientation;
         this.margins = new Margin();
 
@@ -70,7 +63,6 @@ public class Drone {
     }
 
     public String takeDecision() {
-        logger.info("--------> start");
 
         if (!isFlying) return new StopAction(this).apply();
 
@@ -81,8 +73,6 @@ public class Drone {
 
             if (!res.isEmpty()) return res;
         }
-
-        logger.info("--------> end - " + subState);
 
         isFlying = false;
         return "";

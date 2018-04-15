@@ -4,7 +4,6 @@ import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.enums.*;
 import fr.unice.polytech.si3.qgl.ise.parsing.Scan;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import scala.Tuple2;
 

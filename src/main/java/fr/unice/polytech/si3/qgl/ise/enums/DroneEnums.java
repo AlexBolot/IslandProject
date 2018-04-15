@@ -112,46 +112,4 @@ public class DroneEnums {
         HEADING,
         STOP
     }
-
-    public enum SubState {
-        INIT_ECHO_FRONT,
-        INIT_ECHO_RIGHT,
-        INIT_ECHO_LEFT,
-
-        SEARCH_CHOSE_DIR,
-        SEARCH_ECHO_SIDE,
-        SEARCH_FLY,
-
-        REACH_ISLAND_TURN1,
-        REACH_ISLAND_TURN2,
-        REACH_ISLAND_TURN3,
-        REACH_ISLAND_ECHO_FRONT,
-        REACH_ISLAND_MOVE,
-
-        SCAN_STEP_1,
-        SCAN_STEP_2,
-
-        CHANGE_LINE_TURN_1,
-        CHANGE_LINE_TURN_2,
-        CHANGE_LINE_ECHO_FRONT,
-        CHANGE_LINE_DONE,
-
-        PASS_ISLAND_STEP_1,
-        PASS_ISLAND_STEP_2,
-
-        ABOUT_TURN_L_1,
-        ABOUT_TURN_L_2,
-        ABOUT_TURN_L_3,
-        ABOUT_TURN_L_4,
-        ABOUT_TURN_L_5,
-        ABOUT_TURN_L_6,
-        ABOUT_TURN_L_7,
-        ABOUT_TURN_R_1,
-        ABOUT_TURN_R_2,
-        ABOUT_TURN_R_3,
-        ABOUT_TURN_R_4,
-        ABOUT_TURN_R_5,
-        ABOUT_TURN_R_6,
-        ABOUT_TURN_R_7,
-    }
 }

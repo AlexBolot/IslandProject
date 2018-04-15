@@ -128,23 +128,23 @@ public class Crew {
             Optional<CraftedContract> bestCraftedContract = choseBestCraftedContract();
             if (bestCraftedContract.isPresent()) {
                 Map<RawResource, Double> resources = bestCraftedContract.get().getRemainingRawQuantities();
-                for (RawResource rawResource : resources.keySet()) {
+                for (Map.Entry<RawResource, Double> entry : resources.entrySet()) {
                     int realStock;
-                    if (stock.containsKey(rawResource)) {
-                        realStock = stock.get(rawResource);
+                    if (stock.containsKey(entry.getKey())) {
+                        realStock = stock.get(entry.getKey());
                         for (RawContract rawContract : completedRawContracts) {
-                            if (rawContract.getResource().equals(rawResource)) {
+                            if (rawContract.getResource().equals(entry.getKey())) {
                                 realStock = realStock - rawContract.getQuantity();
                             }
                         }
-                        if (realStock < resources.get(rawResource)) {
-                            currentResource = rawResource;
-                            currentQuantity = resources.get(rawResource).intValue();
+                        if (realStock < entry.getValue()) {
+                            currentResource = entry.getKey();
+                            currentQuantity = entry.getValue().intValue();
                             return;
                         }
                     } else {
-                        currentResource = rawResource;
-                        currentQuantity = resources.get(rawResource).intValue();
+                        currentResource = entry.getKey();
+                        currentQuantity = entry.getValue().intValue();
                         return;
                     }
                 }
@@ -187,16 +187,16 @@ public class Crew {
         for (CraftedContract craft : craftedContracts) {
             boolean test = true;
             Map<RawResource, Double> remainingResources = craft.getRemainingRawQuantities();
-            for (RawResource rawResource : remainingResources.keySet()) {
+            for (Map.Entry<RawResource, Double> entry : remainingResources.entrySet()) {
                 int realStock;
-                if (stock.containsKey(rawResource) && stock.get(rawResource) >= remainingResources.get(rawResource)) {
-                    realStock = stock.get(rawResource);
+                if (stock.containsKey(entry.getKey()) && stock.get(entry.getKey()) >= entry.getValue()) {
+                    realStock = stock.get(entry.getKey());
                     for (RawContract rawContract : completedRawContracts) {
-                        if (rawContract.getResource().equals(rawResource)) {
+                        if (rawContract.getResource().equals(entry.getKey())) {
                             realStock = realStock - rawContract.getQuantity();
                         }
                     }
-                    test = realStock >= remainingResources.get(rawResource);
+                    test = realStock >= entry.getValue();
                 } else {
                     test = false;
                 }

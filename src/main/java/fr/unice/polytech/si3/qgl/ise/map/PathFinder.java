@@ -1,19 +1,14 @@
 package fr.unice.polytech.si3.qgl.ise.map;
 
-import fr.unice.polytech.si3.qgl.ise.Explorer;
 import fr.unice.polytech.si3.qgl.ise.enums.Biome;
 import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
-import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.apache.logging.log4j.LogManager.getLogger;
-
 public class PathFinder {
 
     private static final double MINIMAL_PERCENTAGE = 80;
-    private static final Logger logger = getLogger(Explorer.class);
 
     private PathFinder() { /*Empty private constructor to hide the implicit public one*/ }
 

@@ -26,7 +26,6 @@ public class MoveTo extends CrewAction {
     private boolean setLastAction() {
         //The action is the last when whe are 1 tile close
         Coordinates crewCoordinates = getCrewToUpdate().getCoordinates();
-//        if ((crewCoordinates.getX() == coordinates.getX() && Ydiff1) || (crewCoordinates.getY() == coordinates.getY() && Xdiff1))
         if (caseToReachFrom(crewCoordinates) == 1)
             finish();
 
