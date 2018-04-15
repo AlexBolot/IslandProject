@@ -88,5 +88,10 @@ public class Runner {
                 .collecting(amounts.get(4 % amounts.size()), resources.get(4 % amounts.size()))
                 .storingInto(".")
                 .fire();
+
+        AfterRunBench afterRunBench = new AfterRunBench();
+        afterRunBench.fill();
+        afterRunBench.computeContracts();
+        afterRunBench.display();
     }
 }

@@ -25,12 +25,13 @@
     </properties>
 
     <dependencies>
-        <!-- Island Player Interface -->
+        <!-- ISE Explorer -->
         <dependency>
             <groupId>fr.unice.polytech.3a.qgl</groupId>
             <artifactId>ise</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
+        <!-- Island Player Interface -->
         <dependency>
             <groupId>eu.ace-design</groupId>
             <artifactId>island-player</artifactId>
@@ -49,11 +50,11 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-        <!-- Simple and Stupid JSON library -->
+        <!-- Simple JSON library -->
         <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20171018</version>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1.1</version>
         </dependency>
         <!-- Java Logging API and Core -->
         <dependency>
