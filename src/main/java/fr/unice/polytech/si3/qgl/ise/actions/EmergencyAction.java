@@ -6,8 +6,8 @@ import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 
 public class EmergencyAction extends Action {
 
-    private Drone drone;
-    private Land land;
+    private final Drone drone;
+    private final Land land;
 
     public EmergencyAction(Drone drone, Crew crew) {
         this.drone = drone;
