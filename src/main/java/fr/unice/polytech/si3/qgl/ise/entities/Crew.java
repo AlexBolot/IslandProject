@@ -217,9 +217,22 @@ public class Crew {
             wantedResources.add(raw.getResource());
         }
         for (CraftedContract craft : craftedContracts) {
-            for (RawResource raw : craft.getRawQuantities().keySet()) {
+            for (RawResource raw : craft.getRemainingRawQuantities().keySet()) {
                 if (!wantedResources.contains(raw)) {
-                    wantedResources.add(raw);
+                    int realStock;
+                    if (stock.containsKey(raw)) {
+                        realStock = stock.get(raw);
+                        for (RawContract rawContract : completedRawContracts) {
+                            if (rawContract.getResource().equals(raw)) {
+                                realStock = realStock - rawContract.getQuantity();
+                            }
+                        }
+                        if (realStock < craft.getRemainingRawQuantities().get(raw)) {
+                            wantedResources.add(raw);
+                        }
+                    } else {
+                        wantedResources.add(raw);
+                    }
                 }
             }
         }
