@@ -81,7 +81,7 @@ public class AfterRunBench {
                             for (Object o : usedResources.entrySet()) {
                                 Map.Entry entry = (Map.Entry) o;
                                 String resource = (String) entry.getKey();
-                                long amount = (long) entry.getValue();
+                                long amount = Long.parseLong((String) entry.getValue());
 
                                 long formerStock = inventory.get(resource);
                                 inventory.put(resource, formerStock - amount);
