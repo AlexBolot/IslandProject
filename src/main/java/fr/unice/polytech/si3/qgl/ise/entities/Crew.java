@@ -30,7 +30,6 @@ public class Crew {
     private Coordinates coordinates;
     private RawResource currentResource;
     private List<RawResource> wantedResources = new ArrayList<>();
-    private int currentQuantity;
     private boolean isLanded;
 
     public Crew(IslandMap map, List<RawContract> rawContracts, List<CraftedContract> craftedContracts) {
@@ -119,11 +118,9 @@ public class Crew {
 
     private void chooseNewFocus() {
         currentResource = null;
-        currentQuantity = 0;
 
         Optional<RawContract> bestContract = choseBestRawContract();
         bestContract.ifPresent(rawContract -> currentResource = rawContract.getResource());
-        bestContract.ifPresent(rawContract -> currentQuantity = rawContract.getQuantity());
         if (currentResource == null) {
             Optional<CraftedContract> bestCraftedContract = choseBestCraftedContract();
             if (bestCraftedContract.isPresent()) {
@@ -139,12 +136,10 @@ public class Crew {
                         }
                         if (realStock < entry.getValue()) {
                             currentResource = entry.getKey();
-                            currentQuantity = entry.getValue().intValue();
                             return;
                         }
                     } else {
                         currentResource = entry.getKey();
-                        currentQuantity = entry.getValue().intValue();
                         return;
                     }
                 }
@@ -266,27 +261,11 @@ public class Crew {
         this.idCreek = id;
     }
 
-    public Map<RawResource, Integer> getStock() {
-        return stock;
-    }
-
-    public Map<CraftedResource, Integer> getCraftedStock() {
-        return craftedStock;
-    }
-
-    public int getCurrentQuantity() {
-        return currentQuantity;
-    }
-
-    public void setCurrentQuantity(int currentQuantity) {
-        this.currentQuantity = currentQuantity;
-    }
-
     public List<RawContract> getRawContracts() {
         return rawContracts;
     }
 
-    public List<CraftedContract> getCraftedContracts() {
+    List<CraftedContract> getCraftedContracts() {
         return craftedContracts;
     }
 
@@ -298,11 +277,11 @@ public class Crew {
         return wantedResources;
     }
 
-    public List<RawContract> getCompletedRawContracts() {
+    List<RawContract> getCompletedRawContracts() {
         return completedRawContracts;
     }
 
-    public List<CraftedContract> getCompletedCraftedContracts() {
+    List<CraftedContract> getCompletedCraftedContracts() {
         return completedCraftedContracts;
     }
 

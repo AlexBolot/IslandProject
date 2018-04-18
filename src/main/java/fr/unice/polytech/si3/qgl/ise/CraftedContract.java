@@ -10,8 +10,8 @@ public class CraftedContract {
     private final Integer quantity;
     private final CraftedResource resource;
     private final Map<RawResource, Double> rawQuantities;
-    private int remainingQuantity;
     private final Map<RawResource, Double> remainingRawQuantities;
+    private int remainingQuantity;
 
     public CraftedContract(CraftedResource resource, Integer quantity) {
         this.quantity = quantity;

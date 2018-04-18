@@ -37,6 +37,6 @@ public class EchoActionTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void invalidEcho() {
-        String result = echoAction.apply(DroneEnums.ZQSD.BACK);
+        echoAction.apply(DroneEnums.ZQSD.BACK);
     }
 }
