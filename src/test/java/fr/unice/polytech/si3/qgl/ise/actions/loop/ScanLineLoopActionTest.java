@@ -1,7 +1,7 @@
 package fr.unice.polytech.si3.qgl.ise.actions.loop;
 
 import fr.unice.polytech.si3.qgl.ise.actions.drone.ChangeLineAction;
-import fr.unice.polytech.si3.qgl.ise.actions.drone.ScanLineAction;
+import fr.unice.polytech.si3.qgl.ise.actions.drone.ScanLineActionStraight;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
@@ -13,6 +13,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Random;
 
+import static fr.unice.polytech.si3.qgl.ise.actions.drone.ScanLineActionStraight.Strategy.FULL;
 import static fr.unice.polytech.si3.qgl.ise.actions.drone.TestingUtils.setMargins;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW.NORTH;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
@@ -23,7 +24,7 @@ public class ScanLineLoopActionTest {
     private Drone drone;
     private Drone drone2;
     private ScanLineLoopAction scanLineLoopAction;
-    private ScanLineAction scanLineAction;
+    private ScanLineActionStraight scanLineActionStraight;
     private ChangeLineAction changeLineAction;
 
     private int islandWidth;
@@ -32,11 +33,11 @@ public class ScanLineLoopActionTest {
     public void setUp() {
         drone = new Drone(new IslandMap(), NORTH);
         setMargins(drone, 50);
-        scanLineLoopAction = new ScanLineLoopAction(drone);
+        scanLineLoopAction = new ScanLineLoopAction(drone, new ScanLineActionStraight(drone, FULL.getPace()));
 
         drone2 = new Drone(new IslandMap(), NORTH);
         setMargins(drone2, 50);
-        scanLineAction = new ScanLineAction(drone2);
+        scanLineActionStraight = new ScanLineActionStraight(drone2, FULL.getPace());
         changeLineAction = new ChangeLineAction(drone2);
     }
 
@@ -55,18 +56,18 @@ public class ScanLineLoopActionTest {
                 while (!scanLineLoopAction.isFinished()) {
                     islandWidth = new Random().nextInt(5) + 5;
 
-                    while (!scanLineAction.isFinished()) {
-                        assertEquals(scanLineAction.apply(), scanLineLoopAction.apply());
+                    while (!scanLineActionStraight.isFinished()) {
+                        assertEquals(scanLineActionStraight.apply(), scanLineLoopAction.apply());
                         acknowledgeAsNeeded();
                     }
 
-                    assertTrue(scanLineAction.isFinished());
+                    assertTrue(scanLineActionStraight.isFinished());
 
                     while (!changeLineAction.isFinished()) {
                         assertEquals(changeLineAction.apply(), scanLineLoopAction.apply());
                     }
 
-                    scanLineAction.reset();
+                    scanLineActionStraight.reset();
                     changeLineAction.reset();
                 }
 

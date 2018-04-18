@@ -4,6 +4,7 @@ import fr.unice.polytech.si3.qgl.ise.actions.Action;
 import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
 import fr.unice.polytech.si3.qgl.ise.actions.drone.DroneInitAction;
 import fr.unice.polytech.si3.qgl.ise.actions.drone.ReachIslandAction;
+import fr.unice.polytech.si3.qgl.ise.actions.drone.ScanLineActionStraight;
 import fr.unice.polytech.si3.qgl.ise.actions.drone.SearchIslandAction;
 import fr.unice.polytech.si3.qgl.ise.actions.loop.ScanIslandLoopAction;
 import fr.unice.polytech.si3.qgl.ise.enums.Biome;
@@ -59,7 +60,7 @@ public class Drone {
         steps.add(new DroneInitAction(this));
         steps.add(new SearchIslandAction(this));
         steps.add(new ReachIslandAction(this));
-        steps.add(new ScanIslandLoopAction(this));
+        steps.add(new ScanIslandLoopAction(this, new ScanLineActionStraight(this, 1)));
     }
 
     public String takeDecision() {

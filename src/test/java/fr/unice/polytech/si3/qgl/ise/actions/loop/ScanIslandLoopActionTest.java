@@ -2,6 +2,7 @@ package fr.unice.polytech.si3.qgl.ise.actions.loop;
 
 import fr.unice.polytech.si3.qgl.ise.actions.drone.GTurnAction;
 import fr.unice.polytech.si3.qgl.ise.actions.drone.PassIslandAction;
+import fr.unice.polytech.si3.qgl.ise.actions.drone.ScanLineActionStraight;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
@@ -14,6 +15,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Random;
 
+import static fr.unice.polytech.si3.qgl.ise.actions.drone.ScanLineActionStraight.Strategy.FULL;
 import static fr.unice.polytech.si3.qgl.ise.actions.drone.TestingUtils.setMargins;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action.ECHO;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW.NORTH;
@@ -33,12 +35,12 @@ public class ScanIslandLoopActionTest {
     public void setUp() {
         drone = new Drone(new IslandMap(), NORTH);
         setMargins(drone, 50);
-        scanIslandLoopAction = new ScanIslandLoopAction(drone);
+        scanIslandLoopAction = new ScanIslandLoopAction(drone, new ScanLineActionStraight(drone, FULL.getPace()));
 
         drone2 = new Drone(new IslandMap(), NORTH);
         setMargins(drone2, 50);
         gTurnAction = new GTurnAction(drone2);
-        scanLineLoopAction = new ScanLineLoopAction(drone2);
+        scanLineLoopAction = new ScanLineLoopAction(drone2, new ScanLineActionStraight(drone, FULL.getPace()));
         passIslandAction = new PassIslandAction(drone2);
     }
 

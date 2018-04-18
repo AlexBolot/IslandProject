@@ -1,34 +1,23 @@
 package fr.unice.polytech.si3.qgl.ise.actions.drone;
 
-import fr.unice.polytech.si3.qgl.ise.actions.simple.EchoAction;
-import fr.unice.polytech.si3.qgl.ise.actions.simple.FlyAction;
-import fr.unice.polytech.si3.qgl.ise.actions.simple.ScanAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
-import fr.unice.polytech.si3.qgl.ise.enums.Biome;
-import fr.unice.polytech.si3.qgl.ise.map.Tile;
 import scala.Tuple2;
 
-import java.util.List;
-
-import static fr.unice.polytech.si3.qgl.ise.actions.drone.ScanLineAction.Step.*;
-import static fr.unice.polytech.si3.qgl.ise.enums.Biome.OCEAN;
+import static fr.unice.polytech.si3.qgl.ise.actions.drone.ScanLineActionStraight.Step.*;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.BORDER;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 
-public class ScanLineAction extends DroneAction {
-    private final FlyAction flyAction;
-    private final ScanAction scanAction;
-    private final EchoAction echoAction;
+public class ScanLineActionStraight extends ScanLineStrategy {
     private Step currentStep;
+    private int stepCount = 0;
+    private final int pace;
 
-    public ScanLineAction(Drone drone) {
+    public ScanLineActionStraight(Drone drone, int pace) {
         super(drone);
+        this.pace = pace;
         currentStep = SCAN;
-        flyAction = new FlyAction(drone);
-        scanAction = new ScanAction(drone);
-        echoAction = new EchoAction(drone);
     }
 
     @Override
@@ -44,18 +33,21 @@ public class ScanLineAction extends DroneAction {
             case SCAN:
                 res = scanAction.apply();
                 nextStep = FLY_OR_TURN;
+                stepCount = 0;
                 break;
 
             case FLY_OR_TURN:
-                res = checkResult();
+                res = stepCount == 0 ? checkResult() : flyAction.apply();
+                stepCount++;
 
                 if (getDrone().getMargins().getGlobal(FRONT)._2 < 2) {
                     res = echoAction.apply(FRONT);
                     this.finish();
                 }
 
-                if (!res.isEmpty()) nextStep = SCAN;
-                else {
+                if (!res.isEmpty()) {
+                    nextStep = (stepCount == pace) ? SCAN : FLY_OR_TURN;
+                } else {
                     res = echoAction.apply(FRONT);
                     nextStep = ECHO_FRONT;
                 }
@@ -76,8 +68,8 @@ public class ScanLineAction extends DroneAction {
                     res = flyAction.apply();
                     nextStep = REACH;
                 } else {
-                    res = scanAction.apply();
-                    nextStep = FLY_OR_TURN;
+                    currentStep = SCAN;
+                    return apply();
                 }
                 break;
 
@@ -86,18 +78,6 @@ public class ScanLineAction extends DroneAction {
         }
 
         currentStep = nextStep;
-
-        return res;
-    }
-
-    private String checkResult() {
-        Tile tile = getDrone().getMap().getTile(getDrone().getCoordinates());
-        List<Biome> biomes = tile.getPossibleBiomes();
-
-        String res = "";
-
-        if (biomes.stream().anyMatch(biome -> biome != OCEAN && tile.getBiomePercentage(biome) == 100))
-            res = flyAction.apply();
 
         return res;
     }
@@ -113,5 +93,21 @@ public class ScanLineAction extends DroneAction {
         FLY_OR_TURN,
         ECHO_FRONT,
         REACH,
+    }
+
+    public enum Strategy {
+        FULL(1),
+        HALF(2),
+        THIRD(3);
+
+        private int pace;
+
+        Strategy(int pace) {
+            this.pace = pace;
+        }
+
+        public int getPace() {
+            return pace;
+        }
     }
 }

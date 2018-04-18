@@ -3,6 +3,7 @@ package fr.unice.polytech.si3.qgl.ise.actions.loop;
 import fr.unice.polytech.si3.qgl.ise.actions.Action;
 import fr.unice.polytech.si3.qgl.ise.actions.drone.GTurnAction;
 import fr.unice.polytech.si3.qgl.ise.actions.drone.PassIslandAction;
+import fr.unice.polytech.si3.qgl.ise.actions.drone.ScanLineStrategy;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
 
@@ -12,9 +13,9 @@ public class ScanIslandLoopAction extends Action {
     private final ScanLineLoopAction scanLineLoopAction;
     private final PassIslandAction passIslandAction;
 
-    public ScanIslandLoopAction(Drone drone) {
+    public ScanIslandLoopAction(Drone drone, ScanLineStrategy scanLineStrategy) {
         this.drone = drone;
-        this.scanLineLoopAction = new ScanLineLoopAction(drone);
+        this.scanLineLoopAction = new ScanLineLoopAction(drone, scanLineStrategy);
         this.gTurnAction = new GTurnAction(drone);
         this.passIslandAction = new PassIslandAction(drone);
     }

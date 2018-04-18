@@ -2,7 +2,7 @@ package fr.unice.polytech.si3.qgl.ise.actions.loop;
 
 import fr.unice.polytech.si3.qgl.ise.actions.Action;
 import fr.unice.polytech.si3.qgl.ise.actions.drone.ChangeLineAction;
-import fr.unice.polytech.si3.qgl.ise.actions.drone.ScanLineAction;
+import fr.unice.polytech.si3.qgl.ise.actions.drone.ScanLineStrategy;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 
 import java.util.ArrayList;
@@ -14,8 +14,8 @@ public class ScanLineLoopAction extends Action {
     private final Drone drone;
     private final ArrayList<Action> actions;
 
-    ScanLineLoopAction(Drone drone) {
-        actions = new ArrayList<>(Arrays.asList(new ScanLineAction(drone), new ChangeLineAction(drone)));
+    ScanLineLoopAction(Drone drone, ScanLineStrategy scanLineStrategy) {
+        actions = new ArrayList<>(Arrays.asList(scanLineStrategy, new ChangeLineAction(drone)));
         this.drone = drone;
     }
 
