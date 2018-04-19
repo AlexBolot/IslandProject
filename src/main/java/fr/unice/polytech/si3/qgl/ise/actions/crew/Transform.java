@@ -1,5 +1,6 @@
 package fr.unice.polytech.si3.qgl.ise.actions.crew;
 
+import fr.unice.polytech.si3.qgl.ise.CraftedContract;
 import fr.unice.polytech.si3.qgl.ise.actions.CrewAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Crew;
 import fr.unice.polytech.si3.qgl.ise.enums.CraftedResource;
@@ -32,6 +33,12 @@ public class Transform extends CrewAction {
         JSONObject extras = new JSONObject(result).getJSONObject("extras");
         produced = extras.getInt("production");
         getCrewToUpdate().addToCraftedStock(CraftedResource.valueOf(extras.getString("kind")), extras.getInt("production"));
+        for (CraftedContract craftedContract : getCrewToUpdate().getCraftedContracts()) {
+            if (craftedContract.getResource().equals(CraftedResource.valueOf(extras.getString("kind")))) {
+                craftedContract.updateContract(extras.getInt("production"));
+                break;
+            }
+        }
         return "";
     }
 

@@ -265,7 +265,7 @@ public class Crew {
         return rawContracts;
     }
 
-    List<CraftedContract> getCraftedContracts() {
+    public List<CraftedContract> getCraftedContracts() {
         return craftedContracts;
     }
 
