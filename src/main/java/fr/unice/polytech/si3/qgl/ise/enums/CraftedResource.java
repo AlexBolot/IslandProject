@@ -7,18 +7,16 @@ import java.util.Map;
  * Enum describing every crafted resource, its unique id and its recipe
  */
 public enum CraftedResource {
-    GLASS("GLASS", "10Qu+5Wo"),
-    INGOT("INGOT", "5Or+5Wo"),
-    PLANK("PLANK", "0.25Wo"),
-    LEATHER("LEATHER", "3Fu"),
-    RUM("RUM", "10Su+1Fr");
+    GLASS("GLASS"),
+    INGOT("INGOT"),
+    PLANK("PLANK"),
+    LEATHER("LEATHER"),
+    RUM("RUM");
 
     private final String id;
-    private final String recipe;
 
-    CraftedResource(String id, String recipe) {
+    CraftedResource(String id) {
         this.id = id;
-        this.recipe = recipe;
     }
 
     public static Map<RawResource, Double> getValueOf(String id) {
@@ -48,18 +46,7 @@ public enum CraftedResource {
         return returnData;
     }
 
-    public static boolean contains(String id) {
-        for (CraftedResource c : CraftedResource.values())
-            if (c.name().equals(id))
-                return true;
-        return false;
-    }
-
     public String getId() {
         return id;
-    }
-
-    public String getRecipe() {
-        return recipe;
     }
 }

@@ -12,7 +12,6 @@ import java.util.Map;
 
 public class Transform extends CrewAction {
     private final Map<RawResource, Integer> resourceWithQuantity;
-    private int produced;
 
     public Transform(Crew crewToUpdate, Map<RawResource, Integer> resourceWithQuantity) {
         super(crewToUpdate);
@@ -31,7 +30,6 @@ public class Transform extends CrewAction {
     public String acknowledgeResults(String result) {
         finish();
         JSONObject extras = new JSONObject(result).getJSONObject("extras");
-        produced = extras.getInt("production");
         getCrewToUpdate().addToCraftedStock(CraftedResource.valueOf(extras.getString("kind")), extras.getInt("production"));
         for (CraftedContract craftedContract : getCrewToUpdate().getCraftedContracts()) {
             if (craftedContract.getResource().equals(CraftedResource.valueOf(extras.getString("kind")))) {
@@ -40,9 +38,5 @@ public class Transform extends CrewAction {
             }
         }
         return "";
-    }
-
-    public int getProduced() {
-        return produced;
     }
 }
