@@ -22,6 +22,7 @@ public class Explorer implements IExplorerRaid {
     private Crew crew;
     private IslandMap map;
     private int remainingBudget;
+    private int totalBudget;
     private ContractParser contractParser;
     private boolean shouldStop;
 
@@ -35,6 +36,7 @@ public class Explorer implements IExplorerRaid {
 
             String heading = contractParser.getHeading();
             remainingBudget = contractParser.getBudget();
+            totalBudget = contractParser.getBudget();
 
             NSEW orientation = NSEW.getFromValue(heading);
             map = new IslandMap();
@@ -55,9 +57,13 @@ public class Explorer implements IExplorerRaid {
                 String decision;
 
                 if (drone.isFlying()) {
-                    decision = drone.takeDecision();
-                    logger.info("Decision :\t" + decision);
-                    if (!decision.isEmpty()) return decision;
+                    if (remainingBudget < (totalBudget / 2) && !map.getCreeks().isEmpty()) {
+                        drone.stopFlying();
+                    } else {
+                        decision = drone.takeDecision();
+                        logger.info("Decision :\t" + decision);
+                        if (!decision.isEmpty()) return decision;
+                    }
                 }
 
                 if (crew == null) initCrew();
