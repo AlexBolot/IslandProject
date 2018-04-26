@@ -10,9 +10,9 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 
 public class ScanLineActionStraight extends ScanLineStrategy {
+    private final int pace;
     private Step currentStep;
     private int stepCount = 0;
-    private final int pace;
 
     public ScanLineActionStraight(Drone drone, int pace) {
         super(drone);

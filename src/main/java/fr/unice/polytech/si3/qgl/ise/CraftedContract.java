@@ -11,6 +11,7 @@ public class CraftedContract {
     private final CraftedResource resource;
     private final Map<RawResource, Double> rawQuantities;
     private final Map<RawResource, Double> remainingRawQuantities;
+    private final Map<RawResource, Double> remainingRawQuantitiesMinusStock;
     private int remainingQuantity;
 
     public CraftedContract(CraftedResource resource, Integer quantity) {
@@ -19,6 +20,7 @@ public class CraftedContract {
         this.resource = resource;
         rawQuantities = new EnumMap<>(RawResource.class);
         remainingRawQuantities = new EnumMap<>(RawResource.class);
+        remainingRawQuantitiesMinusStock = new EnumMap<>(RawResource.class);
 
         //Calculate the total cost in RawResource
         for (Map.Entry<RawResource, Double> cost : CraftedResource.getValueOf(resource.getId()).entrySet()) {
@@ -26,6 +28,7 @@ public class CraftedContract {
         }
         for (Map.Entry<RawResource, Double> cost : CraftedResource.getValueOf(resource.getId()).entrySet()) {
             remainingRawQuantities.put(cost.getKey(), cost.getValue() * quantity);
+            remainingRawQuantitiesMinusStock.put(cost.getKey(), cost.getValue() * quantity);
         }
     }
 
@@ -36,8 +39,14 @@ public class CraftedContract {
         }
         for (Map.Entry<RawResource, Double> cost : CraftedResource.getValueOf(resource.getId()).entrySet()) {
             remainingRawQuantities.put(cost.getKey(), cost.getValue() * remainingQuantity);
+            remainingRawQuantitiesMinusStock.put(cost.getKey(), cost.getValue() * remainingQuantity);
         }
         return false;
+    }
+
+    public void updateRemainingQuantityMinusStock(RawResource resource, int stock) {
+        if (remainingRawQuantities.containsKey(resource))
+            remainingRawQuantitiesMinusStock.put(resource, (remainingRawQuantities.get(resource) - stock) > 0 ? remainingRawQuantities.get(resource) - stock : 0);
     }
 
     public Integer getQuantity() {
@@ -58,6 +67,10 @@ public class CraftedContract {
 
     public Map<RawResource, Double> getRemainingRawQuantities() {
         return remainingRawQuantities;
+    }
+
+    public Map<RawResource, Double> getRemainingRawQuantitiesMinusStock() {
+        return remainingRawQuantitiesMinusStock;
     }
 
     @Override

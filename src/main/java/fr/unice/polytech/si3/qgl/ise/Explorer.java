@@ -17,7 +17,7 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 
 public class Explorer implements IExplorerRaid {
     private static final Logger logger = getLogger(Explorer.class);
-    private static final int LIMIT = 250;
+    private static final int LIMIT = 500;
     private Drone drone;
     private Crew crew;
     private IslandMap map;
@@ -25,6 +25,7 @@ public class Explorer implements IExplorerRaid {
     private int totalBudget;
     private ContractParser contractParser;
     private boolean shouldStop;
+    private boolean notFullyScanned;
 
     @Override
     public void initialize(String contract) {
@@ -42,6 +43,7 @@ public class Explorer implements IExplorerRaid {
             map = new IslandMap();
             drone = new Drone(map, orientation);
             shouldStop = false;
+            notFullyScanned = false;
         } catch (Exception e) {
             shouldStop = true;
             logger.error("Error in init : ", e);
@@ -50,15 +52,20 @@ public class Explorer implements IExplorerRaid {
 
     @Override
     public String takeDecision() {
-        if (shouldStop) return triggerEmergecy();
+        if (shouldStop) {
+            notFullyScanned = true;
+            return triggerEmergency();
+        }
 
         try {
             if (remainingBudget > LIMIT) {
                 String decision;
 
                 if (drone.isFlying()) {
-                    if (remainingBudget < (totalBudget * 0.55) && !map.getCreeks().isEmpty()) {
+                    if (remainingBudget < (totalBudget * 0.67) && !map.getCreeks().isEmpty()) {
+                        notFullyScanned = true;
                         drone.stopFlying();
+
                     } else {
                         decision = drone.takeDecision();
                         logger.info("Decision :\t" + decision);
@@ -78,7 +85,7 @@ public class Explorer implements IExplorerRaid {
             }
         } catch (Exception e) {
             logger.error("Error in takeDecision :", e);
-            return triggerEmergecy();
+            return triggerEmergency();
         }
     }
 
@@ -104,6 +111,7 @@ public class Explorer implements IExplorerRaid {
                 }
             } else {
                 crew.acknowledgeResults(results);
+                crew.sortContractsAfterCost(remainingBudget);
             }
         } catch (Exception e) {
             shouldStop = true;
@@ -118,9 +126,10 @@ public class Explorer implements IExplorerRaid {
 
     private void initCrew() {
         crew = new Crew(map, contractParser.getRawContracts(), contractParser.getCraftedContracts());
+        crew.setDoNotEstimate(notFullyScanned);
     }
 
-    private String triggerEmergecy() {
+    private String triggerEmergency() {
         try {
             if (crew == null) initCrew();
             return new EmergencyAction(drone, crew).apply();

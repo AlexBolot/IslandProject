@@ -1,6 +1,7 @@
 package fr.unice.polytech.si3.qgl.ise.entities;
 
 import fr.unice.polytech.si3.qgl.ise.CraftedContract;
+import fr.unice.polytech.si3.qgl.ise.Explorer;
 import fr.unice.polytech.si3.qgl.ise.RawContract;
 import fr.unice.polytech.si3.qgl.ise.actions.Action;
 import fr.unice.polytech.si3.qgl.ise.actions.CrewAction;
@@ -10,13 +11,19 @@ import fr.unice.polytech.si3.qgl.ise.actions.loop.MoveExploitLoopAction;
 import fr.unice.polytech.si3.qgl.ise.enums.CraftedResource;
 import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
 import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
+import fr.unice.polytech.si3.qgl.ise.map.Forecaster;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
 import fr.unice.polytech.si3.qgl.ise.map.PathFinder;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static org.apache.logging.log4j.LogManager.getLogger;
 
 public class Crew {
 
+    private static final Logger logger = getLogger(Explorer.class);
     private final List<RawContract> rawContracts;
     private final List<CraftedContract> craftedContracts;
     private final Map<RawResource, Integer> stock;
@@ -24,6 +31,8 @@ public class Crew {
     private final IslandMap map;
     private final List<RawContract> completedRawContracts = new ArrayList<>();
     private final List<CraftedContract> completedCraftedContracts = new ArrayList<>();
+    private final List<RawContract> abortedRawContracts = new ArrayList<>();
+    private final List<CraftedContract> abortedCraftedContracts = new ArrayList<>();
     private Action lastAction;
     private String idCreek;
     private List<Action> steps;
@@ -31,6 +40,7 @@ public class Crew {
     private RawResource currentResource;
     private List<RawResource> wantedResources = new ArrayList<>();
     private boolean isLanded;
+    private boolean doNotEstimate;
 
     public Crew(IslandMap map, List<RawContract> rawContracts, List<CraftedContract> craftedContracts) {
         this.map = map;
@@ -38,7 +48,7 @@ public class Crew {
         this.craftedContracts = craftedContracts;
         this.stock = new EnumMap<>(RawResource.class);
         this.craftedStock = new EnumMap<>(CraftedResource.class);
-        this.isLanded = false;
+        this.doNotEstimate = false;
 
         computeWantedResources();
         chooseNewFocus();
@@ -101,10 +111,17 @@ public class Crew {
     public void addToStock(RawResource resource, int amount) {
         if (stock.containsKey(resource)) amount += stock.get(resource);
         stock.put(resource, amount);
+        rawContracts.stream()
+                .filter(contract -> stock.containsKey(contract.getResource()))
+                .forEach(contract -> contract.updateRemainingQuantity(stock.get(contract.getResource())));
+
+        craftedContracts.stream()
+                .filter(contract -> contract.getRawQuantities().entrySet().stream()
+                        .allMatch(entry -> stock.containsKey(entry.getKey())))
+                .forEach(contract -> contract.getRawQuantities().forEach((rawResource, quantity) -> contract.updateRemainingQuantityMinusStock(resource, stock.get(resource))));
     }
 
     public void removeFromStock(RawResource resource, int amount) {
-        //this if should be useless, it's just here for security precaution
         if (stock.containsKey(resource)) {
             int newStock = stock.get(resource) - amount;
             stock.put(resource, newStock);
@@ -233,6 +250,48 @@ public class Crew {
         }
     }
 
+    public void land(String creekId) {
+        if (!doNotEstimate) sortContractsAfterIslandData();
+        this.isLanded = true;
+        map.setShip(map.getCreeks().get(creekId));
+    }
+
+    private void sortContractsAfterIslandData() {
+        Map<RawResource, Double> foretoldResources = Forecaster.estimateResources(map);
+
+
+        abortedRawContracts.addAll(rawContracts.stream()
+                .filter(contract -> !foretoldResources.containsKey(contract.getResource()) || contract.getQuantity() > foretoldResources.get(contract.getResource()))
+                .collect(Collectors.toList()));
+
+        rawContracts.removeAll(abortedRawContracts);
+
+        abortedCraftedContracts.addAll(craftedContracts.stream()
+                .filter(contract -> contract.getRawQuantities().entrySet().stream()
+                        .anyMatch(entry -> entry.getValue() > foretoldResources.get(entry.getKey())))
+                .collect(Collectors.toList()));
+
+        craftedContracts.removeAll(abortedCraftedContracts);
+
+        foretoldResources.forEach((resource, quantity) -> logger.info("Ressource: " + resource + " / Quantity: " + quantity));
+        abortedRawContracts.forEach(contract -> logger.info("Contrat abandonné : " + contract.getResource()));
+        abortedCraftedContracts.forEach(contract -> logger.info("Contrat abandonné : " + contract.getResource()));
+    }
+
+    public void sortContractsAfterCost(int remainingBudget) {
+        abortedRawContracts.addAll(rawContracts.stream()
+                .filter(contract -> Forecaster.estimateCost(contract) > remainingBudget)
+                .collect(Collectors.toList()));
+
+        rawContracts.removeAll(abortedRawContracts);
+
+        abortedCraftedContracts.addAll(craftedContracts.stream()
+                .filter(contract -> Forecaster.estimateCost(contract) > remainingBudget)
+                .collect(Collectors.toList()));
+
+        craftedContracts.removeAll(abortedCraftedContracts);
+    }
+
     public IslandMap getMap() {
         return map;
     }
@@ -285,9 +344,8 @@ public class Crew {
         return completedCraftedContracts;
     }
 
-    public void land(String creekId) {
-        this.isLanded = true;
-        map.setShip(map.getCreeks().get(creekId));
+    public void setDoNotEstimate(boolean doNotEstimate) {
+        this.doNotEstimate = doNotEstimate;
     }
 }
 

@@ -1,7 +1,5 @@
 package fr.unice.polytech.si3.qgl.ise.enums;
 
-import java.util.Arrays;
-
 import static fr.unice.polytech.si3.qgl.ise.enums.RawResource.*;
 
 /**
