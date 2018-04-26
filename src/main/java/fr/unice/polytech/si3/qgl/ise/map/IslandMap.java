@@ -13,6 +13,7 @@ public class IslandMap {
     private final Map<Coordinates, Tile> tiles;
     private final Map<String, Coordinates> creeks;
     private Tuple2<String, Coordinates> emergencySite;
+    private Coordinates ship;
 
     public IslandMap() {
         tiles = new HashMap<>();
@@ -176,5 +177,13 @@ public class IslandMap {
         layers.add(layer7);
         //endregion
         return layers;
+    }
+
+    public Coordinates getShip() {
+        return ship;
+    }
+
+    public void setShip(Coordinates ship) {
+        this.ship = ship;
     }
 }

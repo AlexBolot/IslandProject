@@ -45,6 +45,8 @@ public class PathFinderTest {
         map.addCreek(new Coordinates(30, -28), "id1");
         map.addCreek(new Coordinates(10, 40), "id2");
         map.addCreek(new Coordinates(-11, 11), "id3");
+
+        map.setShip(new Coordinates(0, 0));
     }
 
     @Test

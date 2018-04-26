@@ -74,7 +74,7 @@ public class PathFinder {
         return map.getMap().entrySet().stream()
                 .filter(entry -> entry.getValue().getBiomePercentage(biome) > MINIMAL_PERCENTAGE)
                 .filter(entry -> !entry.getValue().isExplored())
-                .min(Comparator.comparingDouble(entry -> calculateDistance(entry.getKey(), coordinates)))
+                .min(Comparator.comparingDouble(entry -> calculateDistance(entry.getKey(), coordinates) + 0.001 * calculateDistance(entry.getKey(), map.getShip())))
                 .map(Map.Entry::getKey)
                 .orElse(null);
     }
@@ -95,7 +95,7 @@ public class PathFinder {
         return acceptableBiomes.stream()
                 .map(biome -> findNearestTileOfBiome(map, coordinates, biome))
                 .filter(Objects::nonNull)
-                .min(Comparator.comparingDouble(tileCoordinates -> calculateDistance(tileCoordinates, coordinates)))
+                .min(Comparator.comparingDouble((Coordinates tileCoordinates) -> calculateDistance(tileCoordinates, coordinates) + 0.001 * calculateDistance(tileCoordinates, map.getShip())))
                 .orElse(null);
     }
 }

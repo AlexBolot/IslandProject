@@ -285,8 +285,9 @@ public class Crew {
         return completedCraftedContracts;
     }
 
-    public void land() {
+    public void land(String creekId) {
         this.isLanded = true;
+        map.setShip(map.getCreeks().get(creekId));
     }
 }
 

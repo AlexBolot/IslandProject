@@ -16,7 +16,7 @@ public class Land extends CrewAction {
     @Override
     public String apply() {
         this.finish();
-        getCrewToUpdate().land();
+        getCrewToUpdate().land(idCreek);
         return new JsonFactory().createJsonString("land", "creek", idCreek, "people", 1 + "");
     }
 
