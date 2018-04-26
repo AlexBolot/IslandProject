@@ -100,7 +100,7 @@ public class ScanLineActionStraight extends ScanLineStrategy {
         HALF(2),
         THIRD(3);
 
-        private int pace;
+        private final int pace;
 
         Strategy(int pace) {
             this.pace = pace;

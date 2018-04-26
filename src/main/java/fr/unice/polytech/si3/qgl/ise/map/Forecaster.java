@@ -1,23 +1,20 @@
 package fr.unice.polytech.si3.qgl.ise.map;
 
 import fr.unice.polytech.si3.qgl.ise.CraftedContract;
-import fr.unice.polytech.si3.qgl.ise.Explorer;
 import fr.unice.polytech.si3.qgl.ise.RawContract;
 import fr.unice.polytech.si3.qgl.ise.enums.Biome;
 import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
-import org.apache.logging.log4j.Logger;
 import scala.Tuple2;
 
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.apache.logging.log4j.LogManager.getLogger;
-
 public class Forecaster {
-    private static final Map<RawResource, Tuple2<Integer, Double>> resourceData = new HashMap<>();
-    private static final Map<Biome, Map<RawResource, Double>> biomeData = new HashMap<>();
-    private static final Logger logger = getLogger(Explorer.class);
+    private static final Map<RawResource, Tuple2<Integer, Double>> resourceData = new EnumMap<>(RawResource.class);
+    private static final Map<Biome, Map<RawResource, Double>> biomeData = new EnumMap<>(Biome.class);
+
     private Forecaster() { /*Empty private constructor to hide the implicit public one*/ }
 
     /**
@@ -85,11 +82,11 @@ public class Forecaster {
      */
     public static Map<RawResource, Double> estimateResources(IslandMap map) {
         fillStats();
-        Map<RawResource, Double> foretoldQuantities = new HashMap<>();
+        Map<RawResource, Double> foretoldQuantities = new EnumMap<>(RawResource.class);
 
         map.getMap().entrySet().stream().map(Map.Entry::getValue)
                 .forEach(tile -> {
-                    Map<RawResource, Double> resourcesProbabilities = new HashMap<>();
+                    Map<RawResource, Double> resourcesProbabilities = new EnumMap<>(RawResource.class);
                     tile.getBiomesPercentage().forEach((biome, percentage) -> biomeData.get(biome).forEach((resource, probability) -> resourcesProbabilities.put(resource, probability * ((percentage > 80) ? 1 : 0))));
                     resourcesProbabilities.forEach((resource, probability) -> {
                         if (!foretoldQuantities.containsKey(resource))
@@ -104,23 +101,27 @@ public class Forecaster {
         return foretoldQuantities;
     }
 
+    /**
+     * Estimates the cost of a crafted contract
+     *
+     * @param contract : the contract to be evaluated
+     * @return an estimation of the number of points needed to finish the contract
+     */
     public static double estimateCost(CraftedContract contract) {
         fillStats();
-        double cost = contract.getRemainingRawQuantitiesMinusStock().entrySet().stream()
+        return contract.getRemainingRawQuantitiesMinusStock().entrySet().stream()
                 .mapToDouble(entry -> entry.getValue() * resourceData.get(entry.getKey())._2 * 3)
                 .sum();
-
-        logger.info("ESTIMATED COST FOR " + contract.getResource() + " " + contract.getRemainingQuantity() + " : " + cost);
-
-        return cost;
     }
 
+    /**
+     * Estimates the cost of a raw contract
+     *
+     * @param contract : the contract to be evaluated
+     * @return an estimation of the number of points needed to finish the contract
+     */
     public static double estimateCost(RawContract contract) {
         fillStats();
-        double cost = contract.getRemainingQuantity() * resourceData.get(contract.getResource())._2 * 3;
-
-        logger.info("ESTIMATED COST FOR " + contract.getResource() + " " + contract.getRemainingQuantity() + " : " + cost);
-
-        return cost;
+        return contract.getRemainingQuantity() * resourceData.get(contract.getResource())._2 * 3;
     }
 }

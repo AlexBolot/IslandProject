@@ -12,9 +12,9 @@ import java.util.List;
 import static fr.unice.polytech.si3.qgl.ise.enums.Biome.OCEAN;
 
 public abstract class ScanLineStrategy extends DroneAction {
-    protected FlyAction flyAction;
-    protected EchoAction echoAction;
-    protected ScanAction scanAction;
+    final FlyAction flyAction;
+    final EchoAction echoAction;
+    final ScanAction scanAction;
 
     ScanLineStrategy(Drone drone) {
         super(drone);
@@ -23,7 +23,7 @@ public abstract class ScanLineStrategy extends DroneAction {
         echoAction = new EchoAction(drone);
     }
 
-    protected String checkResult() {
+    String checkResult() {
         Tile tile = getDrone().getMap().getTile(getDrone().getCoordinates());
         List<Biome> biomes = tile.getPossibleBiomes();
 

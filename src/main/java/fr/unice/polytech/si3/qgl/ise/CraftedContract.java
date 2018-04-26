@@ -32,16 +32,15 @@ public class CraftedContract {
         }
     }
 
-    public boolean updateContract(int craftedQuantity) {
+    public void updateContract(int craftedQuantity) {
         remainingQuantity = remainingQuantity - craftedQuantity;
         if (remainingQuantity <= 0) {
-            return true;
+            return;
         }
         for (Map.Entry<RawResource, Double> cost : CraftedResource.getValueOf(resource.getId()).entrySet()) {
             remainingRawQuantities.put(cost.getKey(), cost.getValue() * remainingQuantity);
             remainingRawQuantitiesMinusStock.put(cost.getKey(), cost.getValue() * remainingQuantity);
         }
-        return false;
     }
 
     public void updateRemainingQuantityMinusStock(RawResource resource, int stock) {
