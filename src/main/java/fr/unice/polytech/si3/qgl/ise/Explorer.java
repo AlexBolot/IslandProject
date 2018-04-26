@@ -57,7 +57,7 @@ public class Explorer implements IExplorerRaid {
                 String decision;
 
                 if (drone.isFlying()) {
-                    if (remainingBudget < (totalBudget / 2) && !map.getCreeks().isEmpty()) {
+                    if (remainingBudget < (totalBudget * 0.55) && !map.getCreeks().isEmpty()) {
                         drone.stopFlying();
                     } else {
                         decision = drone.takeDecision();
