@@ -1,8 +1,6 @@
 package fr.unice.polytech.si3.qgl.ise.entities;
 
-import fr.unice.polytech.si3.qgl.ise.CraftedContract;
-import fr.unice.polytech.si3.qgl.ise.Explorer;
-import fr.unice.polytech.si3.qgl.ise.RawContract;
+import fr.unice.polytech.si3.qgl.ise.*;
 import fr.unice.polytech.si3.qgl.ise.actions.Action;
 import fr.unice.polytech.si3.qgl.ise.actions.CrewAction;
 import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
@@ -51,7 +49,7 @@ public class Crew {
         this.doNotEstimate = false;
 
         computeWantedResources();
-        chooseNewFocus();
+        chooseNewFocus(howToChoseContract());
 
         idCreek = PathFinder.findBestCreek(map, wantedResources);
         coordinates = map.getCreeks().get(idCreek);
@@ -59,22 +57,6 @@ public class Crew {
         initActions();
     }
 
-    /**
-     * Chooses the contract with the least resources to collect
-     *
-     * @return the contract
-     */
-    private Optional<RawContract> choseBestRawContract() {
-        if (rawContracts.isEmpty())
-            return Optional.empty();
-        return rawContracts.stream().max(Comparator.comparingInt(RawContract::getQuantity));
-    }
-
-    private Optional<CraftedContract> choseBestCraftedContract() {
-        if (craftedContracts.isEmpty())
-            return Optional.empty();
-        return craftedContracts.stream().max(Comparator.comparingInt(CraftedContract::getRemainingQuantity));
-    }
 
     private void initActions() {
         steps = new ArrayList<>();
@@ -133,35 +115,69 @@ public class Crew {
         craftedStock.put(resource, amount);
     }
 
-    private void chooseNewFocus() {
+    private void chooseNewFocus(ContractChoser howToDertemine) {
         currentResource = null;
 
-        Optional<RawContract> bestContract = choseBestRawContract();
-        bestContract.ifPresent(rawContract -> currentResource = rawContract.getResource());
-        if (currentResource == null) {
-            Optional<CraftedContract> bestCraftedContract = choseBestCraftedContract();
-            if (bestCraftedContract.isPresent()) {
-                Map<RawResource, Double> resources = bestCraftedContract.get().getRemainingRawQuantities();
-                for (Map.Entry<RawResource, Double> entry : resources.entrySet()) {
-                    int realStock;
-                    if (stock.containsKey(entry.getKey())) {
-                        realStock = stock.get(entry.getKey());
-                        for (RawContract rawContract : completedRawContracts) {
-                            if (rawContract.getResource().equals(entry.getKey())) {
-                                realStock = realStock - rawContract.getQuantity();
-                            }
+        Optional<Contract> bestContract = howToDertemine.chooseBestContract();
+        bestContract.ifPresent(contract -> {
+            for (Map.Entry<RawResource, Double> entry : contract.getTotalRessourcesToCollect().entrySet()) {
+                int realStock;
+                // If we don't have it in stock, we focus it
+                if (stock.containsKey(entry.getKey())) {
+                    realStock = stock.get(entry.getKey());
+                    System.out.println("Stock : " + realStock);
+                    // Else, we calculate if the stock isn't really enough
+
+                    // We calculate the amount of the resource used in rawContracts
+                    for (RawContract rawContract : completedRawContracts) {
+                        if (rawContract.getResource().equals(entry.getKey())) {
+                            realStock = realStock - rawContract.getQuantity();
                         }
-                        if (realStock < entry.getValue()) {
-                            currentResource = entry.getKey();
-                            return;
-                        }
-                    } else {
+                    }
+
+                    // We calculate the amount of the resource used in CraftedContracts
+                    for (CraftedContract craftedContract : completedCraftedContracts) {
+                        if (craftedContract.getRawQuantities().containsKey(entry.getKey()))
+                            realStock = realStock - craftedContract.getRawQuantities().get(entry.getKey()).intValue();
+                    }
+
+                    if (realStock < entry.getValue()) {
                         currentResource = entry.getKey();
                         return;
                     }
+                } else {
+                    currentResource = entry.getKey();
+                    return;
                 }
             }
-        }
+        });
+
+//        Optional<RawContract> bestContract = choseBestRawContract();
+//        bestContract.ifPresent(rawContract -> currentResource = rawContract.getResource());
+//        if (currentResource == null) {
+//            Optional<CraftedContract> bestCraftedContract = choseBestCraftedContract();
+//            if (bestCraftedContract.isPresent()) {
+//                Map<RawResource, Double> resources = bestCraftedContract.get().getRemainingRawQuantities();
+//                for (Map.Entry<RawResource, Double> entry : resources.entrySet()) {
+//                    int realStock;
+//                    if (stock.containsKey(entry.getKey())) {
+//                        realStock = stock.get(entry.getKey());
+//                        for (RawContract rawContract : completedRawContracts) {
+//                            if (rawContract.getResource().equals(entry.getKey())) {
+//                                realStock = realStock - rawContract.getQuantity();
+//                            }
+//                        }
+//                        if (realStock < entry.getValue()) {
+//                            currentResource = entry.getKey();
+//                            return;
+//                        }
+//                    } else {
+//                        currentResource = entry.getKey();
+//                        return;
+//                    }
+//                }
+//            }
+//        }
     }
 
     public void tryToFinishContracts() {
@@ -191,8 +207,23 @@ public class Crew {
         });
 
         computeWantedResources();
+        chooseNewFocus(howToChoseContract());
+    }
 
-        chooseNewFocus();
+    /**
+     * We decide here how to determine the next Best contract based on contracts left and current crew
+     *
+     * @return the ContractChose that we need at the moment
+     */
+    private ContractChoser howToChoseContract() {
+        List<RawContract> rawContractsLeft = rawContracts;
+        rawContractsLeft.removeAll(abortedRawContracts);
+        rawContractsLeft.removeAll(completedRawContracts);
+
+        List<CraftedContract> craftedContractsLeft = craftedContracts;
+        craftedContractsLeft.removeAll(abortedCraftedContracts);
+        craftedContractsLeft.removeAll(completedCraftedContracts);
+        return new BasicContractChoser(rawContractsLeft, craftedContractsLeft);
     }
 
     public Map<RawResource, Double> tryCrafting() {
