@@ -6,7 +6,7 @@
   - Ticketing: _[3]_
   - Versioning: _[5]_
   - Qualité Objet: _[4]_
-  - Tests: _[3]_
+  - Tests: _[4]_
   - Confiance dans le code: _[4]_
 
 ## Semainier
@@ -63,3 +63,19 @@
  - Points négatifs
     - _Baisse dans le classement_
     - _Baisse d'efficacité dûe à la dualité entre contracts_
+    
+### Semaine 16
+ - Points positifs
+    - _Meilleure couverture de tests_
+    - _Moins de code smells_
+    - _Champion battu, again_
+ - Points négatifs
+    - _Baisse de charge de travail sur Jira_
+
+### Semaine 17
+ - Points positifs
+    - _Tous les contrats remplis_
+    - _Meilleure gestion du budget_
+ - Points négatifs
+    - _Très peu de commits_
+    - _Kanban en hibernation_
