@@ -120,7 +120,10 @@ public class Crew {
 
         Optional<Contract> bestContract = howToDertemine.chooseBestContract();
         bestContract.ifPresent(contract -> {
+            int i = 0;
+            int size = contract.getTotalRessourcesToCollect().entrySet().size();
             for (Map.Entry<RawResource, Double> entry : contract.getTotalRessourcesToCollect().entrySet()) {
+                ++i;
                 int realStock;
                 // If we don't have it in stock, we focus it
                 if (stock.containsKey(entry.getKey())) {
@@ -141,7 +144,7 @@ public class Crew {
 //                            realStock = realStock - craftedContract.getRawQuantities().get(entry.getKey()).intValue();
 //                    }
 
-                    if (realStock < entry.getValue()) {
+                    if (realStock < entry.getValue() || i == size) {
                         currentResource = entry.getKey();
                         return;
                     }
@@ -155,6 +158,7 @@ public class Crew {
 //        Optional<RawContract> bestContract = choseBestRawContract();
 //        bestContract.ifPresent(rawContract -> currentResource = rawContract.getResource());
 //        if (currentResource == null) {
+//        Si on a pas eu de raw contract
 //            Optional<CraftedContract> bestCraftedContract = choseBestCraftedContract();
 //            if (bestCraftedContract.isPresent()) {
 //                Map<RawResource, Double> resources = bestCraftedContract.get().getRemainingRawQuantities();
