@@ -79,3 +79,11 @@
  - Points négatifs
     - _Très peu de commits_
     - _Kanban en hibernation_
+    
+### Semaine 18
+ - Points positifs
+    - _Tous les contrats possibles remplis sur les îles précédentes_
+    - _Economie de points pour le drone_
+ - Points négatifs
+    - _Jira abandonné_
+   
