@@ -14,22 +14,37 @@ import java.util.Map;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
-public class AfterRunBench {
+class AfterRunBench {
+
+    AfterRunBench() {
+        inventory = new HashMap<>();
+        contracts = new HashMap<>();
+        rawContracts = new HashMap<>();
+        craftedContracts = new HashMap<>();
+        completedCraftedContracts = new HashMap<>();
+        completedRawContracts = new HashMap<>();
+        actionsCost = new HashMap<>();
+        creeks = new ArrayList<>();
+        droneCost = 0L;
+        crewCost = 0L;
+        jsonLog = new File("Explorer_ise.json");
+        jsonParser = new JSONParser();
+    }
 
     private static final Logger logger = getLogger("fr.unice.polytech.si3.qgl.ise.Explorer");
-    private Map<String, Long> inventory = new HashMap<>();
-    private Map<String, Long> contracts = new HashMap<>();
-    private Map<String, Long> rawContracts = new HashMap<>();
-    private Map<String, Long> craftedContracts = new HashMap<>();
-    private Map<String, Long> completedRawContracts = new HashMap<>();
-    private Map<String, Long> completedCraftedContracts = new HashMap<>();
-    private Map<String, Long> actionsCost = new HashMap<>();
-    private List<String> creeks = new ArrayList<>();
-    private long remainingPoints, droneCost = 0L, crewCost = 0L;
-    private File jsonLog = new File("Explorer_ise.json");
-    private JSONParser jsonParser = new JSONParser();
+    private Map<String, Long> inventory;
+    private Map<String, Long> contracts;
+    private Map<String, Long> rawContracts;
+    private Map<String, Long> craftedContracts;
+    private Map<String, Long> completedRawContracts;
+    private Map<String, Long> completedCraftedContracts;
+    private Map<String, Long> actionsCost;
+    private List<String> creeks;
+    private long remainingPoints, droneCost, crewCost;
+    private File jsonLog;
+    private JSONParser jsonParser;
 
-    public void fill() {
+    void fill() {
         if (jsonLog.exists() && !jsonLog.isDirectory()) {
             try {
                 JSONArray list = (JSONArray) jsonParser.parse(new FileReader(jsonLog));
@@ -103,7 +118,7 @@ public class AfterRunBench {
         }
     }
 
-    public void compute() {
+    void compute() {
         contracts.forEach((resource, amount) -> {
             if (resource.equals("GLASS") || resource.equals("INGOT") || resource.equals("LEATHER") || resource.equals("PLANK") || resource.equals("RUM")) {
                 if (inventory.containsKey(resource) && inventory.get(resource) >= amount) {
@@ -129,7 +144,7 @@ public class AfterRunBench {
         });
     }
 
-    public void display() {
+    void display() {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append("Report:").append("\n");

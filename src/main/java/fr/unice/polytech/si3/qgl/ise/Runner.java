@@ -26,10 +26,10 @@ public class Runner {
         int crew = 4;
         long seed = 0xFB9DDB405E0071F8L;
         List<String> resources = new ArrayList<>();
-        resources.add("WOOD");
+        resources.add("FUR");
         resources.add("SUGAR_CANE");
         resources.add("GLASS");
-        resources.add("FUR");
+        resources.add("WOOD");
         List<Integer> amounts = new ArrayList<>();
         amounts.add(500);
         amounts.add(400);
