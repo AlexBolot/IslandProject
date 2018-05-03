@@ -136,10 +136,10 @@ public class Crew {
                     }
 
                     // We calculate the amount of the resource used in CraftedContracts
-                    for (CraftedContract craftedContract : completedCraftedContracts) {
-                        if (craftedContract.getRawQuantities().containsKey(entry.getKey()))
-                            realStock = realStock - craftedContract.getRawQuantities().get(entry.getKey()).intValue();
-                    }
+//                    for (CraftedContract craftedContract : completedCraftedContracts) {
+//                        if (craftedContract.getRawQuantities().containsKey(entry.getKey()))
+//                            realStock = realStock - craftedContract.getRawQuantities().get(entry.getKey()).intValue();
+//                    }
 
                     if (realStock < entry.getValue()) {
                         currentResource = entry.getKey();
