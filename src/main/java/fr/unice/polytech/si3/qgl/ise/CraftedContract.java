@@ -6,7 +6,7 @@ import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
 import java.util.EnumMap;
 import java.util.Map;
 
-public class CraftedContract {
+public class CraftedContract implements Contract {
     private final Integer quantity;
     private final CraftedResource resource;
     private final Map<RawResource, Double> rawQuantities;
@@ -70,6 +70,11 @@ public class CraftedContract {
 
     public Map<RawResource, Double> getRemainingRawQuantitiesMinusStock() {
         return remainingRawQuantitiesMinusStock;
+    }
+
+    @Override
+    public Map<RawResource, Double> getTotalRessourcesToCollect() {
+        return rawQuantities;
     }
 
     @Override
