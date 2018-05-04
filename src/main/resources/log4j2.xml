@@ -22,6 +22,10 @@
         <Logger additivity="false" level="trace" name="fr.unice.polytech.si3.qgl.ise.Explorer">
             <AppenderRef ref="IslandLog"/>
         </Logger>
+
+        <Logger additivity="false" level="info" name="fr.unice.polytech.si3.qgl.ise.parsing.ExtResParser">
+            <AppenderRef ref="IslandLog"/>
+        </Logger>
     </Loggers>
 
 </Configuration>

@@ -1,0 +1,101 @@
+{
+  "raw-resources": [
+    "FISH",
+    "QUARTZ",
+    "ORE",
+    "WOOD",
+    "FRUITS",
+    "SUGAR_CANE",
+    "FLOWER",
+    "FUR"
+  ],
+  "crafted-resources": [
+    "GLASS",
+    "INGOT",
+    "PLANK",
+    "LEATHER",
+    "RUM"
+  ],
+  "biomes": {
+    "OCEAN": [
+      "FISH"
+    ],
+    "LAKE": [
+      "FISH"
+    ],
+    "BEACH": [
+      "QUARTZ"
+    ],
+    "GRASSLAND": [
+      "FUR"
+    ],
+    "MANGROVE": [
+      "WOOD",
+      "FLOWER"
+    ],
+    "TROPICAL_RAIN_FOREST": [
+      "WOOD",
+      "FRUITS",
+      "SUGAR_CANE"
+    ],
+    "TROPICAL_SEASONAL_FOREST": [
+      "WOOD",
+      "FRUITS",
+      "SUGAR_CANE"
+    ],
+    "TEMPERATE_DECIDUOUS_FOREST": [
+      "WOOD"
+    ],
+    "TEMPERATE_RAIN_FOREST": [
+      "WOOD",
+      "FUR"
+    ],
+    "TEMPERATE_DESERT": [
+      "QUARTZ",
+      "ORE"
+    ],
+    "TAIGA": [
+      "WOOD"
+    ],
+    "SNOW": [
+      ""
+    ],
+    "TUNDRA": [
+      "FUR"
+    ],
+    "ALPINE": [
+      "FLOWER",
+      "ORE"
+    ],
+    "GLACIER": [
+      "FLOWER"
+    ],
+    "SHRUBLAND": [
+      "FUR"
+    ],
+    "SUB_TROPICAL_DESERT": [
+      "QUARTZ",
+      "ORE"
+    ]
+  },
+  "recipes": {
+    "GLASS": {
+      "QUARTZ": 10,
+      "WOOD": 5
+    },
+    "INGOT": {
+      "ORE": 5,
+      "WOOD": 5
+    },
+    "PLANK": {
+      "WOOD": 0.25
+    },
+    "LEATHER": {
+      "FUR": 3
+    },
+    "RUM": {
+      "SUGAR_CANE": 10,
+      "FRUITS": 1
+    }
+  }
+}
