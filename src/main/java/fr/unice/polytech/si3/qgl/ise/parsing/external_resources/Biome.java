@@ -1,6 +1,7 @@
 package fr.unice.polytech.si3.qgl.ise.parsing.external_resources;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Biome {
     private String name;
@@ -20,11 +21,27 @@ public class Biome {
     }
 
     public boolean hasResource(RawResource resource) {
-        return possibleResources.contains(resource);
+        return getPossibleResources().contains(resource);
+    }
+
+    public boolean isSame(String name) {
+        return this.getName().equalsIgnoreCase(name);
     }
 
     @Override
     public String toString() {
-        return  name + " " + possibleResources.toString();
+        return getName() + " " + getPossibleResources().toString();
+    }
+
+    @Override
+    public boolean equals(Object toCompare) {
+        if (!(toCompare instanceof Biome)) return false;
+        Biome biome = (Biome) toCompare;
+        return this.isSame(biome.getName()) && biome.getPossibleResources().equals(getPossibleResources());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, possibleResources);
     }
 }

@@ -9,13 +9,26 @@
     "FLOWER",
     "FUR"
   ],
-  "crafted-resources": [
-    "GLASS",
-    "INGOT",
-    "PLANK",
-    "LEATHER",
-    "RUM"
-  ],
+  "crafted-resources": {
+    "GLASS": {
+      "QUARTZ": 10,
+      "WOOD": 5
+    },
+    "INGOT": {
+      "ORE": 5,
+      "WOOD": 5
+    },
+    "PLANK": {
+      "WOOD": 0.25
+    },
+    "LEATHER": {
+      "FUR": 3
+    },
+    "RUM": {
+      "SUGAR_CANE": 10,
+      "FRUITS": 1
+    }
+  },
   "biomes": {
     "OCEAN": [
       "FISH"
@@ -57,9 +70,7 @@
     "TAIGA": [
       "WOOD"
     ],
-    "SNOW": [
-      ""
-    ],
+    "SNOW": [],
     "TUNDRA": [
       "FUR"
     ],
@@ -77,25 +88,5 @@
       "QUARTZ",
       "ORE"
     ]
-  },
-  "recipes": {
-    "GLASS": {
-      "QUARTZ": 10,
-      "WOOD": 5
-    },
-    "INGOT": {
-      "ORE": 5,
-      "WOOD": 5
-    },
-    "PLANK": {
-      "WOOD": 0.25
-    },
-    "LEATHER": {
-      "FUR": 3
-    },
-    "RUM": {
-      "SUGAR_CANE": 10,
-      "FRUITS": 1
-    }
   }
 }

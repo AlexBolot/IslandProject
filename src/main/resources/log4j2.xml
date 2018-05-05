@@ -23,7 +23,7 @@
             <AppenderRef ref="IslandLog"/>
         </Logger>
 
-        <Logger additivity="false" level="info" name="fr.unice.polytech.si3.qgl.ise.parsing.ExtResParser">
+        <Logger additivity="false" level="info" name="fr.unice.polytech.si3.qgl.ise.parsing.external_resources.ExtResParser">
             <AppenderRef ref="IslandLog"/>
         </Logger>
     </Loggers>

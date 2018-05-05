@@ -5,18 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class CraftedResource {
+public class CraftedResource extends Resource {
 
-    private String name;
     private HashMap<RawResource, Double> recipe;
 
     public CraftedResource(String name, HashMap<RawResource, Double> recipe) {
-        this.name = name;
+        super(name);
         this.recipe = recipe;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public HashMap<RawResource, Double> getRecipe() {
@@ -24,27 +19,27 @@ public class CraftedResource {
     }
 
     public List<RawResource> getRawRessources() {
-        return new ArrayList<>(recipe.keySet());
+        return new ArrayList<>(getRecipe().keySet());
     }
 
     public boolean requiresResource(RawResource resource) {
-        return this.recipe.containsKey(resource);
+        return this.getRecipe().containsKey(resource);
     }
 
     @Override
     public String toString() {
-        return name + " : " + recipe.entrySet();
+        return super.toString() + " : " + getRecipe().entrySet();
     }
 
     @Override
     public boolean equals(Object toCompare) {
-        if (toCompare instanceof String) return name.equalsIgnoreCase((String) toCompare);
-        CraftedResource that = (CraftedResource) toCompare;
-        return Objects.equals(name, that.name) && Objects.equals(recipe, that.recipe);
+        return super.equals(toCompare)
+                && toCompare instanceof CraftedResource
+                && ((CraftedResource) toCompare).getRecipe().equals(getRecipe());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(getName(), getRecipe());
     }
 }
