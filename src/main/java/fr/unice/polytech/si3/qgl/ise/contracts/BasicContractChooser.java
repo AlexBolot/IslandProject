@@ -1,11 +1,11 @@
-package fr.unice.polytech.si3.qgl.ise;
+package fr.unice.polytech.si3.qgl.ise.contracts;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public class BasicContractChoser extends ContractChoser {
-    public BasicContractChoser(List<RawContract> rawContracts, List<CraftedContract> craftedContracts) {
+public class BasicContractChooser extends ContractChooser {
+    public BasicContractChooser(List<RawContract> rawContracts, List<CraftedContract> craftedContracts) {
         super(rawContracts, craftedContracts);
     }
 
@@ -30,9 +30,6 @@ public class BasicContractChoser extends ContractChoser {
     public Optional<Contract> chooseBestContract() {
         Contract bestRawContract = choseBestRawContract();
         Contract bestCraftedContract = choseBestCraftedContract();
-        return bestRawContract != null ?
-                Optional.of(bestRawContract) :
-                bestCraftedContract != null ?
-                        Optional.of(bestCraftedContract) : Optional.empty();
+        return Optional.ofNullable(bestRawContract).map(Optional::of).orElseGet(() -> Optional.ofNullable(bestCraftedContract));
     }
 }

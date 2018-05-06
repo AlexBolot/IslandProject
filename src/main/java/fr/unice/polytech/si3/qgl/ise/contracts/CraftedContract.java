@@ -1,4 +1,4 @@
-package fr.unice.polytech.si3.qgl.ise;
+package fr.unice.polytech.si3.qgl.ise.contracts;
 
 import fr.unice.polytech.si3.qgl.ise.enums.CraftedResource;
 import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
@@ -52,16 +52,12 @@ public class CraftedContract implements Contract {
         return quantity;
     }
 
-    public int getRemainingQuantity() {
+    int getRemainingQuantity() {
         return remainingQuantity;
     }
 
     public CraftedResource getResource() {
         return resource;
-    }
-
-    public Map<RawResource, Double> getRawQuantities() {
-        return rawQuantities;
     }
 
     public Map<RawResource, Double> getRemainingRawQuantities() {
@@ -73,7 +69,7 @@ public class CraftedContract implements Contract {
     }
 
     @Override
-    public Map<RawResource, Double> getTotalRessourcesToCollect() {
+    public Map<RawResource, Double> getTotalResourcesToCollect() {
         return rawQuantities;
     }
 

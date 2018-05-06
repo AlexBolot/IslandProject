@@ -1,8 +1,8 @@
-package fr.unice.polytech.si3.qgl.ise;
+package fr.unice.polytech.si3.qgl.ise.contracts;
 
 import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 public class RawContract implements Contract {
@@ -37,8 +37,9 @@ public class RawContract implements Contract {
         return quantity + " " + resource;
     }
 
-    public Map<RawResource, Double> getTotalRessourcesToCollect() {
-        HashMap<RawResource, Double> result = new HashMap<>();
+    @Override
+    public Map<RawResource, Double> getTotalResourcesToCollect() {
+        EnumMap<RawResource, Double> result = new EnumMap<>(RawResource.class);
         result.put(resource, (double) remainingQuantity);
         return result;
     }

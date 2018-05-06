@@ -1,7 +1,7 @@
 package fr.unice.polytech.si3.qgl.ise.entities;
 
-import fr.unice.polytech.si3.qgl.ise.CraftedContract;
-import fr.unice.polytech.si3.qgl.ise.RawContract;
+import fr.unice.polytech.si3.qgl.ise.contracts.CraftedContract;
+import fr.unice.polytech.si3.qgl.ise.contracts.RawContract;
 import fr.unice.polytech.si3.qgl.ise.enums.CraftedResource;
 import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
