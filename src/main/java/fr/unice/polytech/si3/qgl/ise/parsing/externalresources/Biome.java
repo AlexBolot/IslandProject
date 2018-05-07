@@ -1,9 +1,9 @@
-package fr.unice.polytech.si3.qgl.ise.parsing.external_resources;
+package fr.unice.polytech.si3.qgl.ise.parsing.externalresources;
 
 import java.util.List;
 import java.util.Objects;
 
-public class Biome {
+public class Biome implements Comparable<Biome> {
     private String name;
     private List<RawResource> possibleResources;
 
@@ -24,8 +24,17 @@ public class Biome {
         return getPossibleResources().contains(resource);
     }
 
-    public boolean isSame(String name) {
+    public boolean sameName(String name) {
         return this.getName().equalsIgnoreCase(name);
+    }
+
+    @Override
+    public int compareTo(Biome that) {
+        boolean thisContainsThat = this.getPossibleResources().containsAll(that.getPossibleResources());
+        boolean thatContainsThis = that.getPossibleResources().containsAll(this.getPossibleResources());
+
+        if (!thisContainsThat && !thatContainsThis) return -2;
+        else return Boolean.compare(thisContainsThat, thatContainsThis);
     }
 
     @Override
@@ -35,13 +44,12 @@ public class Biome {
 
     @Override
     public boolean equals(Object toCompare) {
-        if (!(toCompare instanceof Biome)) return false;
-        Biome biome = (Biome) toCompare;
-        return this.isSame(biome.getName()) && biome.getPossibleResources().equals(getPossibleResources());
+        return toCompare instanceof Biome && this.sameName(((Biome) toCompare).getName());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(name, possibleResources);
     }
+
 }

@@ -1,4 +1,4 @@
-package fr.unice.polytech.si3.qgl.ise.parsing.external_resources;
+package fr.unice.polytech.si3.qgl.ise.parsing.externalresources;
 
 import java.util.Objects;
 
@@ -14,7 +14,7 @@ public abstract class Resource {
         return name;
     }
 
-    public boolean isSame(String name) {
+    public boolean sameName(String name) {
         return this.getName().equalsIgnoreCase(name);
     }
 
@@ -25,7 +25,7 @@ public abstract class Resource {
 
     @Override
     public boolean equals(Object toCompare) {
-        return (toCompare instanceof Resource) && isSame(((Resource) toCompare).getName());
+        return (toCompare instanceof Resource) && sameName(((Resource) toCompare).getName());
     }
 
     @Override
