@@ -6,4 +6,6 @@
 *.svg
 *.log
 /scriptResults
-!maps/*
+!maps/island16/*.json
+!maps/island17/*.json
+!maps/island18/*.json
