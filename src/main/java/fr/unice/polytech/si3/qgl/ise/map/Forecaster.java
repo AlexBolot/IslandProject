@@ -2,18 +2,18 @@ package fr.unice.polytech.si3.qgl.ise.map;
 
 import fr.unice.polytech.si3.qgl.ise.CraftedContract;
 import fr.unice.polytech.si3.qgl.ise.RawContract;
-import fr.unice.polytech.si3.qgl.ise.enums.Biome;
-import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
+import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.Biome;
+import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.RawResource;
 import scala.Tuple2;
 
-import java.util.Arrays;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
+import static fr.unice.polytech.si3.qgl.ise.parsing.externalresources.ExtResSelector.bundle;
+
 public class Forecaster {
-    private static final Map<RawResource, Tuple2<Integer, Double>> resourceData = new EnumMap<>(RawResource.class);
-    private static final Map<Biome, Map<RawResource, Double>> biomeData = new EnumMap<>(Biome.class);
+    private static final Map<RawResource, Tuple2<Integer, Double>> resourceData = new HashMap<>();
+    private static final Map<Biome, Map<RawResource, Double>> biomeData = new HashMap<>();
 
     private Forecaster() { /*Empty private constructor to hide the implicit public one*/ }
 
@@ -21,58 +21,76 @@ public class Forecaster {
      * Fills the maps with generic island stats
      */
     private static void fillStats() {
-        resourceData.put(RawResource.FISH, new Tuple2<>(40, 0.7727665564172457));
-        resourceData.put(RawResource.QUARTZ, new Tuple2<>(5, 3.495537794063535));
-        resourceData.put(RawResource.ORE, new Tuple2<>(15, 1.0)); //No data
-        resourceData.put(RawResource.WOOD, new Tuple2<>(40, 0.42887111592539784));
-        resourceData.put(RawResource.FRUITS, new Tuple2<>(10, 2.1337618836808363));
-        resourceData.put(RawResource.SUGAR_CANE, new Tuple2<>(20, 0.840776217239025));
-        resourceData.put(RawResource.FLOWER, new Tuple2<>(1, 11.183116999843994));
-        resourceData.put(RawResource.FUR, new Tuple2<>(5, 2.6972614067667204));
 
-        Arrays.stream(Biome.values()).forEach(biome -> biomeData.put(biome, new HashMap<>()));
+        RawResource quartz = rawRes("QUARTZ");
+        RawResource fruits = rawRes("FRUITS");
+        RawResource sugarCane = rawRes("SUGAR_CANE");
+        RawResource flower = rawRes("FLOWER");
 
-        biomeData.get(Biome.MANGROVE).put(RawResource.WOOD, 0.6);
-        biomeData.get(Biome.MANGROVE).put(RawResource.FLOWER, 0.4);
+        resourceData.put(rawRes("FISH"), new Tuple2<>(40, 0.7727665564172457));
+        resourceData.put(quartz, new Tuple2<>(5, 3.495537794063535));
+        resourceData.put(rawRes("ORE"), new Tuple2<>(15, 1.0)); //No data
+        resourceData.put(rawRes("WOOD"), new Tuple2<>(40, 0.42887111592539784));
+        resourceData.put(fruits, new Tuple2<>(10, 2.1337618836808363));
+        resourceData.put(sugarCane, new Tuple2<>(20, 0.840776217239025));
+        resourceData.put(flower, new Tuple2<>(1, 11.183116999843994));
+        resourceData.put(rawRes("FUR"), new Tuple2<>(5, 2.6972614067667204));
 
-        biomeData.get(Biome.TROPICAL_RAIN_FOREST).put(RawResource.WOOD, 0.4);
-        biomeData.get(Biome.TROPICAL_RAIN_FOREST).put(RawResource.SUGAR_CANE, 0.4);
-        biomeData.get(Biome.TROPICAL_RAIN_FOREST).put(RawResource.FRUITS, 0.2);
+        bundle().getBiomes().forEach(biome -> biomeData.put(biome, new HashMap<>()));
 
-        biomeData.get(Biome.TROPICAL_SEASONAL_FOREST).put(RawResource.WOOD, 0.4);
-        biomeData.get(Biome.TROPICAL_SEASONAL_FOREST).put(RawResource.SUGAR_CANE, 0.5);
-        biomeData.get(Biome.TROPICAL_SEASONAL_FOREST).put(RawResource.FRUITS, 0.1);
+        biomeData.get(biome("MANGROVE")).put(rawRes("WOOD"), 0.6);
+        biomeData.get(biome("MANGROVE")).put(flower, 0.4);
 
-        biomeData.get(Biome.TAIGA).put(RawResource.WOOD, 1.0);
+        Biome tropicalRainForest = biome("TROPICAL_RAIN_FOREST");
+        biomeData.get(tropicalRainForest).put(rawRes("WOOD"), 0.4);
+        biomeData.get(tropicalRainForest).put(sugarCane, 0.4);
+        biomeData.get(tropicalRainForest).put(fruits, 0.2);
 
-        biomeData.get(Biome.TEMPERATE_RAIN_FOREST).put(RawResource.WOOD, 0.8);
-        biomeData.get(Biome.TEMPERATE_RAIN_FOREST).put(RawResource.FUR, 0.2);
+        Biome tropicalSeasonalForest = biome("TROPICAL_SEASONAL_FOREST");
+        biomeData.get(tropicalSeasonalForest).put(rawRes("WOOD"), 0.4);
+        biomeData.get(tropicalSeasonalForest).put(sugarCane, 0.5);
+        biomeData.get(tropicalSeasonalForest).put(fruits, 0.1);
 
-        biomeData.get(Biome.TEMPERATE_DECIDUOUS_FOREST).put(RawResource.WOOD, 1.0);
+        biomeData.get(biome("TAIGA")).put(rawRes("WOOD"), 1.0);
 
-        biomeData.get(Biome.GRASSLAND).put(RawResource.FUR, 1.0);
+        biomeData.get(biome("TEMPERATE_RAIN_FOREST")).put(rawRes("WOOD"), 0.8);
+        biomeData.get(biome("TEMPERATE_RAIN_FOREST")).put(rawRes("FUR"), 0.2);
 
-        biomeData.get(Biome.SHRUBLAND).put(RawResource.FUR, 1.0);
+        biomeData.get(biome("TEMPERATE_DECIDUOUS_FOREST")).put(rawRes("WOOD"), 1.0);
 
-        biomeData.get(Biome.TUNDRA).put(RawResource.FUR, 1.0);
+        biomeData.get(biome("GRASSLAND")).put(rawRes("FUR"), 1.0);
 
-        biomeData.get(Biome.ALPINE).put(RawResource.ORE, 0.2);
-        biomeData.get(Biome.ALPINE).put(RawResource.FLOWER, 0.05);
+        biomeData.get(biome("SHRUBLAND")).put(rawRes("FUR"), 1.0);
 
-        biomeData.get(Biome.BEACH).put(RawResource.QUARTZ, 0.2);
+        biomeData.get(biome("TUNDRA")).put(rawRes("FUR"), 1.0);
 
-        biomeData.get(Biome.SUB_TROPICAL_DESERT).put(RawResource.ORE, 0.2);
-        biomeData.get(Biome.SUB_TROPICAL_DESERT).put(RawResource.QUARTZ, 0.4);
+        biomeData.get(biome("ALPINE")).put(rawRes("ORE"), 0.2);
+        biomeData.get(biome("ALPINE")).put(flower, 0.05);
 
-        biomeData.get(Biome.TEMPERATE_DESERT).put(RawResource.ORE, 0.3);
-        biomeData.get(Biome.TEMPERATE_DESERT).put(RawResource.QUARTZ, 0.3);
+        biomeData.get(biome("BEACH")).put(quartz, 0.2);
 
-        biomeData.get(Biome.OCEAN).put(RawResource.FISH, 0.9);
+        biomeData.get(biome("SUB_TROPICAL_DESERT")).put(rawRes("ORE"), 0.2);
+        biomeData.get(biome("SUB_TROPICAL_DESERT")).put(quartz, 0.4);
 
-        biomeData.get(Biome.LAKE).put(RawResource.FISH, 0.8);
+        biomeData.get(biome("TEMPERATE_DESERT")).put(rawRes("ORE"), 0.3);
+        biomeData.get(biome("TEMPERATE_DESERT")).put(quartz, 0.3);
 
-        biomeData.get(Biome.GLACIER).put(RawResource.FLOWER, 0.05);
+        biomeData.get(biome("OCEAN")).put(rawRes("FISH"), 0.9);
+
+        biomeData.get(biome("LAKE")).put(rawRes("FISH"), 0.8);
+
+        biomeData.get(biome("GLACIER")).put(flower, 0.05);
     }
+
+    //region --- utils for lisibility ---
+    private static RawResource rawRes(String name) {
+        return bundle().getRawRes(name);
+    }
+
+    private static Biome biome(String name) {
+        return bundle().getBiome(name);
+    }
+    //endregion
 
     /**
      * Estimates the actual resources on the island
@@ -82,11 +100,11 @@ public class Forecaster {
      */
     public static Map<RawResource, Double> estimateResources(IslandMap map) {
         fillStats();
-        Map<RawResource, Double> foretoldQuantities = new EnumMap<>(RawResource.class);
+        Map<RawResource, Double> foretoldQuantities = new HashMap<>();
 
         map.getMap().entrySet().stream().map(Map.Entry::getValue)
                 .forEach(tile -> {
-                    Map<RawResource, Double> resourcesProbabilities = new EnumMap<>(RawResource.class);
+                    Map<RawResource, Double> resourcesProbabilities = new HashMap<>();
                     tile.getBiomesPercentage().forEach((biome, percentage) -> biomeData.get(biome).forEach((resource, probability) -> resourcesProbabilities.put(resource, probability * ((percentage > 80) ? 1 : 0))));
                     resourcesProbabilities.forEach((resource, probability) -> {
                         if (!foretoldQuantities.containsKey(resource))

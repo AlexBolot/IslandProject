@@ -7,7 +7,6 @@ import fr.unice.polytech.si3.qgl.ise.actions.drone.ReachIslandAction;
 import fr.unice.polytech.si3.qgl.ise.actions.drone.ScanLineActionStraight;
 import fr.unice.polytech.si3.qgl.ise.actions.drone.SearchIslandAction;
 import fr.unice.polytech.si3.qgl.ise.actions.loop.ScanIslandLoopAction;
-import fr.unice.polytech.si3.qgl.ise.enums.Biome;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle;
@@ -17,10 +16,11 @@ import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
 import fr.unice.polytech.si3.qgl.ise.map.Tile;
 import fr.unice.polytech.si3.qgl.ise.parsing.Echo;
 import fr.unice.polytech.si3.qgl.ise.parsing.Scan;
+import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.Biome;
 import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -100,7 +100,7 @@ public class Drone {
                 //On each tile
                 for (Tile tileOfLayer : layer) {
                     //With each biome
-                    Map<Biome, Double> toAdd = new EnumMap<>(Biome.class);
+                    Map<Biome, Double> toAdd = new HashMap<>();
                     for (Biome biome : scan.getBiomes()) {
                         toAdd.put(biome, IslandMap.getPercentageOfLayerForUpdate()[numLayer]);
                     }

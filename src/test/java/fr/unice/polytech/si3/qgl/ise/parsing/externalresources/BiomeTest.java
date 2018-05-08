@@ -18,7 +18,7 @@ public class BiomeTest {
     public void hasResource_Right() {
         for (int i = 0; i < 500; i++) {
             Biome biome = randomBiome();
-            biome.getPossibleResources().stream().map(biome::hasResource).forEach(Assert::assertTrue);
+            biome.getResources().stream().map(biome::hasResource).forEach(Assert::assertTrue);
         }
     }
 
@@ -29,7 +29,7 @@ public class BiomeTest {
 
         do {
             newName = randomString();
-        } while (biome.getPossibleResources().contains(new RawResource(newName)));
+        } while (biome.getResources().contains(new RawResource(newName)));
 
         assertFalse(biome.hasResource(new RawResource(newName)));
     }
@@ -75,7 +75,7 @@ public class BiomeTest {
     public void toString_() {
         Biome biome = randomBiome();
 
-        assertEquals(biome.toString(), biome.getName() + " " + biome.getPossibleResources().toString());
+        assertEquals(biome.toString(), biome.getName() + " " + biome.getResources().toString());
     }
 
     //region ------------ utils ---------------

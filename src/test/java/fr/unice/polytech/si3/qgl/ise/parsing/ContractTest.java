@@ -1,10 +1,10 @@
 package fr.unice.polytech.si3.qgl.ise.parsing;
 
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums;
-import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
 import org.junit.Before;
 import org.junit.Test;
 
+import static fr.unice.polytech.si3.qgl.ise.parsing.externalresources.ExtResSelector.bundle;
 import static org.junit.Assert.assertEquals;
 
 public class ContractTest {
@@ -49,6 +49,6 @@ public class ContractTest {
     @Test
     public void testCraftedContract() {
         assertEquals("The contractParser in raw resource isn't calculated correctly", new Double(100),
-                contractParser.getCraftedContracts().get(0).getRawQuantities().get(RawResource.SUGAR_CANE));
+                contractParser.getCraftedContracts().get(0).getRawQuantities().get(bundle().getRawRes("SUGAR_CANE")));
     }
 }

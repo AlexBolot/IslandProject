@@ -15,13 +15,15 @@ public class ExtResSelector {
     private static final Logger logger = getLogger(ExtResSelector.class);
     private static final String DEFAULT_PATH = "external-resources.json";
     private static final String ENV_VAR_NAME = "ISE_EXT_RES";
-    private static ExtResBundle globalResBundle = new ExtResBundle();
+    private static ExtResBundle globalResBundle = null;
 
     private static boolean raisedFlag = false;
 
     private ExtResSelector() { /*Empty private constructor to hide the implicit public one*/ }
 
-    public static ExtResBundle globalResBundle() {
+    public static ExtResBundle bundle() {
+        if (globalResBundle == null)
+            selectBundle();
         return globalResBundle;
     }
 

@@ -20,7 +20,7 @@ public class ExtResSelectorTest {
             ExtResSelector.selectBundle();
 
             ExtResBundle defaultBundle = loadDefaultBundle();
-            ExtResBundle loadedBundle = ExtResSelector.globalResBundle();
+            ExtResBundle loadedBundle = ExtResSelector.bundle();
 
             assertTrue(loadedBundle.containsAllDeep(defaultBundle)); //Loaded bundle must at least do what default does
 

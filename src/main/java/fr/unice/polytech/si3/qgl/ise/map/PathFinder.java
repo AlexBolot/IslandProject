@@ -1,10 +1,12 @@
 package fr.unice.polytech.si3.qgl.ise.map;
 
-import fr.unice.polytech.si3.qgl.ise.enums.Biome;
-import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
+import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.Biome;
+import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.RawResource;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static fr.unice.polytech.si3.qgl.ise.parsing.externalresources.ExtResSelector.bundle;
 
 public class PathFinder {
 
@@ -36,8 +38,8 @@ public class PathFinder {
         List<Biome> acceptableBiomes = new ArrayList<>();
 
         for (RawResource resource : resources) {
-            acceptableBiomes.addAll(Arrays.stream(Biome.values())
-                    .filter(biome -> Arrays.asList(biome.getResources()).contains(resource))
+            acceptableBiomes.addAll(bundle().getBiomes().stream()
+                    .filter(biome -> biome.hasResource(resource))
                     .collect(Collectors.toList()));
         }
 
@@ -88,8 +90,8 @@ public class PathFinder {
      * @return the coordinates of the nearest tile that possibly contains the given raw resource, or null if there is no such tile
      */
     public static Coordinates findNearestTileOfResource(IslandMap map, Coordinates coordinates, RawResource resource) {
-        List<Biome> acceptableBiomes = Arrays.stream(Biome.values())
-                .filter(biome -> Arrays.asList(biome.getResources()).contains(resource))
+        List<Biome> acceptableBiomes = bundle().getBiomes().stream()
+                .filter(biome -> biome.hasResource(resource))
                 .collect(Collectors.toList());
 
         return acceptableBiomes.stream()

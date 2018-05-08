@@ -1,12 +1,14 @@
 package fr.unice.polytech.si3.qgl.ise.parsing;
 
-import fr.unice.polytech.si3.qgl.ise.enums.Biome;
+import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.Biome;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
+
+import static fr.unice.polytech.si3.qgl.ise.parsing.externalresources.ExtResSelector.bundle;
 
 /**
  * Parses the data obtained through the scan command
@@ -34,8 +36,8 @@ public class Scan {
         IntStream.range(0, biomesJson.length()).mapToObj(biomesJson::getString).forEach(this::addBiome);
     }
 
-    private void addBiome(String biome) {
-        biomes.add(Biome.valueOf(biome));
+    private void addBiome(String biomeName) {
+        biomes.add(bundle().getBiome(biomeName));
     }
 
     public List<String> getCreeks() {

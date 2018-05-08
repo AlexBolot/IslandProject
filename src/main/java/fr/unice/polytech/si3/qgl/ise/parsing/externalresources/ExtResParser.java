@@ -111,22 +111,43 @@ public class ExtResParser {
 
     public static class ExtResBundle {
 
-        private List<Biome> biomes = new ArrayList<>();
         private List<RawResource> rawResources = new ArrayList<>();
         private List<CraftedResource> craftedResources = new ArrayList<>();
+        private List<Biome> biomes = new ArrayList<>();
 
         //region --------------- Getters and Setters ---------------
 
-        public List<Biome> getBiomes() {
-            return biomes;
+        public List<RawResource> getRawResources() {
+            return rawResources;
         }
 
         public List<CraftedResource> getCraftedResources() {
             return craftedResources;
         }
 
-        public List<RawResource> getRawResources() {
-            return rawResources;
+        public List<Biome> getBiomes() {
+            return biomes;
+        }
+
+        public RawResource getRawRes(String name) {
+            return getRawResources().stream()
+                    .filter(rawRes -> rawRes.sameName(name))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("This raw resource does not exist !"));
+        }
+
+        public CraftedResource getCraftedRes(String name) {
+            return getCraftedResources().stream()
+                    .filter(craftedRes -> craftedRes.sameName(name))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("This crafted resource does not exist !"));
+        }
+
+        public Biome getBiome(String name) {
+            return getBiomes().stream()
+                    .filter(biome -> biome.sameName(name))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("This biome does not exist !"));
         }
 
         //endregion
@@ -156,7 +177,7 @@ public class ExtResParser {
         public boolean containsAllDeep(ExtResBundle that) {
             for (CraftedResource craftedRes : that.getCraftedResources()) {
 
-                if(!this.getCraftedResources().contains(craftedRes)) return false;
+                if (!this.getCraftedResources().contains(craftedRes)) return false;
 
                 int indexInThis = this.getCraftedResources().indexOf(craftedRes);
                 CraftedResource toCompare = this.getCraftedResources().get(indexInThis);
@@ -166,7 +187,7 @@ public class ExtResParser {
 
             for (Biome biome : that.getBiomes()) {
 
-                if(!this.getBiomes().contains(biome)) return false;
+                if (!this.getBiomes().contains(biome)) return false;
 
                 int indexInThis = this.getBiomes().indexOf(biome);
                 Biome toCompare = this.getBiomes().get(indexInThis);

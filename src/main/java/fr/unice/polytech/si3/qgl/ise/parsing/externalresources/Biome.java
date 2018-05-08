@@ -16,12 +16,12 @@ public class Biome implements Comparable<Biome> {
         return name;
     }
 
-    public List<RawResource> getPossibleResources() {
+    public List<RawResource> getResources() {
         return possibleResources;
     }
 
     public boolean hasResource(RawResource resource) {
-        return getPossibleResources().contains(resource);
+        return getResources().contains(resource);
     }
 
     public boolean sameName(String name) {
@@ -30,8 +30,8 @@ public class Biome implements Comparable<Biome> {
 
     @Override
     public int compareTo(Biome that) {
-        boolean thisContainsThat = this.getPossibleResources().containsAll(that.getPossibleResources());
-        boolean thatContainsThis = that.getPossibleResources().containsAll(this.getPossibleResources());
+        boolean thisContainsThat = this.getResources().containsAll(that.getResources());
+        boolean thatContainsThis = that.getResources().containsAll(this.getResources());
 
         if (!thisContainsThat && !thatContainsThis) return -2;
         else return Boolean.compare(thisContainsThat, thatContainsThis);
@@ -39,7 +39,7 @@ public class Biome implements Comparable<Biome> {
 
     @Override
     public String toString() {
-        return getName() + " " + getPossibleResources().toString();
+        return getName() + " " + getResources().toString();
     }
 
     @Override

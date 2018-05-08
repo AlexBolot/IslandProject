@@ -3,12 +3,13 @@ package fr.unice.polytech.si3.qgl.ise.actions.crew;
 import fr.unice.polytech.si3.qgl.ise.CraftedContract;
 import fr.unice.polytech.si3.qgl.ise.actions.CrewAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Crew;
-import fr.unice.polytech.si3.qgl.ise.enums.CraftedResource;
-import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
 import fr.unice.polytech.si3.qgl.ise.factories.JsonFactory;
+import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.RawResource;
 import org.json.JSONObject;
 
 import java.util.Map;
+
+import static fr.unice.polytech.si3.qgl.ise.parsing.externalresources.ExtResSelector.bundle;
 
 public class Transform extends CrewAction {
     private final Map<RawResource, Integer> resourceWithQuantity;
@@ -30,9 +31,9 @@ public class Transform extends CrewAction {
     public String acknowledgeResults(String result) {
         finish();
         JSONObject extras = new JSONObject(result).getJSONObject("extras");
-        getCrewToUpdate().addToCraftedStock(CraftedResource.valueOf(extras.getString("kind")), extras.getInt("production"));
+        getCrewToUpdate().addToCraftedStock(bundle().getCraftedRes(extras.getString("kind")), extras.getInt("production"));
         for (CraftedContract craftedContract : getCrewToUpdate().getCraftedContracts()) {
-            if (craftedContract.getResource().equals(CraftedResource.valueOf(extras.getString("kind")))) {
+            if (craftedContract.getResource().equals(bundle().getCraftedRes(extras.getString("kind")))) {
                 craftedContract.updateContract(extras.getInt("production"));
                 break;
             }

@@ -2,13 +2,13 @@ package fr.unice.polytech.si3.qgl.ise.parsing;
 
 import fr.unice.polytech.si3.qgl.ise.CraftedContract;
 import fr.unice.polytech.si3.qgl.ise.RawContract;
-import fr.unice.polytech.si3.qgl.ise.enums.CraftedResource;
-import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static fr.unice.polytech.si3.qgl.ise.parsing.externalresources.ExtResSelector.bundle;
 
 public class ContractParser {
 
@@ -32,10 +32,13 @@ public class ContractParser {
     private void parseContracts(JSONArray contracts) {
         for (int i = 0; i < contracts.length(); ++i) {
             JSONObject obj = contracts.getJSONObject(i);
-            if (RawResource.contains(obj.getString(RESOURCE))) {
-                rawContracts.add(new RawContract(RawResource.valueOf(obj.getString(RESOURCE)), obj.getInt("amount")));
-            } else {
-                craftedContracts.add(new CraftedContract(CraftedResource.valueOf(obj.getString(RESOURCE)), obj.getInt("amount")));
+
+            String resourceName = obj.getString(RESOURCE);
+
+            if (bundle().hasRawRes(resourceName)) {
+                rawContracts.add(new RawContract(bundle().getRawRes(resourceName), obj.getInt("amount")));
+            } else if (bundle().hasCraftedRes(resourceName)) {
+                craftedContracts.add(new CraftedContract(bundle().getCraftedRes(resourceName), obj.getInt("amount")));
             }
         }
     }

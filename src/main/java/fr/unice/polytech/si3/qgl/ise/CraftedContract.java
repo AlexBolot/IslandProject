@@ -1,10 +1,11 @@
 package fr.unice.polytech.si3.qgl.ise;
 
-import fr.unice.polytech.si3.qgl.ise.enums.CraftedResource;
-import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
+import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.CraftedResource;
+import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.RawResource;
 
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
+
 
 public class CraftedContract {
     private final Integer quantity;
@@ -18,15 +19,16 @@ public class CraftedContract {
         this.quantity = quantity;
         this.remainingQuantity = quantity;
         this.resource = resource;
-        rawQuantities = new EnumMap<>(RawResource.class);
-        remainingRawQuantities = new EnumMap<>(RawResource.class);
-        remainingRawQuantitiesMinusStock = new EnumMap<>(RawResource.class);
+        this.rawQuantities = new HashMap<>();
+        this.remainingRawQuantities = new HashMap<>();
+        this.remainingRawQuantitiesMinusStock = new HashMap<>();
 
         //Calculate the total cost in RawResource
-        for (Map.Entry<RawResource, Double> cost : CraftedResource.getValueOf(resource.getId()).entrySet()) {
+        for (Map.Entry<RawResource, Double> cost : resource.getRecipe().entrySet()) {
             rawQuantities.put(cost.getKey(), cost.getValue() * quantity);
         }
-        for (Map.Entry<RawResource, Double> cost : CraftedResource.getValueOf(resource.getId()).entrySet()) {
+
+        for (Map.Entry<RawResource, Double> cost : resource.getRecipe().entrySet()) {
             remainingRawQuantities.put(cost.getKey(), cost.getValue() * quantity);
             remainingRawQuantitiesMinusStock.put(cost.getKey(), cost.getValue() * quantity);
         }
@@ -37,7 +39,8 @@ public class CraftedContract {
         if (remainingQuantity <= 0) {
             return;
         }
-        for (Map.Entry<RawResource, Double> cost : CraftedResource.getValueOf(resource.getId()).entrySet()) {
+
+        for (Map.Entry<RawResource, Double> cost : resource.getRecipe().entrySet()) {
             remainingRawQuantities.put(cost.getKey(), cost.getValue() * remainingQuantity);
             remainingRawQuantitiesMinusStock.put(cost.getKey(), cost.getValue() * remainingQuantity);
         }

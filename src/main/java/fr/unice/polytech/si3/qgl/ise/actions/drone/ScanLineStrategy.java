@@ -4,12 +4,10 @@ import fr.unice.polytech.si3.qgl.ise.actions.simple.EchoAction;
 import fr.unice.polytech.si3.qgl.ise.actions.simple.FlyAction;
 import fr.unice.polytech.si3.qgl.ise.actions.simple.ScanAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
-import fr.unice.polytech.si3.qgl.ise.enums.Biome;
 import fr.unice.polytech.si3.qgl.ise.map.Tile;
+import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.Biome;
 
 import java.util.List;
-
-import static fr.unice.polytech.si3.qgl.ise.enums.Biome.OCEAN;
 
 public abstract class ScanLineStrategy extends DroneAction {
     final FlyAction flyAction;
@@ -29,7 +27,7 @@ public abstract class ScanLineStrategy extends DroneAction {
 
         String res = "";
 
-        if (biomes.stream().anyMatch(biome -> biome != OCEAN && tile.getBiomePercentage(biome) == 100))
+        if (biomes.stream().anyMatch(biome -> !biome.sameName("OCEAN") && tile.getBiomePercentage(biome) == 100))
             res = flyAction.apply();
 
         return res;

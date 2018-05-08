@@ -2,12 +2,13 @@ package fr.unice.polytech.si3.qgl.ise.parsing;
 
 import fr.unice.polytech.si3.qgl.ise.enums.Abundance;
 import fr.unice.polytech.si3.qgl.ise.enums.Exploitability;
-import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
+import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.RawResource;
 import org.junit.Test;
 import scala.Tuple2;
 
 import java.util.Random;
 
+import static fr.unice.polytech.si3.qgl.ise.parsing.externalresources.ExtResSelector.bundle;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -27,7 +28,7 @@ public class ExploreParsingTest {
     }
 
     private RawResource generateResource() {
-        return RawResource.values()[new Random().nextInt(RawResource.values().length - 1)];
+        return bundle().getRawResources().get(new Random().nextInt(bundle().getRawResources().size() - 1));
     }
 
     private Abundance generateAbundance() {

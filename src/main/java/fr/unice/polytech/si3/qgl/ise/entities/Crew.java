@@ -8,12 +8,12 @@ import fr.unice.polytech.si3.qgl.ise.actions.CrewAction;
 import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
 import fr.unice.polytech.si3.qgl.ise.actions.crew.Land;
 import fr.unice.polytech.si3.qgl.ise.actions.loop.MoveExploitLoopAction;
-import fr.unice.polytech.si3.qgl.ise.enums.CraftedResource;
-import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
 import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
 import fr.unice.polytech.si3.qgl.ise.map.Forecaster;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
 import fr.unice.polytech.si3.qgl.ise.map.PathFinder;
+import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.CraftedResource;
+import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.RawResource;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
@@ -46,8 +46,8 @@ public class Crew {
         this.map = map;
         this.rawContracts = rawContracts;
         this.craftedContracts = craftedContracts;
-        this.stock = new EnumMap<>(RawResource.class);
-        this.craftedStock = new EnumMap<>(CraftedResource.class);
+        this.stock = new HashMap<>();
+        this.craftedStock = new HashMap<>();
         this.doNotEstimate = false;
 
         computeWantedResources();

@@ -1,9 +1,9 @@
 package fr.unice.polytech.si3.qgl.ise.map;
 
 import fr.unice.polytech.si3.qgl.ise.enums.Abundance;
-import fr.unice.polytech.si3.qgl.ise.enums.Biome;
 import fr.unice.polytech.si3.qgl.ise.enums.Exploitability;
-import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
+import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.Biome;
+import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.RawResource;
 import scala.Tuple2;
 
 import java.util.*;
@@ -14,13 +14,13 @@ public class Tile {
     private boolean isExplored = false;
 
     Tile() {
-        biomesPercentage = new EnumMap<>(Biome.class);
-        resourcesStats = new EnumMap<>(RawResource.class);
+        biomesPercentage = new HashMap<>();
+        resourcesStats = new HashMap<>();
     }
 
     Tile(Map<Biome, Double> possibleBiomes) {
         biomesPercentage = possibleBiomes;
-        resourcesStats = new EnumMap<>(RawResource.class);
+        resourcesStats = new HashMap<>();
     }
 
     @Override

@@ -4,7 +4,6 @@ import fr.unice.polytech.si3.qgl.ise.CraftedContract;
 import fr.unice.polytech.si3.qgl.ise.RawContract;
 import fr.unice.polytech.si3.qgl.ise.actions.CrewAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Crew;
-import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
 import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
 import org.junit.Before;
@@ -13,6 +12,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static fr.unice.polytech.si3.qgl.ise.parsing.externalresources.ExtResSelector.bundle;
 import static org.junit.Assert.assertEquals;
 
 public class MoveToTest {
@@ -28,7 +28,7 @@ public class MoveToTest {
         List<RawContract> rawContracts = new ArrayList<>();
         List<CraftedContract> craftedContracts = new ArrayList<>();
 
-        rawContracts.add(new RawContract(RawResource.WOOD, 500));
+        rawContracts.add(new RawContract(bundle().getRawRes("WOOD"), 500));
         crew = new Crew(map, rawContracts, craftedContracts);
         crew.setIdCreek("idDepart");
         crew.setCoordinates(new Coordinates(0, 0));

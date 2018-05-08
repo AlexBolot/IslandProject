@@ -1,6 +1,6 @@
 package fr.unice.polytech.si3.qgl.ise;
 
-import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
+import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.RawResource;
 
 public class RawContract {
     private final Integer quantity;

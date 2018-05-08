@@ -1,9 +1,9 @@
 package fr.unice.polytech.si3.qgl.ise.map;
 
 import fr.unice.polytech.si3.qgl.ise.enums.Abundance;
-import fr.unice.polytech.si3.qgl.ise.enums.Biome;
 import fr.unice.polytech.si3.qgl.ise.enums.Exploitability;
-import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
+import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.Biome;
+import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.RawResource;
 import org.junit.Before;
 import org.junit.Test;
 import scala.Tuple2;
@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static fr.unice.polytech.si3.qgl.ise.parsing.externalresources.ExtResSelector.bundle;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -24,13 +25,13 @@ public class TileTest {
     @Before
     public void init() {
         biomesPercentage = new HashMap<>();
-        biomesPercentage.put(Biome.ALPINE, 30.8);
-        biomesPercentage.put(Biome.GLACIER, 69.2);
+        biomesPercentage.put(bundle().getBiome("ALPINE"), 30.8);
+        biomesPercentage.put(bundle().getBiome("GLACIER"), 69.2);
 
         resourcesStats = new HashMap<>();
 
-        resourcesStats.put(RawResource.ORE, new Tuple2<>(Abundance.HIGH, Exploitability.HARSH));
-        resourcesStats.put(RawResource.WOOD, new Tuple2<>(Abundance.LOW, Exploitability.EASY));
+        resourcesStats.put(bundle().getRawRes("ORE"), new Tuple2<>(Abundance.HIGH, Exploitability.HARSH));
+        resourcesStats.put(bundle().getRawRes("WOOD"), new Tuple2<>(Abundance.LOW, Exploitability.EASY));
 
         tiles = new ArrayList<>();
         tiles.add(new Tile());                              //tiles.get(0)

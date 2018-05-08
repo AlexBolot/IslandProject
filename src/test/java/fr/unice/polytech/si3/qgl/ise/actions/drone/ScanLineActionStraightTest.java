@@ -42,7 +42,7 @@ public class ScanLineActionStraightTest {
 
             for (NSEW ori : NSEW.values()) {
 
-                pace = 3; //random.nextInt(10) + 3;
+                pace = random.nextInt(10) + 3;
                 setUpScanLineAction(pace);
 
                 drone.setOrientation(ori);
@@ -108,7 +108,7 @@ public class ScanLineActionStraightTest {
                 for (int j = 0; j < pace; j++) {
                     json = jsonFact.createJsonString("fly");
                     result = scanLineActionStraight.apply();
-                    assertEquals(json, result);
+                    assertEquals(String.valueOf(j), json, result);
                 }
 
                 json = jsonFact.createJsonString("scan");
