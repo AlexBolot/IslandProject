@@ -1,6 +1,6 @@
 package fr.unice.polytech.si3.qgl.ise.contracts;
 
-import fr.unice.polytech.si3.qgl.ise.enums.RawResource;
+import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.RawResource;
 
 import java.util.Map;
 
