@@ -263,7 +263,7 @@ public class Crew {
 
         abortedCraftedContracts.addAll(craftedContracts.stream()
                 .filter(contract -> contract.getTotalResourcesToCollect().entrySet().stream()
-                        .anyMatch(entry -> entry.getValue() > foretoldResources.get(entry.getKey())))
+                        .anyMatch(entry -> !foretoldResources.containsKey(entry.getKey()) || entry.getValue() > foretoldResources.get(entry.getKey())))
                 .collect(Collectors.toList()));
 
         craftedContracts.removeAll(abortedCraftedContracts);
