@@ -2,9 +2,7 @@ package fr.unice.polytech.si3.qgl.ise.parsing.externalresources;
 
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.URL;
+import java.io.*;
 import java.util.Scanner;
 
 import static fr.unice.polytech.si3.qgl.ise.parsing.externalresources.ExtResParser.ExtResBundle;
@@ -35,9 +33,9 @@ public class ExtResSelector {
         raisedFlag = false;
 
         logger.info("Reading in External File");
-        ExtResBundle envBundle = selectBundle(System.getenv(ENV_VAR_NAME), false);
+        ExtResBundle envBundle = readFromEnvironement(System.getenv(ENV_VAR_NAME));
         logger.info("Reading in Default File");
-        ExtResBundle defaultBundle = selectBundle(DEFAULT_PATH, true);
+        ExtResBundle defaultBundle = readFromResource(DEFAULT_PATH);
 
         ExtResBundle selectedBunlde;
 
@@ -52,27 +50,35 @@ public class ExtResSelector {
         setResBundle(selectedBunlde);
     }
 
-    private static ExtResBundle selectBundle(String pathToFile, boolean fromResources) {
+    private static ExtResBundle readFromResource(String pathToFile) {
+        String str;
+        StringBuilder builder = new StringBuilder();
 
-        String fullPath;
+        try (InputStream is = ExtResSelector.class.getClassLoader().getResourceAsStream(pathToFile)) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            while ((str = reader.readLine()) != null) {
+                builder.append(str).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        ExtResParser extResParser = new ExtResParser();
+
+        ExtResBundle bundle = extResParser.parse(builder.toString());
+        if (extResParser.raisedFlag()) raisedFlag = true;
+
+        return bundle;
+    }
+
+    private static ExtResBundle readFromEnvironement(String pathToFile) {
+
         ExtResBundle bundle = new ExtResBundle();
         File file = new File("");
 
         try {
-            if (fromResources) {
-                URL path = ExtResSelector.class.getClassLoader().getResource(pathToFile);
-
-                if (path == null) throw new FileNotFoundException("Path is null");
-
-                fullPath = path.getFile();
-            } else {
-                fullPath = pathToFile;
-            }
-
-            file = new File(fullPath);
-
-            if (file.isDirectory()) throw new IllegalStateException(fullPath + " is not a File");
-
+            file = new File(pathToFile);
+            if (file.isDirectory()) throw new IllegalStateException(pathToFile + " is not a File");
         } catch (Exception ex) {
             raisedFlag = true;
             logger.info("Problem while loading resoure : " + ex.getMessage());
