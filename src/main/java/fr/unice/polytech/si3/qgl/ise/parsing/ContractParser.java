@@ -1,7 +1,7 @@
 package fr.unice.polytech.si3.qgl.ise.parsing;
 
-import fr.unice.polytech.si3.qgl.ise.CraftedContract;
-import fr.unice.polytech.si3.qgl.ise.RawContract;
+import fr.unice.polytech.si3.qgl.ise.contracts.CraftedContract;
+import fr.unice.polytech.si3.qgl.ise.contracts.RawContract;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

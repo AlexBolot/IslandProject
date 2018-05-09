@@ -108,7 +108,7 @@ public class ScanActionTest {
                 map.getTile(new Coordinates(4, 4)).getBiomesPercentage().get(alpine), 0.01);
 
 
-        //Test that we don't overcap 100%
+        //Test that we don't exceed 100%
         for (int i = 0; i < 20; ++i)
             drone.acknowledgeScan(new Scan("{\"cost\": 2, \"extras\": { \"biomes\": [\"GLACIER\", \"ALPINE\"], " +
                     "\"creeks\": [], \"sites\": []}, \"status\": \"OK\"}"));

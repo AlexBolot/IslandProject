@@ -49,6 +49,6 @@ public class ContractTest {
     @Test
     public void testCraftedContract() {
         assertEquals("The contractParser in raw resource isn't calculated correctly", new Double(100),
-                contractParser.getCraftedContracts().get(0).getRawQuantities().get(bundle().getRawRes("SUGAR_CANE")));
+                contractParser.getCraftedContracts().get(0).getTotalResourcesToCollect().get(bundle().getRawRes("SUGAR_CANE")));
     }
 }

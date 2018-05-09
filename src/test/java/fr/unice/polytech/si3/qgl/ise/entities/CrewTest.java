@@ -1,9 +1,10 @@
 package fr.unice.polytech.si3.qgl.ise.entities;
 
-import fr.unice.polytech.si3.qgl.ise.CraftedContract;
-import fr.unice.polytech.si3.qgl.ise.RawContract;
+import fr.unice.polytech.si3.qgl.ise.contracts.CraftedContract;
+import fr.unice.polytech.si3.qgl.ise.contracts.RawContract;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
 import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.RawResource;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,8 +34,8 @@ public class CrewTest {
         assertTrue(crew.getCompletedRawContracts().isEmpty());
         assertFalse(crew.getRawContracts().isEmpty());
         crew.tryToFinishContracts();
-        assertFalse(crew.getCompletedRawContracts().isEmpty());
-        assertTrue(crew.getRawContracts().isEmpty());
+        assertFalse("There should be a completed raw contract", crew.getCompletedRawContracts().isEmpty());
+        assertTrue("All raw contracts should be completed", crew.getRawContracts().isEmpty());
     }
 
     @Test
@@ -43,8 +44,8 @@ public class CrewTest {
         assertTrue(crew.getCompletedCraftedContracts().isEmpty());
         assertFalse(crew.getCraftedContracts().isEmpty());
         crew.tryToFinishContracts();
-        assertFalse(crew.getCompletedCraftedContracts().isEmpty());
-        assertTrue(crew.getCraftedContracts().isEmpty());
+        assertFalse("There should be a completed crafted contract", crew.getCompletedCraftedContracts().isEmpty());
+        assertTrue("All crafted contracts should be completed", crew.getCraftedContracts().isEmpty());
     }
 
     @Test
@@ -58,7 +59,7 @@ public class CrewTest {
     public void notEnoughToCraftResource() {
         crew.addToStock(bundle().getRawRes("WOOD"), 10);
         Map<RawResource, Double> res = crew.tryCrafting();
-        assertNull(res);
+        assertNull("No resource should be crafted here", res);
     }
 
     @Test
@@ -66,7 +67,7 @@ public class CrewTest {
         crew.addToCraftedStock(bundle().getCraftedRes("PLANK"), 60);
         crew.tryToFinishContracts();
         Map<RawResource, Double> res = crew.tryCrafting();
-        assertNull(res);
+        assertNull("No resource should be crafted here", res);
     }
 
     @Test
@@ -88,7 +89,7 @@ public class CrewTest {
         crew.tryToFinishContracts();
         List<RawResource> res = crew.getWantedResources();
         assertEquals(bundle().getRawRes("ORE"), res.get(0));
-        assertEquals(1, res.size());
+        assertEquals("There should be only 1 wanted resource left", 1, res.size());
     }
 
     @Test
@@ -110,6 +111,13 @@ public class CrewTest {
         crew.addToStock(bundle().getRawRes("ORE"), 10);
         crew.tryToFinishContracts();
         assertEquals(bundle().getRawRes("WOOD"), crew.getCurrentResource());
+    }
+
+    @Test
+    public void firstActionLand() {
+        String res = crew.takeDecision();
+        JSONObject json = new JSONObject(res);
+        assertEquals("The first action is not land", "land", json.getString("action"));
     }
 
 }

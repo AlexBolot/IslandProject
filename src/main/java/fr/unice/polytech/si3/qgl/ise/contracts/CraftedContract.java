@@ -1,4 +1,4 @@
-package fr.unice.polytech.si3.qgl.ise;
+package fr.unice.polytech.si3.qgl.ise.contracts;
 
 import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.CraftedResource;
 import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.RawResource;
@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class CraftedContract {
+public class CraftedContract implements Contract {
     private final Integer quantity;
     private final CraftedResource resource;
     private final Map<RawResource, Double> rawQuantities;
@@ -63,16 +63,17 @@ public class CraftedContract {
         return resource;
     }
 
-    public Map<RawResource, Double> getRawQuantities() {
-        return rawQuantities;
-    }
-
     public Map<RawResource, Double> getRemainingRawQuantities() {
         return remainingRawQuantities;
     }
 
     public Map<RawResource, Double> getRemainingRawQuantitiesMinusStock() {
         return remainingRawQuantitiesMinusStock;
+    }
+
+    @Override
+    public Map<RawResource, Double> getTotalResourcesToCollect() {
+        return rawQuantities;
     }
 
     @Override
