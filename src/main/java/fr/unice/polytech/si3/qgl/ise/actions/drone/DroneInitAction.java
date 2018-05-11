@@ -17,6 +17,12 @@ public class DroneInitAction extends DroneAction {
     }
 
     @Override
+    public void reset() {
+        super.reset();
+        currentStep = ECHO_FRONT;
+    }
+
+    @Override
     public String apply() {
         return apply(currentStep);
     }
@@ -55,12 +61,6 @@ public class DroneInitAction extends DroneAction {
         currentStep = nextStep;
 
         return res;
-    }
-
-    @Override
-    public void reset() {
-        super.reset();
-        currentStep = ECHO_FRONT;
     }
 
     public enum Step {

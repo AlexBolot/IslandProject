@@ -21,6 +21,12 @@ public class ScanLineActionStraight extends ScanLineStrategy {
     }
 
     @Override
+    public void reset() {
+        super.reset();
+        currentStep = SCAN;
+    }
+
+    @Override
     public String apply() {
         return apply(currentStep);
     }
@@ -80,12 +86,6 @@ public class ScanLineActionStraight extends ScanLineStrategy {
         currentStep = nextStep;
 
         return res;
-    }
-
-    @Override
-    public void reset() {
-        super.reset();
-        currentStep = SCAN;
     }
 
     public enum Step {

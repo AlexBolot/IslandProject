@@ -18,18 +18,9 @@ public class MoveTo extends CrewAction {
         this.coordinates = coordinates;
     }
 
-    private int caseToReachFrom(Coordinates coordinates) {
-        return Math.abs(Math.abs(coordinates.getX()) + Math.abs(this.coordinates.getX()))
-                + Math.abs(Math.abs(coordinates.getY()) + Math.abs(this.coordinates.getY()));
-    }
-
-    private boolean setLastAction() {
-        //The action is the last when whe are 1 tile close
-        Coordinates crewCoordinates = getCrewToUpdate().getCoordinates();
-        if (caseToReachFrom(crewCoordinates) == 1)
-            finish();
-
-        return this.isFinished();
+    @Override
+    public String acknowledgeResults(String result) {
+        return "";
     }
 
     @Override
@@ -61,8 +52,17 @@ public class MoveTo extends CrewAction {
         return "";
     }
 
-    @Override
-    public String acknowledgeResults(String result) {
-        return "";
+    private int caseToReachFrom(Coordinates coordinates) {
+        return Math.abs(Math.abs(coordinates.getX()) + Math.abs(this.coordinates.getX()))
+                + Math.abs(Math.abs(coordinates.getY()) + Math.abs(this.coordinates.getY()));
+    }
+
+    private boolean setLastAction() {
+        //The action is the last when whe are 1 tile close
+        Coordinates crewCoordinates = getCrewToUpdate().getCoordinates();
+        if (caseToReachFrom(crewCoordinates) == 1)
+            finish();
+
+        return this.isFinished();
     }
 }

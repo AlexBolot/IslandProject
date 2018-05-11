@@ -7,13 +7,13 @@ public abstract class Action {
         return isFinished;
     }
 
-    protected void finish() {
-        isFinished = true;
-    }
-
     public void reset() {
         isFinished = false;
     }
 
     public abstract String apply();
+
+    protected void finish() {
+        isFinished = true;
+    }
 }

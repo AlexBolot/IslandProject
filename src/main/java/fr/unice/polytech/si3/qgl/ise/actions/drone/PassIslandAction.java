@@ -25,6 +25,12 @@ public class PassIslandAction extends DroneAction {
     }
 
     @Override
+    public void reset() {
+        super.reset();
+        currentStep = ECHO_SIDE;
+    }
+
+    @Override
     public String apply() {
         return apply(currentStep);
     }
@@ -71,12 +77,6 @@ public class PassIslandAction extends DroneAction {
         }
 
         return res;
-    }
-
-    @Override
-    public void reset() {
-        super.reset();
-        currentStep = ECHO_SIDE;
     }
 
     public enum Step {

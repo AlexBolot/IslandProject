@@ -17,6 +17,12 @@ public class LTurnAction extends DroneAction {
     }
 
     @Override
+    public void reset() {
+        super.reset();
+        currentStep = TURN_1;
+    }
+
+    @Override
     public String apply() {
         return apply(getDrone().getLastEcho());
     }
@@ -48,12 +54,6 @@ public class LTurnAction extends DroneAction {
         currentStep = nextStep;
 
         return res;
-    }
-
-    @Override
-    public void reset() {
-        super.reset();
-        currentStep = TURN_1;
     }
 
     public enum Step {

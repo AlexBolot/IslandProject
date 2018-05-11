@@ -6,7 +6,7 @@ public abstract class Resource {
 
     private String name;
 
-    public Resource(String name) {
+    Resource(String name) {
         this.name = name;
     }
 

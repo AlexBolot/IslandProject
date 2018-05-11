@@ -31,12 +31,15 @@ public class Drone {
     private static final int MOVEMENT_UNIT = 3;
     private final IslandMap map;
     private final Margin margins;
+
     private NSEW orientation;
     private ZQSD lastTurn;
     private ZQSD lastEcho;
     private DroneEnums.Action lastAction;
+
     private boolean isFlying;
     private boolean hasFoundIsland;
+
     private Coordinates coordinates;
     private ArrayList<Action> steps;
 
@@ -111,7 +114,7 @@ public class Drone {
         }
     }
 
-    //region =============== Getters and Setters ===============
+    //region ========= Getters & Setters ========
 
     public boolean isFlying() {
         return isFlying;

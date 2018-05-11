@@ -18,6 +18,57 @@ public class Forecaster {
     private Forecaster() { /*Empty private constructor to hide the implicit public one*/ }
 
     /**
+     * Estimates the actual resources on the island
+     *
+     * @param map : the map containing the tiles
+     * @return a map with resources as keys and their respective amounts on the island as values
+     */
+    public static Map<RawResource, Double> estimateResources(IslandMap map) {
+        fillStats();
+        Map<RawResource, Double> foretoldQuantities = new HashMap<>();
+
+        map.getMap().entrySet().stream().map(Map.Entry::getValue)
+                .forEach(tile -> {
+                    Map<RawResource, Double> resourcesProbabilities = new HashMap<>();
+                    tile.getBiomesPercentage().forEach((biome, percentage) -> biomeData.get(biome).forEach((resource, probability) -> resourcesProbabilities.put(resource, probability * ((percentage > 80) ? 1 : 0))));
+                    resourcesProbabilities.forEach((resource, probability) -> {
+                        if (!foretoldQuantities.containsKey(resource))
+                            foretoldQuantities.put(resource, probability * resourceData.get(resource)._1);
+                        else {
+                            double formerQuantity = foretoldQuantities.get(resource);
+                            foretoldQuantities.put(resource, formerQuantity + probability * resourceData.get(resource)._1);
+                        }
+                    });
+                });
+
+        return foretoldQuantities;
+    }
+
+    /**
+     * Estimates the cost of a crafted contract
+     *
+     * @param contract : the contract to be evaluated
+     * @return an estimation of the number of points needed to finish the contract
+     */
+    public static double estimateCost(CraftedContract contract) {
+        fillStats();
+        return contract.getRemainingRawQuantitiesMinusStock().entrySet().stream()
+                .mapToDouble(entry -> entry.getValue() * resourceData.get(entry.getKey())._2 * 3)
+                .sum();
+    }
+
+    /**
+     * Estimates the cost of a raw contract
+     *
+     * @param contract : the contract to be evaluated
+     * @return an estimation of the number of points needed to finish the contract
+     */
+    public static double estimateCost(RawContract contract) {
+        fillStats();
+        return contract.getRemainingQuantity() * resourceData.get(contract.getResource())._2 * 3;
+    }
+
+    /**
      * Fills the maps with generic island stats
      */
     private static void fillStats() {
@@ -82,7 +133,7 @@ public class Forecaster {
         biomeData.get(biome("GLACIER")).put(flower, 0.05);
     }
 
-    //region --- utils for lisibility ---
+    //region ========= utils for lisibility =====
     private static RawResource rawRes(String name) {
         return bundle().getRawRes(name);
     }
@@ -91,55 +142,4 @@ public class Forecaster {
         return bundle().getBiome(name);
     }
     //endregion
-
-    /**
-     * Estimates the actual resources on the island
-     *
-     * @param map : the map containing the tiles
-     * @return a map with resources as keys and their respective amounts on the island as values
-     */
-    public static Map<RawResource, Double> estimateResources(IslandMap map) {
-        fillStats();
-        Map<RawResource, Double> foretoldQuantities = new HashMap<>();
-
-        map.getMap().entrySet().stream().map(Map.Entry::getValue)
-                .forEach(tile -> {
-                    Map<RawResource, Double> resourcesProbabilities = new HashMap<>();
-                    tile.getBiomesPercentage().forEach((biome, percentage) -> biomeData.get(biome).forEach((resource, probability) -> resourcesProbabilities.put(resource, probability * ((percentage > 80) ? 1 : 0))));
-                    resourcesProbabilities.forEach((resource, probability) -> {
-                        if (!foretoldQuantities.containsKey(resource))
-                            foretoldQuantities.put(resource, probability * resourceData.get(resource)._1);
-                        else {
-                            double formerQuantity = foretoldQuantities.get(resource);
-                            foretoldQuantities.put(resource, formerQuantity + probability * resourceData.get(resource)._1);
-                        }
-                    });
-                });
-
-        return foretoldQuantities;
-    }
-
-    /**
-     * Estimates the cost of a crafted contract
-     *
-     * @param contract : the contract to be evaluated
-     * @return an estimation of the number of points needed to finish the contract
-     */
-    public static double estimateCost(CraftedContract contract) {
-        fillStats();
-        return contract.getRemainingRawQuantitiesMinusStock().entrySet().stream()
-                .mapToDouble(entry -> entry.getValue() * resourceData.get(entry.getKey())._2 * 3)
-                .sum();
-    }
-
-    /**
-     * Estimates the cost of a raw contract
-     *
-     * @param contract : the contract to be evaluated
-     * @return an estimation of the number of points needed to finish the contract
-     */
-    public static double estimateCost(RawContract contract) {
-        fillStats();
-        return contract.getRemainingQuantity() * resourceData.get(contract.getResource())._2 * 3;
-    }
 }

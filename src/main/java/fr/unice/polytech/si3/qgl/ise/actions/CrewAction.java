@@ -10,12 +10,12 @@ public abstract class CrewAction extends Action {
         this.crewToUpdate = crewToUpdate;
     }
 
-    protected Crew getCrewToUpdate() {
-        return crewToUpdate;
-    }
-
     public abstract String apply();
 
     public abstract String acknowledgeResults(String result);
+
+    protected Crew getCrewToUpdate() {
+        return crewToUpdate;
+    }
 
 }

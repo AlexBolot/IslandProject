@@ -26,6 +26,12 @@ public class SearchIslandAction extends DroneAction {
     }
 
     @Override
+    public void reset() {
+        super.reset();
+        currentStep = CHOOSE_DIRECTION;
+    }
+
+    @Override
     public String apply() {
         return apply(currentStep);
     }
@@ -87,12 +93,6 @@ public class SearchIslandAction extends DroneAction {
         }
 
         return res;
-    }
-
-    @Override
-    public void reset() {
-        super.reset();
-        currentStep = CHOOSE_DIRECTION;
     }
 
     public enum Step {

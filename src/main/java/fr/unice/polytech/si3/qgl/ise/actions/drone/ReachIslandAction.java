@@ -24,6 +24,13 @@ public class ReachIslandAction extends DroneAction {
     }
 
     @Override
+    public void reset() {
+        super.reset();
+        currentStep = L_TURN;
+        lTurnAction.reset();
+    }
+
+    @Override
     public String apply() {
         return apply(currentStep);
     }
@@ -72,13 +79,6 @@ public class ReachIslandAction extends DroneAction {
             if (frontDist >= 0) return flyAction.apply();
         }
         return res;
-    }
-
-    @Override
-    public void reset() {
-        super.reset();
-        currentStep = L_TURN;
-        lTurnAction.reset();
     }
 
     public enum Step {

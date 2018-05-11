@@ -27,14 +27,17 @@ public class Crew {
     private final List<CraftedContract> completedCraftedContracts = new ArrayList<>();
     private final List<RawContract> abortedRawContracts = new ArrayList<>();
     private final List<CraftedContract> abortedCraftedContracts = new ArrayList<>();
+
     private Action lastAction;
     private String idCreek;
     private List<Action> steps;
     private Coordinates coordinates;
     private RawResource currentResource;
     private List<RawResource> wantedResources = new ArrayList<>();
+
     private boolean isLanded;
     private boolean doNotEstimate;
+
 
     public Crew(IslandMap map, List<RawContract> rawContracts, List<CraftedContract> craftedContracts) {
         this.map = map;
@@ -51,14 +54,6 @@ public class Crew {
         coordinates = map.getCreeks().get(idCreek);
 
         initActions();
-    }
-
-
-    private void initActions() {
-        steps = new ArrayList<>();
-        steps.add(new Land(this, idCreek));
-        steps.add(new MoveExploitLoopAction(this));
-        steps.add(new StopAction());
     }
 
     public String takeDecision() {
@@ -111,6 +106,92 @@ public class Crew {
         craftedStock.put(resource, amount);
     }
 
+    public void tryToFinishContracts() {
+
+        rawContracts.removeIf(rawContract -> {
+            RawResource resource = rawContract.getResource();
+            int quantity = rawContract.getQuantity();
+
+            boolean completed = stock.containsKey(resource) && stock.get(resource) >= quantity;
+
+            if (completed)
+                completedRawContracts.add(rawContract);
+
+            return completed;
+        });
+
+        craftedContracts.removeIf(craftedContract -> {
+            CraftedResource resource = craftedContract.getResource();
+            int quantity = craftedContract.getQuantity();
+
+            boolean completed = craftedStock.containsKey(resource) && craftedStock.get(resource) >= quantity;
+
+            if (completed)
+                completedCraftedContracts.add(craftedContract);
+
+            return completed;
+        });
+
+        computeWantedResources();
+        chooseNewFocus(howToChoseContract());
+    }
+
+    public Map<RawResource, Double> tryCrafting() {
+        for (CraftedContract craft : craftedContracts) {
+            boolean test = true;
+            Map<RawResource, Double> remainingResources = craft.getRemainingRawQuantities();
+            for (Map.Entry<RawResource, Double> entry : remainingResources.entrySet()) {
+                int realStock;
+                if (stock.containsKey(entry.getKey()) && stock.get(entry.getKey()) >= entry.getValue()) {
+                    realStock = stock.get(entry.getKey());
+                    for (RawContract rawContract : completedRawContracts) {
+                        if (rawContract.getResource().equals(entry.getKey())) {
+                            realStock = realStock - rawContract.getQuantity();
+                        }
+                    }
+                    test = realStock >= entry.getValue();
+                } else {
+                    test = false;
+                }
+                if (!test) {
+                    break;
+                }
+            }
+            if (test) {
+                return remainingResources;
+            }
+        }
+        return null;
+    }
+
+    public void land(String creekId) {
+        if (!doNotEstimate) sortContractsAfterIslandData();
+        this.isLanded = true;
+        map.setShip(map.getCreeks().get(creekId));
+    }
+
+    public void sortContractsAfterCost(int remainingBudget) {
+        abortedRawContracts.addAll(rawContracts.stream()
+                .filter(contract -> Forecaster.estimateCost(contract) > remainingBudget)
+                .collect(Collectors.toList()));
+
+        rawContracts.removeAll(abortedRawContracts);
+
+        abortedCraftedContracts.addAll(craftedContracts.stream()
+                .filter(contract -> Forecaster.estimateCost(contract) > remainingBudget)
+                .collect(Collectors.toList()));
+
+        craftedContracts.removeAll(abortedCraftedContracts);
+    }
+
+
+    private void initActions() {
+        steps = new ArrayList<>();
+        steps.add(new Land(this, idCreek));
+        steps.add(new MoveExploitLoopAction(this));
+        steps.add(new StopAction());
+    }
+
     private void chooseNewFocus(ContractChooser howToDertemine) {
         currentResource = null;
 
@@ -144,36 +225,6 @@ public class Crew {
         });
     }
 
-    public void tryToFinishContracts() {
-
-        rawContracts.removeIf(rawContract -> {
-            RawResource resource = rawContract.getResource();
-            int quantity = rawContract.getQuantity();
-
-            boolean completed = stock.containsKey(resource) && stock.get(resource) >= quantity;
-
-            if (completed)
-                completedRawContracts.add(rawContract);
-
-            return completed;
-        });
-
-        craftedContracts.removeIf(craftedContract -> {
-            CraftedResource resource = craftedContract.getResource();
-            int quantity = craftedContract.getQuantity();
-
-            boolean completed = craftedStock.containsKey(resource) && craftedStock.get(resource) >= quantity;
-
-            if (completed)
-                completedCraftedContracts.add(craftedContract);
-
-            return completed;
-        });
-
-        computeWantedResources();
-        chooseNewFocus(howToChoseContract());
-    }
-
     /**
      * We decide here how to determine the next Best contract based on contracts left and current crew
      *
@@ -188,34 +239,6 @@ public class Crew {
         craftedContractsLeft.removeAll(abortedCraftedContracts);
         craftedContractsLeft.removeAll(completedCraftedContracts);
         return new BasicContractChooser(rawContractsLeft, craftedContractsLeft);
-    }
-
-    public Map<RawResource, Double> tryCrafting() {
-        for (CraftedContract craft : craftedContracts) {
-            boolean test = true;
-            Map<RawResource, Double> remainingResources = craft.getRemainingRawQuantities();
-            for (Map.Entry<RawResource, Double> entry : remainingResources.entrySet()) {
-                int realStock;
-                if (stock.containsKey(entry.getKey()) && stock.get(entry.getKey()) >= entry.getValue()) {
-                    realStock = stock.get(entry.getKey());
-                    for (RawContract rawContract : completedRawContracts) {
-                        if (rawContract.getResource().equals(entry.getKey())) {
-                            realStock = realStock - rawContract.getQuantity();
-                        }
-                    }
-                    test = realStock >= entry.getValue();
-                } else {
-                    test = false;
-                }
-                if (!test) {
-                    break;
-                }
-            }
-            if (test) {
-                return remainingResources;
-            }
-        }
-        return null;
     }
 
     private void computeWantedResources() {
@@ -245,11 +268,6 @@ public class Crew {
         }
     }
 
-    public void land(String creekId) {
-        if (!doNotEstimate) sortContractsAfterIslandData();
-        this.isLanded = true;
-        map.setShip(map.getCreeks().get(creekId));
-    }
 
     private void sortContractsAfterIslandData() {
         Map<RawResource, Double> foretoldResources = Forecaster.estimateResources(map);
@@ -269,20 +287,7 @@ public class Crew {
         craftedContracts.removeAll(abortedCraftedContracts);
     }
 
-    public void sortContractsAfterCost(int remainingBudget) {
-        abortedRawContracts.addAll(rawContracts.stream()
-                .filter(contract -> Forecaster.estimateCost(contract) > remainingBudget)
-                .collect(Collectors.toList()));
-
-        rawContracts.removeAll(abortedRawContracts);
-
-        abortedCraftedContracts.addAll(craftedContracts.stream()
-                .filter(contract -> Forecaster.estimateCost(contract) > remainingBudget)
-                .collect(Collectors.toList()));
-
-        craftedContracts.removeAll(abortedCraftedContracts);
-    }
-
+    //region ========= Getters & Setters ========
     public IslandMap getMap() {
         return map;
     }
@@ -327,6 +332,10 @@ public class Crew {
         return wantedResources;
     }
 
+    public void setDoNotEstimate(boolean doNotEstimate) {
+        this.doNotEstimate = doNotEstimate;
+    }
+
     List<RawContract> getCompletedRawContracts() {
         return completedRawContracts;
     }
@@ -335,8 +344,6 @@ public class Crew {
         return completedCraftedContracts;
     }
 
-    public void setDoNotEstimate(boolean doNotEstimate) {
-        this.doNotEstimate = doNotEstimate;
-    }
+    //endregion
 }
 

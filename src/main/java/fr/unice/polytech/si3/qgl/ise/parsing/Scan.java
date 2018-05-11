@@ -40,6 +40,7 @@ public class Scan {
         biomes.add(bundle().getBiome(biomeName));
     }
 
+    //region ========== Getters =================
     public List<String> getCreeks() {
         return creeks;
     }
@@ -52,4 +53,5 @@ public class Scan {
         return biomes;
     }
 
+    //endregion
 }

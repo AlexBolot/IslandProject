@@ -16,13 +16,13 @@ public class StopAction extends Action {
 
     }
 
-    protected Drone getDrone() {
-        return drone;
-    }
-
     @Override
     public String apply() {
         if (drone != null) drone.setLastAction(STOP);
         return new JsonFactory().createJsonString("stop");
+    }
+
+    protected Drone getDrone() {
+        return drone;
     }
 }

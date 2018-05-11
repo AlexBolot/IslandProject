@@ -29,20 +29,6 @@ public class ContractParser {
         parseContracts(data.getJSONArray("contracts"));
     }
 
-    private void parseContracts(JSONArray contracts) {
-        for (int i = 0; i < contracts.length(); ++i) {
-            JSONObject obj = contracts.getJSONObject(i);
-
-            String resourceName = obj.getString(RESOURCE);
-
-            if (bundle().hasRawRes(resourceName)) {
-                rawContracts.add(new RawContract(bundle().getRawRes(resourceName), obj.getInt("amount")));
-            } else if (bundle().hasCraftedRes(resourceName)) {
-                craftedContracts.add(new CraftedContract(bundle().getCraftedRes(resourceName), obj.getInt("amount")));
-            }
-        }
-    }
-
     public int getMen() {
         return men;
     }
@@ -61,5 +47,19 @@ public class ContractParser {
 
     public List<CraftedContract> getCraftedContracts() {
         return craftedContracts;
+    }
+
+    private void parseContracts(JSONArray contracts) {
+        for (int i = 0; i < contracts.length(); ++i) {
+            JSONObject obj = contracts.getJSONObject(i);
+
+            String resourceName = obj.getString(RESOURCE);
+
+            if (bundle().hasRawRes(resourceName)) {
+                rawContracts.add(new RawContract(bundle().getRawRes(resourceName), obj.getInt("amount")));
+            } else if (bundle().hasCraftedRes(resourceName)) {
+                craftedContracts.add(new CraftedContract(bundle().getCraftedRes(resourceName), obj.getInt("amount")));
+            }
+        }
     }
 }

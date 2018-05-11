@@ -31,6 +31,12 @@ public class GTurnAction extends DroneAction {
     }
 
     @Override
+    public void reset() {
+        super.reset();
+        currentStep = FLY_FRONT_1;
+    }
+
+    @Override
     public String apply() {
         return apply(currentStep);
     }
@@ -125,12 +131,6 @@ public class GTurnAction extends DroneAction {
         else throw new IllegalStateException("Not enough margin left !");
 
         return res;
-    }
-
-    @Override
-    public void reset() {
-        super.reset();
-        currentStep = FLY_FRONT_1;
     }
 
     public enum Step {

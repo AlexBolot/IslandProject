@@ -25,10 +25,6 @@ public class ExtResSelector {
         return globalResBundle;
     }
 
-    private static void setResBundle(ExtResBundle bundle) {
-        globalResBundle = bundle;
-    }
-
     public static void selectBundle() {
         raisedFlag = false;
 
@@ -49,6 +45,7 @@ public class ExtResSelector {
 
         setResBundle(selectedBunlde);
     }
+
 
     private static ExtResBundle readFromResource(String pathToFile) {
         String str;
@@ -97,5 +94,9 @@ public class ExtResSelector {
         }
 
         return bundle;
+    }
+
+    private static void setResBundle(ExtResBundle bundle) {
+        globalResBundle = bundle;
     }
 }

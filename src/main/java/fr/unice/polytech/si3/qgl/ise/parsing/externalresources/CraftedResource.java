@@ -7,7 +7,8 @@ public class CraftedResource extends Resource implements Comparable<CraftedResou
 
     private Map<RawResource, Double> recipe;
 
-    public CraftedResource(String name, Map<RawResource, Double> recipe) {
+
+    CraftedResource(String name, Map<RawResource, Double> recipe) {
         super(name);
         this.recipe = recipe;
     }

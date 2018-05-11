@@ -27,29 +27,6 @@ public class PathFinder {
     }
 
     /**
-     * Assigns a score to a creek based on its proximity to the given resources
-     *
-     * @param map       : the map containing the tiles
-     * @param creekId   : the creek we want to assign a score to
-     * @param resources : the resources we want to be near the creek
-     * @return a score for the creek
-     */
-    private static double calculateScore(IslandMap map, String creekId, List<RawResource> resources) {
-        List<Biome> acceptableBiomes = new ArrayList<>();
-
-        for (RawResource resource : resources) {
-            acceptableBiomes.addAll(bundle().getBiomes().stream()
-                    .filter(biome -> biome.hasResource(resource))
-                    .collect(Collectors.toList()));
-        }
-
-        return map.getMap().entrySet().stream()
-                .filter(entry -> !Collections.disjoint(entry.getValue().getPossibleBiomes(), acceptableBiomes))
-                .mapToDouble(entry -> 1 / (calculateDistance(entry.getKey(), map.getCreeks().get(creekId)) + 1))
-                .sum();
-    }
-
-    /**
      * Searches for the best creek that is nearest to the given resources
      *
      * @param map       : the map containing the tiles
@@ -99,5 +76,28 @@ public class PathFinder {
                 .filter(Objects::nonNull)
                 .min(Comparator.comparingDouble((Coordinates tileCoordinates) -> calculateDistance(tileCoordinates, coordinates) + 0.001 * calculateDistance(tileCoordinates, map.getShip())))
                 .orElse(null);
+    }
+
+    /**
+     * Assigns a score to a creek based on its proximity to the given resources
+     *
+     * @param map       : the map containing the tiles
+     * @param creekId   : the creek we want to assign a score to
+     * @param resources : the resources we want to be near the creek
+     * @return a score for the creek
+     */
+    private static double calculateScore(IslandMap map, String creekId, List<RawResource> resources) {
+        List<Biome> acceptableBiomes = new ArrayList<>();
+
+        for (RawResource resource : resources) {
+            acceptableBiomes.addAll(bundle().getBiomes().stream()
+                    .filter(biome -> biome.hasResource(resource))
+                    .collect(Collectors.toList()));
+        }
+
+        return map.getMap().entrySet().stream()
+                .filter(entry -> !Collections.disjoint(entry.getValue().getPossibleBiomes(), acceptableBiomes))
+                .mapToDouble(entry -> 1 / (calculateDistance(entry.getKey(), map.getCreeks().get(creekId)) + 1))
+                .sum();
     }
 }

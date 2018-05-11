@@ -30,6 +30,12 @@ public class ChangeLineAction extends DroneAction {
     }
 
     @Override
+    public void reset() {
+        super.reset();
+        currentStep = ECHO_SIDE;
+    }
+
+    @Override
     public String apply() {
         return apply(ZQSD.getOpposite(getDrone().getLastTurn()));
     }
@@ -110,12 +116,6 @@ public class ChangeLineAction extends DroneAction {
         if (frontMargin._1 == GROUND && frontMargin._2 >= 0) res = flyAction.apply();
 
         return res;
-    }
-
-    @Override
-    public void reset() {
-        super.reset();
-        currentStep = ECHO_SIDE;
     }
 
     public enum Step {
