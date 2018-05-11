@@ -29,7 +29,7 @@ public class ExtResSelector {
         raisedFlag = false;
 
         logger.info("Reading in External File");
-        ExtResBundle envBundle = readFromEnvironement(System.getenv(ENV_VAR_NAME));
+        ExtResBundle envBundle = readFromEnvironment(System.getenv(ENV_VAR_NAME));
         logger.info("Reading in Default File");
         ExtResBundle defaultBundle = readFromResource(DEFAULT_PATH);
 
@@ -57,7 +57,7 @@ public class ExtResSelector {
                 builder.append(str).append("\n");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Problem in readFromResource : ", e);
         }
 
         ExtResParser extResParser = new ExtResParser();
@@ -68,7 +68,7 @@ public class ExtResSelector {
         return bundle;
     }
 
-    private static ExtResBundle readFromEnvironement(String pathToFile) {
+    private static ExtResBundle readFromEnvironment(String pathToFile) {
 
         ExtResBundle bundle = new ExtResBundle();
         File file = new File("");
@@ -76,9 +76,9 @@ public class ExtResSelector {
         try {
             file = new File(pathToFile);
             if (file.isDirectory()) throw new IllegalStateException(pathToFile + " is not a File");
-        } catch (Exception ex) {
+        } catch (Exception e) {
             raisedFlag = true;
-            logger.info("Problem while loading resoure : " + ex.getMessage());
+            logger.error("Problem while loading resource : ", e);
         }
 
         try (Scanner sc = new Scanner(file).useDelimiter("you'd never type that, would you \\?")) {
@@ -88,9 +88,9 @@ public class ExtResSelector {
             if (sc.hasNext()) bundle = extResParser.parse(sc.next());
             if (extResParser.raisedFlag()) raisedFlag = true;
 
-        } catch (Exception ex) {
+        } catch (Exception e) {
             raisedFlag = true;
-            logger.info("Problem while loading resoure : " + ex.getMessage());
+            logger.error("Problem while loading resource : ", e);
         }
 
         return bundle;
