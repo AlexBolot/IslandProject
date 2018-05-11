@@ -12,14 +12,15 @@ public class PathFinder {
 
     private final double minThreshold;
     private final double maxThreshold;
-    private double actualThreshold;
     private final IslandMap map;
+    private double actualThreshold;
 
     /**
+     * Creates a pathfinder object
      *
-     * @param map       : the map containing the tiles
-     * @param minThreshold
-     * @param maxThreshold
+     * @param map          : the map containing the tiles
+     * @param minThreshold : the minimum probability threshold allowed
+     * @param maxThreshold : the base probability threshold allowed
      */
     public PathFinder(IslandMap map, double minThreshold, double maxThreshold) {
         this.minThreshold = minThreshold;
@@ -89,6 +90,13 @@ public class PathFinder {
                 .orElse(null);
     }
 
+    /**
+     * Finds the nearest tile that possibly contains any of the given raw resources, excluding already explored tiles
+     *
+     * @param coordinates : the coordinates from where the search is led
+     * @param resources : resources to look for
+     * @return the coordinates of the nearest tile that possibly contains any of the given raw resources, or null if there is no such tile
+     */
     public Coordinates findNearestTileOfAnyResource(Coordinates coordinates, List<RawResource> resources) {
         Coordinates nearest = resources.stream()
                 .map(resource -> findNearestTileOfResource(coordinates, resource))

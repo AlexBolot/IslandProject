@@ -5,7 +5,6 @@ import fr.unice.polytech.si3.qgl.ise.contracts.RawContract;
 import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.Biome;
 import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.RawResource;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.HashMap;
