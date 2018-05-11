@@ -5,10 +5,7 @@ import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.RawResource;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static fr.unice.polytech.si3.qgl.ise.parsing.externalresources.ExtResSelector.bundle;
 import static org.junit.Assert.assertEquals;
@@ -17,10 +14,12 @@ import static org.junit.Assert.assertNull;
 public class PathFinderTest {
 
     private IslandMap map;
+    private PathFinder pathFinder;
 
     @Before
     public void init() {
         map = new IslandMap();
+        pathFinder = new PathFinder(map, 50, 80);
 
         Map<Biome, Double> biomesPercentage1 = new HashMap<>();
         biomesPercentage1.put(biome("ALPINE"), 100d);
@@ -61,33 +60,42 @@ public class PathFinderTest {
 
     @Test
     public void findNearestTileOfBiomeTest() {
-        assertNull(PathFinder.findNearestTileOfBiome(map, new Coordinates(0, 0), biome("SHRUBLAND")));
-        assertEquals(new Coordinates(15, -34), PathFinder.findNearestTileOfBiome(map, new Coordinates(-20, -26), biome("TAIGA")));
-        assertEquals(new Coordinates(15, -34), PathFinder.findNearestTileOfBiome(map, new Coordinates(0, 0), biome("TUNDRA")));
-        assertEquals(new Coordinates(13, 39), PathFinder.findNearestTileOfBiome(map, new Coordinates(0, 0), biome("ALPINE")));
-        assertEquals(new Coordinates(23, -40), PathFinder.findNearestTileOfBiome(map, new Coordinates(39, -45), biome("GLACIER")));
+        assertNull(pathFinder.findNearestTileOfBiome(new Coordinates(0, 0), biome("SHRUBLAND")));
+        assertEquals(new Coordinates(15, -34), pathFinder.findNearestTileOfBiome(new Coordinates(-20, -26), biome("TAIGA")));
+        assertEquals(new Coordinates(15, -34), pathFinder.findNearestTileOfBiome(new Coordinates(0, 0), biome("TUNDRA")));
+        assertEquals(new Coordinates(13, 39), pathFinder.findNearestTileOfBiome(new Coordinates(0, 0), biome("ALPINE")));
+        assertEquals(new Coordinates(23, -40), pathFinder.findNearestTileOfBiome(new Coordinates(39, -45), biome("GLACIER")));
     }
 
     @Test
     public void findNearestTileOfResourceTest() {
-        assertNull(PathFinder.findNearestTileOfResource(map, new Coordinates(24, -42), rawRes("FRUITS")));
-        assertNull(PathFinder.findNearestTileOfResource(map, new Coordinates(-17, 2), rawRes("FISH")));
-        assertEquals(new Coordinates(15, -34), PathFinder.findNearestTileOfResource(map, new Coordinates(6, -14), rawRes("WOOD")));
+        assertNull(pathFinder.findNearestTileOfResource(new Coordinates(24, -42), rawRes("FRUITS")));
+        assertNull(pathFinder.findNearestTileOfResource(new Coordinates(-17, 2), rawRes("FISH")));
+        assertEquals(new Coordinates(15, -34), pathFinder.findNearestTileOfResource(new Coordinates(6, -14), rawRes("WOOD")));
         map.getTile(new Coordinates(15, -34)).setExplored(true);
-        assertEquals(new Coordinates(13, 39), PathFinder.findNearestTileOfResource(map, new Coordinates(0, 0), rawRes("FUR")));
-        assertEquals(new Coordinates(13, 39), PathFinder.findNearestTileOfResource(map, new Coordinates(0, 0), rawRes("FLOWER")));
+        assertEquals(new Coordinates(13, 39), pathFinder.findNearestTileOfResource(new Coordinates(0, 0), rawRes("FUR")));
+        assertEquals(new Coordinates(13, 39), pathFinder.findNearestTileOfResource(new Coordinates(0, 0), rawRes("FLOWER")));
         map.getTile(new Coordinates(13, 39)).setExplored(true);
     }
 
     @Test
-    public void findBestCreekTest() {
-        assertEquals("", PathFinder.findBestCreek(map, new ArrayList<>(Arrays.asList(rawRes("FRUITS"), rawRes("FISH")))));
-        assertEquals("id1", PathFinder.findBestCreek(map, new ArrayList<>(Arrays.asList(rawRes("WOOD"), rawRes("SUGAR_CANE")))));
-        assertEquals("id2", PathFinder.findBestCreek(map, new ArrayList<>(Arrays.asList(rawRes("FLOWER"), rawRes("ORE")))));
-        assertEquals("id2", PathFinder.findBestCreek(map, new ArrayList<>(Arrays.asList(rawRes("FLOWER"), rawRes("ORE"), rawRes("WOOD"), rawRes("FUR")))));
+    public void adaptiveThresholdTest() {
+        Map<Biome, Double> biomesPercentage = new HashMap<>();
+        biomesPercentage.put(biome("TROPICAL_RAIN_FOREST"), 70d);
+        map.addTile(new Coordinates(8, -7), new Tile(biomesPercentage));
+        List<RawResource> resources = new ArrayList<>(Arrays.asList(rawRes("FRUITS"), rawRes("SUGAR_CANE")));
+        assertEquals(new Coordinates(8, -7), pathFinder.findNearestTileOfAnyResource(new Coordinates(0, 0), resources));
     }
 
-    //region --- utils for lisibility ---
+    @Test
+    public void findBestCreekTest() {
+        assertEquals("", pathFinder.findBestCreek(new ArrayList<>(Arrays.asList(rawRes("FRUITS"), rawRes("FISH")))));
+        assertEquals("id1", pathFinder.findBestCreek(new ArrayList<>(Arrays.asList(rawRes("WOOD"), rawRes("SUGAR_CANE")))));
+        assertEquals("id2", pathFinder.findBestCreek(new ArrayList<>(Arrays.asList(rawRes("FLOWER"), rawRes("ORE")))));
+        assertEquals("id2", pathFinder.findBestCreek(new ArrayList<>(Arrays.asList(rawRes("FLOWER"), rawRes("ORE"), rawRes("WOOD"), rawRes("FUR")))));
+    }
+
+    //region --- utils for readability ---
     private static RawResource rawRes(String name) {
         return bundle().getRawRes(name);
     }

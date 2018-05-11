@@ -56,7 +56,7 @@ public class ScanTest {
         assertEquals("The scan must fin creek with id \"idC2\"", "idC2", scan.getCreeks().get(1));
     }
 
-    //region --- utils for lisibility ---
+    //region --- utils for readability ---
     private static Biome biome(String name) {
         return bundle().getBiome(name);
     }

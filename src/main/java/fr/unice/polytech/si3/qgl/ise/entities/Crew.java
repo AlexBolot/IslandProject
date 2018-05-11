@@ -1,5 +1,6 @@
 package fr.unice.polytech.si3.qgl.ise.entities;
 
+import fr.unice.polytech.si3.qgl.ise.Explorer;
 import fr.unice.polytech.si3.qgl.ise.actions.Action;
 import fr.unice.polytech.si3.qgl.ise.actions.CrewAction;
 import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
@@ -12,12 +13,16 @@ import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
 import fr.unice.polytech.si3.qgl.ise.map.PathFinder;
 import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.CraftedResource;
 import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.RawResource;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.apache.logging.log4j.LogManager.getLogger;
+
 public class Crew {
 
+    private static final Logger logger = getLogger(Explorer.class);
     private final List<RawContract> rawContracts;
     private final List<CraftedContract> craftedContracts;
     private final Map<RawResource, Integer> stock;
@@ -27,6 +32,7 @@ public class Crew {
     private final List<CraftedContract> completedCraftedContracts = new ArrayList<>();
     private final List<RawContract> abortedRawContracts = new ArrayList<>();
     private final List<CraftedContract> abortedCraftedContracts = new ArrayList<>();
+    private final PathFinder pathFinder;
 
     private Action lastAction;
     private String idCreek;
@@ -46,11 +52,12 @@ public class Crew {
         this.stock = new HashMap<>();
         this.craftedStock = new HashMap<>();
         this.doNotEstimate = false;
+        this.pathFinder = new PathFinder(map, 50, 80);
 
         computeWantedResources();
         chooseNewFocus(howToChoseContract());
 
-        idCreek = PathFinder.findBestCreek(map, wantedResources);
+        idCreek = pathFinder.findBestCreek(wantedResources);
         coordinates = map.getCreeks().get(idCreek);
 
         initActions();
@@ -171,11 +178,19 @@ public class Crew {
     }
 
     public void sortContractsAfterCost(int remainingBudget) {
+        rawContracts.stream()
+                .filter(contract -> Forecaster.estimateCost(contract) > remainingBudget)
+                .forEach(contract -> logger.info("ABORT! " + contract));
+
         abortedRawContracts.addAll(rawContracts.stream()
                 .filter(contract -> Forecaster.estimateCost(contract) > remainingBudget)
                 .collect(Collectors.toList()));
 
         rawContracts.removeAll(abortedRawContracts);
+
+        craftedContracts.stream()
+                .filter(contract -> Forecaster.estimateCost(contract) > remainingBudget)
+                .forEach(contract -> logger.info("ABORT! " + contract));
 
         abortedCraftedContracts.addAll(craftedContracts.stream()
                 .filter(contract -> Forecaster.estimateCost(contract) > remainingBudget)
@@ -192,10 +207,10 @@ public class Crew {
         steps.add(new StopAction());
     }
 
-    private void chooseNewFocus(ContractChooser howToDertemine) {
+    private void chooseNewFocus(ContractChooser howToDetermine) {
         currentResource = null;
 
-        Optional<Contract> bestContract = howToDertemine.chooseBestContract();
+        Optional<Contract> bestContract = howToDetermine.chooseBestContract();
         bestContract.ifPresent(contract -> {
             int i = 0;
             int size = contract.getTotalResourcesToCollect().entrySet().size();

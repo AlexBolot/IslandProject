@@ -78,14 +78,14 @@ public class Forecaster {
         RawResource sugarCane = rawRes("SUGAR_CANE");
         RawResource flower = rawRes("FLOWER");
 
-        resourceData.put(rawRes("FISH"), new Tuple2<>(40, 0.7727665564172457));
-        resourceData.put(quartz, new Tuple2<>(5, 3.495537794063535));
+        resourceData.put(rawRes("FISH"), new Tuple2<>(40, 0.164576802507837));
+        resourceData.put(quartz, new Tuple2<>(5, 1.884264142309489));
         resourceData.put(rawRes("ORE"), new Tuple2<>(15, 1.0)); //No data
-        resourceData.put(rawRes("WOOD"), new Tuple2<>(40, 0.42887111592539784));
-        resourceData.put(fruits, new Tuple2<>(10, 2.1337618836808363));
-        resourceData.put(sugarCane, new Tuple2<>(20, 0.840776217239025));
-        resourceData.put(flower, new Tuple2<>(1, 11.183116999843994));
-        resourceData.put(rawRes("FUR"), new Tuple2<>(5, 2.6972614067667204));
+        resourceData.put(rawRes("WOOD"), new Tuple2<>(40, 0.24903587998784404));
+        resourceData.put(fruits, new Tuple2<>(10, 1.1253038347737756));
+        resourceData.put(sugarCane, new Tuple2<>(20, 0.5235607693619284));
+        resourceData.put(flower, new Tuple2<>(1, 7.566848351822144));
+        resourceData.put(rawRes("FUR"), new Tuple2<>(5, 1.6182193468177184));
 
         bundle().getBiomes().forEach(biome -> biomeData.put(biome, new HashMap<>()));
 
@@ -133,7 +133,7 @@ public class Forecaster {
         biomeData.get(biome("GLACIER")).put(flower, 0.05);
     }
 
-    //region ========= utils for lisibility =====
+    //region ========= utils for readability =====
     private static RawResource rawRes(String name) {
         return bundle().getRawRes(name);
     }

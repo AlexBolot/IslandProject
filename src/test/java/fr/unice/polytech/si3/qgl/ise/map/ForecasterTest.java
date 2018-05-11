@@ -5,6 +5,7 @@ import fr.unice.polytech.si3.qgl.ise.contracts.RawContract;
 import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.Biome;
 import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.RawResource;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -53,8 +54,8 @@ public class ForecasterTest {
 
     @Test
     public void estimateCostTest() {
-        assertEquals(1286.613347776192, Forecaster.estimateCost(new RawContract(bundle().getRawRes("WOOD"), 1000)), 0.00000000001);
-        assertEquals(321.6533369440481, Forecaster.estimateCost(new CraftedContract(bundle().getCraftedRes("PLANK"), 1000)), 0.00000000001);
-        assertEquals(22259.8401121574, Forecaster.estimateCost(new CraftedContract(bundle().getCraftedRes("GLASS"), 200)), 0.00000000001);
+        assertEquals(747.10764, Forecaster.estimateCost(new RawContract(bundle().getRawRes("WOOD"), 1000)), 0.00001);
+        assertEquals(186.77691, Forecaster.estimateCost(new CraftedContract(bundle().getCraftedRes("PLANK"), 1000)), 0.00001);
+        assertEquals(12052.69249, Forecaster.estimateCost(new CraftedContract(bundle().getCraftedRes("GLASS"), 200)), 0.00001);
     }
 }
