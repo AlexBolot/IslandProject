@@ -3,7 +3,7 @@
 /target
 /out
 *.json
-!/src/main/resources/external-resources.json
+!/src/main/resources/*.json
 *.svg
 *.log
 /scriptResults

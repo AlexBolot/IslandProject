@@ -33,6 +33,7 @@ public class Crew {
     private final List<RawContract> abortedRawContracts = new ArrayList<>();
     private final List<CraftedContract> abortedCraftedContracts = new ArrayList<>();
     private final PathFinder pathFinder;
+    private final Forecaster forecaster;
 
     private Action lastAction;
     private String idCreek;
@@ -53,6 +54,7 @@ public class Crew {
         this.craftedStock = new HashMap<>();
         this.doNotEstimate = false;
         this.pathFinder = new PathFinder(map, 50, 80);
+        this.forecaster = new Forecaster();
 
         computeWantedResources();
         chooseNewFocus(howToChoseContract());
@@ -179,21 +181,21 @@ public class Crew {
 
     public void sortContractsAfterCost(int remainingBudget) {
         rawContracts.stream()
-                .filter(contract -> Forecaster.estimateCost(contract) > remainingBudget)
+                .filter(contract -> forecaster.estimateCost(contract) > remainingBudget)
                 .forEach(contract -> logger.info("ABORT! " + contract));
 
         abortedRawContracts.addAll(rawContracts.stream()
-                .filter(contract -> Forecaster.estimateCost(contract) > remainingBudget)
+                .filter(contract -> forecaster.estimateCost(contract) > remainingBudget)
                 .collect(Collectors.toList()));
 
         rawContracts.removeAll(abortedRawContracts);
 
         craftedContracts.stream()
-                .filter(contract -> Forecaster.estimateCost(contract) > remainingBudget)
+                .filter(contract -> forecaster.estimateCost(contract) > remainingBudget)
                 .forEach(contract -> logger.info("ABORT! " + contract));
 
         abortedCraftedContracts.addAll(craftedContracts.stream()
-                .filter(contract -> Forecaster.estimateCost(contract) > remainingBudget)
+                .filter(contract -> forecaster.estimateCost(contract) > remainingBudget)
                 .collect(Collectors.toList()));
 
         craftedContracts.removeAll(abortedCraftedContracts);
@@ -285,7 +287,7 @@ public class Crew {
 
 
     private void sortContractsAfterIslandData() {
-        Map<RawResource, Double> foretoldResources = Forecaster.estimateResources(map);
+        Map<RawResource, Double> foretoldResources = forecaster.estimateResources(map);
 
 
         abortedRawContracts.addAll(rawContracts.stream()

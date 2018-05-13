@@ -16,6 +16,15 @@ public class PathFinderTest {
     private IslandMap map;
     private PathFinder pathFinder;
 
+    //region --- utils for readability ---
+    private static RawResource rawRes(String name) {
+        return bundle().getRawRes(name);
+    }
+
+    private static Biome biome(String name) {
+        return bundle().getBiome(name);
+    }
+
     @Before
     public void init() {
         map = new IslandMap();
@@ -93,15 +102,6 @@ public class PathFinderTest {
         assertEquals("id1", pathFinder.findBestCreek(new ArrayList<>(Arrays.asList(rawRes("WOOD"), rawRes("SUGAR_CANE")))));
         assertEquals("id2", pathFinder.findBestCreek(new ArrayList<>(Arrays.asList(rawRes("FLOWER"), rawRes("ORE")))));
         assertEquals("id2", pathFinder.findBestCreek(new ArrayList<>(Arrays.asList(rawRes("FLOWER"), rawRes("ORE"), rawRes("WOOD"), rawRes("FUR")))));
-    }
-
-    //region --- utils for readability ---
-    private static RawResource rawRes(String name) {
-        return bundle().getRawRes(name);
-    }
-
-    private static Biome biome(String name) {
-        return bundle().getBiome(name);
     }
     //endregion
 

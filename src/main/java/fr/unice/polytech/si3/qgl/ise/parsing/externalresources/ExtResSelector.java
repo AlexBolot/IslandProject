@@ -33,17 +33,17 @@ public class ExtResSelector {
         logger.info("Reading in Default File");
         ExtResBundle defaultBundle = readFromResource(DEFAULT_PATH);
 
-        ExtResBundle selectedBunlde;
+        ExtResBundle selectedBundle;
 
         if (raisedFlag || envBundle.compareDeep(defaultBundle) < 0) {
             logger.info("Selected Default File");
-            selectedBunlde = defaultBundle;
+            selectedBundle = defaultBundle;
         } else {
             logger.info("Selected External File");
-            selectedBunlde = defaultBundle;
+            selectedBundle = defaultBundle;
         }
 
-        setResBundle(selectedBunlde);
+        setResBundle(selectedBundle);
     }
 
 

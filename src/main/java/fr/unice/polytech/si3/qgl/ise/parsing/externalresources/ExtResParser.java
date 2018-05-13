@@ -38,8 +38,8 @@ public class ExtResParser {
             parseCraftedResources(jsonCraftedRes);
             parseBiomes(jsonBiomes);
 
-        } catch (Exception exeption) {
-            logger.info("Error while parsing json : " + exeption.getMessage());
+        } catch (Exception e) {
+            logger.info("Error while parsing json : " + e.getMessage());
             errorFlag = true;
         }
 

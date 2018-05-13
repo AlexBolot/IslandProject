@@ -1,0 +1,95 @@
+{
+  "resources-data": {
+    "FISH": {
+      "amount": 40,
+      "cost": 0.164576802507837
+    },
+    "QUARTZ": {
+      "amount": 5,
+      "cost": 1.884264142309489
+    },
+    "ORE": {
+      "amount": 15,
+      "cost": 1.0
+    },
+    "WOOD": {
+      "amount": 40,
+      "cost": 0.24903587998784404
+    },
+    "FRUITS": {
+      "amount": 10,
+      "cost": 1.1253038347737756
+    },
+    "SUGAR_CANE": {
+      "amount": 20,
+      "cost": 0.5235607693619284
+    },
+    "FLOWER": {
+      "amount": 1,
+      "cost": 7.566848351822144
+    },
+    "FUR": {
+      "amount": 5,
+      "cost": 1.6182193468177184
+    }
+  },
+  "biomes-data": {
+    "MANGROVE": {
+      "WOOD": 0.6,
+      "FLOWER": 0.4
+    },
+    "TROPICAL_RAIN_FOREST": {
+      "WOOD": 0.4,
+      "SUGAR_CANE": 0.4,
+      "FRUITS": 0.2
+    },
+    "TROPICAL_SEASONAL_FOREST": {
+      "WOOD": 0.4,
+      "SUGAR_CANE": 0.5,
+      "FRUITS": 0.1
+    },
+    "TAIGA": {
+      "WOOD": 1.0
+    },
+    "TEMPERATE_RAIN_FOREST": {
+      "WOOD": 0.8,
+      "FUR": 0.2
+    },
+    "TEMPERATE_DECIDUOUS_FOREST": {
+      "WOOD": 1.0
+    },
+    "GRASSLAND": {
+      "FUR": 1.0
+    },
+    "SHRUBLAND": {
+      "FUR": 1.0
+    },
+    "TUNDRA": {
+      "FUR": 1.0
+    },
+    "ALPINE": {
+      "ORE": 0.2,
+      "FLOWER": 0.05
+    },
+    "BEACH": {
+      "QUARTZ": 0.2
+    },
+    "SUB_TROPICAL_DESERT": {
+      "ORE": 0.2,
+      "QUARTZ": 0.4
+    },
+    "TEMPERATE_DESERT": {
+      "ORE": 0.3,
+      "QUARTZ": 0.3
+    },
+    "OCEAN": {
+      "FISH": 0.9
+    },
+    "LAKE": {
+      "FISH": 0.8
+    },
+    "GLACIER": {
+      "FLOWER": 0.05
+    }
+  }
+}

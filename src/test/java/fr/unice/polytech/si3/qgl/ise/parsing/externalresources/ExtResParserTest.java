@@ -47,8 +47,8 @@ public class ExtResParserTest {
             if (sc.hasNext()) extResParser.parse(sc.next());
             if (extResParser.raisedFlag()) Assert.fail("Flag was raised");
 
-        } catch (Exception exeption) {
-            Assert.fail("Exeption was raised : " + exeption.getMessage());
+        } catch (Exception e) {
+            Assert.fail("Exception was raised: " + e.getMessage());
         }
     }
 

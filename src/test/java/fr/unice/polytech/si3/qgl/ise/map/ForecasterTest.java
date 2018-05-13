@@ -16,10 +16,12 @@ import static org.junit.Assert.assertEquals;
 public class ForecasterTest {
 
     private IslandMap map;
+    private Forecaster forecaster;
 
     @Before
     public void init() {
         map = new IslandMap();
+        forecaster = new Forecaster();
 
         Map<Biome, Double> biomesPercentage1 = new HashMap<>();
         biomesPercentage1.put(bundle().getBiome("ALPINE"), 100d);
@@ -44,7 +46,7 @@ public class ForecasterTest {
 
     @Test
     public void estimateResourcesTest() {
-        Map<RawResource, Double> foretoldQuantities = Forecaster.estimateResources(map);
+        Map<RawResource, Double> foretoldQuantities = forecaster.estimateResources(map);
         assertEquals(6.0, foretoldQuantities.get(bundle().getRawRes("ORE")), 0.0);
         assertEquals(40.0, foretoldQuantities.get(bundle().getRawRes("WOOD")), 0.0);
         assertEquals(10.0, foretoldQuantities.get(bundle().getRawRes("FUR")), 0.0);
@@ -53,8 +55,8 @@ public class ForecasterTest {
 
     @Test
     public void estimateCostTest() {
-        assertEquals(747.10764, Forecaster.estimateCost(new RawContract(bundle().getRawRes("WOOD"), 1000)), 0.00001);
-        assertEquals(186.77691, Forecaster.estimateCost(new CraftedContract(bundle().getCraftedRes("PLANK"), 1000)), 0.00001);
-        assertEquals(12052.69249, Forecaster.estimateCost(new CraftedContract(bundle().getCraftedRes("GLASS"), 200)), 0.00001);
+        assertEquals(747.10764, forecaster.estimateCost(new RawContract(bundle().getRawRes("WOOD"), 1000)), 0.00001);
+        assertEquals(186.77691, forecaster.estimateCost(new CraftedContract(bundle().getCraftedRes("PLANK"), 1000)), 0.00001);
+        assertEquals(12052.69249, forecaster.estimateCost(new CraftedContract(bundle().getCraftedRes("GLASS"), 200)), 0.00001);
     }
 }

@@ -94,7 +94,7 @@ public class PathFinder {
      * Finds the nearest tile that possibly contains any of the given raw resources, excluding already explored tiles
      *
      * @param coordinates : the coordinates from where the search is led
-     * @param resources : resources to look for
+     * @param resources   : resources to look for
      * @return the coordinates of the nearest tile that possibly contains any of the given raw resources, or null if there is no such tile
      */
     public Coordinates findNearestTileOfAnyResource(Coordinates coordinates, List<RawResource> resources) {

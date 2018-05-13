@@ -14,6 +14,11 @@ public class ScanTest {
 
     private Scan scan;
 
+    //region --- utils for readability ---
+    private static Biome biome(String name) {
+        return bundle().getBiome(name);
+    }
+
     @Before
     public void setup() {
         String dataIn = "{\"cost\": 2, \"extras\": { \"biomes\": " +
@@ -54,11 +59,6 @@ public class ScanTest {
     public void parsingTestForCreeks() {
         assertEquals("The scan must fin creek with id \"idC1\"", "idC1", scan.getCreeks().get(0));
         assertEquals("The scan must fin creek with id \"idC2\"", "idC2", scan.getCreeks().get(1));
-    }
-
-    //region --- utils for readability ---
-    private static Biome biome(String name) {
-        return bundle().getBiome(name);
     }
     //endregion
 }
