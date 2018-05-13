@@ -93,27 +93,6 @@ public class CrewTest {
     }
 
     @Test
-    public void changeFocusRaw() {
-        crew.getRawContracts().add(new RawContract(bundle().getRawRes("ORE"), 10));
-        crew.tryToFinishContracts();
-        assertEquals(bundle().getRawRes("WOOD"), crew.getCurrentResource());
-        crew.addToStock(bundle().getRawRes("WOOD"), 500);
-        crew.tryToFinishContracts();
-        assertEquals(bundle().getRawRes("ORE"), crew.getCurrentResource());
-    }
-
-    @Test
-    public void changeFocusCrafted() {
-        crew.getRawContracts().add(new RawContract(bundle().getRawRes("ORE"), 10));
-        crew.tryToFinishContracts();
-        assertEquals(bundle().getRawRes("WOOD"), crew.getCurrentResource());
-        crew.addToStock(bundle().getRawRes("WOOD"), 500);
-        crew.addToStock(bundle().getRawRes("ORE"), 10);
-        crew.tryToFinishContracts();
-        assertEquals(bundle().getRawRes("WOOD"), crew.getCurrentResource());
-    }
-
-    @Test
     public void firstActionLand() {
         String res = crew.takeDecision();
         JSONObject json = new JSONObject(res);
