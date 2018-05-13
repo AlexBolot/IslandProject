@@ -7,6 +7,7 @@ import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 
 import static fr.unice.polytech.si3.qgl.ise.actions.drone.SearchIslandAction.Step.*;
+import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.BORDER;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
@@ -43,18 +44,18 @@ public class SearchIslandAction extends DroneAction {
         switch (step) {
             case CHOOSE_DIRECTION:
                 res = chooseDirection();
-                nextStep = ECHO_SIDE;
+                nextStep = ECHO_FRONT;
                 break;
 
-            case ECHO_SIDE:
-                res = echoAction.apply(ZQSD.getOpposite(getDrone().getLastTurn()));
-                nextStep = FLY_FRONT;
+            case ECHO_FRONT:
+                res = echoAction.apply(FRONT);
+                nextStep = HEADING;
                 break;
 
-            case FLY_FRONT:
-                res = decideToFly();
+            case HEADING:
+                res = decideToTurn();
 
-                if (!res.isEmpty()) nextStep = ECHO_SIDE;
+                if (!res.isEmpty()) nextStep = ECHO_FRONT;
                 else finish();
                 break;
 
@@ -71,24 +72,22 @@ public class SearchIslandAction extends DroneAction {
         Margin margins = getDrone().getMargins();
         ZQSD dir;
 
-        boolean facingGround = margins.getLocal(FRONT)._1 == GROUND;
         int marginRight = margins.getLocal(RIGHT)._2;
         int marginLeft = margins.getLocal(LEFT)._2;
 
-        if (facingGround) dir = (marginRight < marginLeft) ? RIGHT : LEFT;
-        else dir = (marginRight > marginLeft) ? RIGHT : LEFT;
+        dir = (marginRight > marginLeft) ? RIGHT : LEFT;
 
         return headingAction.apply(dir);
     }
 
-    private String decideToFly() {
+    private String decideToTurn() {
         Margin margins = getDrone().getMargins();
         String res = "";
 
-        if (margins.getLocal(getDrone().getLastEcho())._1 == GROUND || !getDrone().hasFoundIsland()) {
+        if (margins.getLocal(getDrone().getLastEcho())._1 == BORDER || !getDrone().hasFoundIsland()) {
             int frontDist = margins.getLocal(FRONT)._2;
 
-            if (frontDist > 1) res = flyAction.apply();
+            if (frontDist > 1) res = headingAction.apply(ZQSD.getOpposite(getDrone().getLastTurn()));
             else throw new IllegalStateException("Not enough margin left !");
         }
 
@@ -97,7 +96,7 @@ public class SearchIslandAction extends DroneAction {
 
     public enum Step {
         CHOOSE_DIRECTION,
-        ECHO_SIDE,
-        FLY_FRONT
+        ECHO_FRONT,
+        HEADING
     }
 }

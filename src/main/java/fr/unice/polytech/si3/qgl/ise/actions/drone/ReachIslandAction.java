@@ -12,22 +12,20 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 public class ReachIslandAction extends DroneAction {
     private final FlyAction flyAction;
     private final EchoAction echoAction;
-    private final LTurnAction lTurnAction;
     private Step currentStep;
 
     public ReachIslandAction(Drone drone) {
         super(drone);
-        currentStep = L_TURN;
+        currentStep = ECHO_FRONT;
         flyAction = new FlyAction(drone);
         echoAction = new EchoAction(drone);
-        lTurnAction = new LTurnAction(drone);
     }
 
     @Override
     public void reset() {
         super.reset();
-        currentStep = L_TURN;
-        lTurnAction.reset();
+        currentStep = ECHO_FRONT;
+        echoAction.reset();
     }
 
     @Override
@@ -40,15 +38,6 @@ public class ReachIslandAction extends DroneAction {
         Step nextStep = null;
 
         switch (step) {
-            case L_TURN:
-                if (!lTurnAction.isFinished()) {
-                    res = lTurnAction.apply();
-                    nextStep = L_TURN;
-                    break;
-                } else {
-                    return apply(ECHO_FRONT);
-                }
-
             case ECHO_FRONT:
                 res = echoAction.apply(FRONT);
                 nextStep = FLY_TO_ISLAND;
@@ -82,7 +71,6 @@ public class ReachIslandAction extends DroneAction {
     }
 
     public enum Step {
-        L_TURN,
         ECHO_FRONT,
         FLY_TO_ISLAND
     }
