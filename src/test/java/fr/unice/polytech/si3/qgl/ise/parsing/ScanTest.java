@@ -18,6 +18,7 @@ public class ScanTest {
     private static Biome biome(String name) {
         return bundle().getBiome(name);
     }
+    //endregion
 
     @Before
     public void setup() {
@@ -60,5 +61,4 @@ public class ScanTest {
         assertEquals("The scan must fin creek with id \"idC1\"", "idC1", scan.getCreeks().get(0));
         assertEquals("The scan must fin creek with id \"idC2\"", "idC2", scan.getCreeks().get(1));
     }
-    //endregion
 }

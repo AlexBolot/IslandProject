@@ -2,10 +2,7 @@ package fr.unice.polytech.si3.qgl.ise.contracts;
 
 import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.RawResource;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class RawContract implements Contract {
+public class RawContract {
     private final Integer quantity;
     private final RawResource resource;
     private int remainingQuantity;
@@ -37,10 +34,4 @@ public class RawContract implements Contract {
         return quantity + " " + resource;
     }
 
-    @Override
-    public Map<RawResource, Double> getTotalResourcesToCollect() {
-        HashMap<RawResource, Double> result = new HashMap<>();
-        result.put(resource, (double) remainingQuantity);
-        return result;
-    }
 }

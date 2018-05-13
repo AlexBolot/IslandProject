@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class Biome implements Comparable<Biome> {
-    private String name;
-    private List<RawResource> possibleResources;
+    private final String name;
+    private final List<RawResource> possibleResources;
 
     public Biome(String name, List<RawResource> possibleResources) {
         this.name = name;

@@ -24,6 +24,7 @@ public class PathFinderTest {
     private static Biome biome(String name) {
         return bundle().getBiome(name);
     }
+    //endregion
 
     @Before
     public void init() {
@@ -103,6 +104,4 @@ public class PathFinderTest {
         assertEquals("id2", pathFinder.findBestCreek(new ArrayList<>(Arrays.asList(rawRes("FLOWER"), rawRes("ORE")))));
         assertEquals("id2", pathFinder.findBestCreek(new ArrayList<>(Arrays.asList(rawRes("FLOWER"), rawRes("ORE"), rawRes("WOOD"), rawRes("FUR")))));
     }
-    //endregion
-
 }

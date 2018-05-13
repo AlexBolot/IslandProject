@@ -18,9 +18,9 @@ import static org.junit.Assert.*;
 
 public class ExtResParserTest {
 
-    private ArrayList<RawResource> rawResources = new ArrayList<>();
-    private ArrayList<CraftedResource> craftedResources = new ArrayList<>();
-    private ArrayList<Biome> biomes = new ArrayList<>();
+    private final ArrayList<RawResource> rawResources = new ArrayList<>();
+    private final ArrayList<CraftedResource> craftedResources = new ArrayList<>();
+    private final ArrayList<Biome> biomes = new ArrayList<>();
 
     private JSONObject mainJSON;
     private JSONArray rawResourcesJSON;
@@ -133,7 +133,7 @@ public class ExtResParserTest {
 
         assertTrue(bundle1.containsAllLight(bundle1)); //Since bundle1 contains itself (thanks capt. obvious)
         assertTrue(bundle1.containsAllLight(bundle2)); //Since bundle1 contains bundle2's values
-        assertFalse(bundle2.containsAllLight(bundle1)); //Since bundel2 doesn't contain all bundle2's values
+        assertFalse(bundle2.containsAllLight(bundle1)); //Since bundle2 doesn't contain all bundle2's values
         assertFalse(bundle1.containsAllLight(bundle3)); //Since bundle1 and bundle3 are different -> not comparable
     }
 
@@ -147,7 +147,7 @@ public class ExtResParserTest {
 
         assertEquals(0, bundle1.compareLight(bundle1)); //Since bundle1 contains itself (thanks capt. obvious)
         assertEquals(1, bundle1.compareLight(bundle2)); //Since bundle1 contains bundle2's values
-        assertEquals(-1, bundle2.compareLight(bundle1)); //Since bundel2 doesn't contain all bundle2's values
+        assertEquals(-1, bundle2.compareLight(bundle1)); //Since bundle2 doesn't contain all bundle2's values
         assertEquals(-2, bundle1.compareLight(bundle3)); //Since bundle1 and bundle3 are different -> not comparable
     }
 
@@ -163,7 +163,7 @@ public class ExtResParserTest {
 
         assertTrue(bundle1.containsAllDeep(bundle1)); //Since bundle1 contains itself (thanks capt. obvious)
         assertTrue(bundle1.containsAllDeep(bundle2)); //Since bundle1 contains bundle2's values
-        assertFalse(bundle2.containsAllDeep(bundle1)); //Since bundel2 doesn't contain all bundle2's values
+        assertFalse(bundle2.containsAllDeep(bundle1)); //Since bundle2 doesn't contain all bundle2's values
         assertFalse(bundle1.containsAllDeep(bundle3)); //Since bundle1 and bundle3 are different (crafted -> same res but diff amount) -> not comparable
         assertFalse(bundle1.containsAllDeep(bundle4)); //Since bundle1 and bundle3 are different (crafted -> diff resources) -> not comparable
     }
@@ -180,7 +180,7 @@ public class ExtResParserTest {
 
         assertEquals(0, bundle1.compareDeep(bundle1)); //Since bundle1 contains itself (thanks capt. obvious)
         assertEquals(1, bundle1.compareDeep(bundle2)); //Since bundle1 contains bundle2's values
-        assertEquals(-1, bundle2.compareDeep(bundle1)); //Since bundel2 doesn't contain all bundle2's values
+        assertEquals(-1, bundle2.compareDeep(bundle1)); //Since bundle2 doesn't contain all bundle2's values
         assertEquals(-2, bundle1.compareDeep(bundle3)); //Since bundle1 and bundle3 are different (crafted -> same res but diff amount) -> not comparable
         assertEquals(-2, bundle1.compareDeep(bundle4)); //Since bundle1 and bundle3 are different (crafted -> diff resources) -> not comparable
     }

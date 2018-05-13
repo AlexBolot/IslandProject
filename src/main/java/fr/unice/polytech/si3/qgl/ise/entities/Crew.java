@@ -6,7 +6,8 @@ import fr.unice.polytech.si3.qgl.ise.actions.CrewAction;
 import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
 import fr.unice.polytech.si3.qgl.ise.actions.crew.Land;
 import fr.unice.polytech.si3.qgl.ise.actions.loop.MoveExploitLoopAction;
-import fr.unice.polytech.si3.qgl.ise.contracts.*;
+import fr.unice.polytech.si3.qgl.ise.contracts.CraftedContract;
+import fr.unice.polytech.si3.qgl.ise.contracts.RawContract;
 import fr.unice.polytech.si3.qgl.ise.map.Coordinates;
 import fr.unice.polytech.si3.qgl.ise.map.Forecaster;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
@@ -15,7 +16,10 @@ import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.CraftedResource;
 import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.RawResource;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
@@ -32,7 +36,6 @@ public class Crew {
     private final List<CraftedContract> completedCraftedContracts = new ArrayList<>();
     private final List<RawContract> abortedRawContracts = new ArrayList<>();
     private final List<CraftedContract> abortedCraftedContracts = new ArrayList<>();
-    private final PathFinder pathFinder;
     private final Forecaster forecaster;
 
     private Action lastAction;
@@ -53,7 +56,7 @@ public class Crew {
         this.stock = new HashMap<>();
         this.craftedStock = new HashMap<>();
         this.doNotEstimate = false;
-        this.pathFinder = new PathFinder(map, 50, 80);
+        PathFinder pathFinder = new PathFinder(map, 50, 80);
         this.forecaster = new Forecaster();
 
         computeWantedResources();
@@ -97,9 +100,9 @@ public class Crew {
                 .forEach(contract -> contract.updateRemainingQuantity(stock.get(contract.getResource())));
 
         craftedContracts.stream()
-                .filter(contract -> contract.getTotalResourcesToCollect().entrySet().stream()
+                .filter(contract -> contract.getRawQuantities().entrySet().stream()
                         .allMatch(entry -> stock.containsKey(entry.getKey())))
-                .forEach(contract -> contract.getTotalResourcesToCollect().forEach((rawResource, quantity) -> contract.updateRemainingQuantityMinusStock(resource, stock.get(resource))));
+                .forEach(contract -> contract.getRawQuantities().forEach((rawResource, quantity) -> contract.updateRemainingQuantityMinusStock(resource, stock.get(resource))));
     }
 
     public void removeFromStock(RawResource resource, int amount) {
@@ -246,7 +249,7 @@ public class Crew {
         rawContracts.removeAll(abortedRawContracts);
 
         abortedCraftedContracts.addAll(craftedContracts.stream()
-                .filter(contract -> contract.getTotalResourcesToCollect().entrySet().stream()
+                .filter(contract -> contract.getRawQuantities().entrySet().stream()
                         .anyMatch(entry -> !foretoldResources.containsKey(entry.getKey()) || entry.getValue() > foretoldResources.get(entry.getKey())))
                 .collect(Collectors.toList()));
 

@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public abstract class Resource {
 
-    private String name;
+    private final String name;
 
     Resource(String name) {
         this.name = name;
