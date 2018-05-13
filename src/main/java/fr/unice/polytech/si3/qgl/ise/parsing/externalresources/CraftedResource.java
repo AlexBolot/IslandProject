@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class CraftedResource extends Resource implements Comparable<CraftedResource> {
 
-    private Map<RawResource, Double> recipe;
+    private final Map<RawResource, Double> recipe;
 
 
     CraftedResource(String name, Map<RawResource, Double> recipe) {

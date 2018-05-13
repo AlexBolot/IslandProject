@@ -32,7 +32,6 @@ public class Crew {
     private final List<CraftedContract> completedCraftedContracts = new ArrayList<>();
     private final List<RawContract> abortedRawContracts = new ArrayList<>();
     private final List<CraftedContract> abortedCraftedContracts = new ArrayList<>();
-    private final PathFinder pathFinder;
     private final Forecaster forecaster;
 
     private Action lastAction;
@@ -53,7 +52,7 @@ public class Crew {
         this.stock = new HashMap<>();
         this.craftedStock = new HashMap<>();
         this.doNotEstimate = false;
-        this.pathFinder = new PathFinder(map, 50, 80);
+        PathFinder pathFinder = new PathFinder(map, 50, 80);
         this.forecaster = new Forecaster();
 
         computeWantedResources();

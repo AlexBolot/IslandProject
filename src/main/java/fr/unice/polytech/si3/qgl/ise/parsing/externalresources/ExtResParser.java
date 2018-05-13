@@ -17,7 +17,7 @@ public class ExtResParser {
 
     private static final Logger logger = getLogger(ExtResParser.class);
     private boolean errorFlag = false;
-    private ExtResBundle bundle = new ExtResBundle();
+    private final ExtResBundle bundle = new ExtResBundle();
 
     public boolean raisedFlag() {
         return errorFlag;

@@ -7,10 +7,7 @@ import fr.unice.polytech.si3.qgl.ise.factories.JsonFactory;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
 import fr.unice.polytech.si3.qgl.ise.parsing.Echo;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import java.util.Random;
 
 import static fr.unice.polytech.si3.qgl.ise.actions.drone.TestingUtils.setMargins;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW.NORTH;
@@ -33,7 +30,6 @@ public class SearchIslandActionTest {
     }
 
     @Test
-    @Ignore
     public void apply_FacingGround() {
         for (NSEW ori : NSEW.values()) {
             for (ZQSD dir : new ZQSD[]{LEFT, RIGHT}) {
@@ -51,42 +47,15 @@ public class SearchIslandActionTest {
                 droneInitAction.apply();
                 drone.acknowledgeEcho(new Echo("{ \"cost\": 1, \"extras\": { \"range\": " + (dir == LEFT ? 10 : 20) + ", \"found\": \"OUT_OF_RANGE\" }, \"status\": \"OK\" }"));
 
-                String json = jsonFact.createJsonString("heading", "direction", drone.getOrientation().getToThe(dir).getValue());
+                String json = jsonFact.createJsonString("heading", "direction", drone.getOrientation().getToThe(getOpposite(dir)).getValue());
                 String result = searchIslandAction.apply();
                 assertEquals(json, result);
 
-                json = jsonFact.createJsonString("echo", "direction", drone.getOrientation().getToThe(getOpposite(dir)).getValue());
+                json = jsonFact.createJsonString("echo", "direction", drone.getOrientation().getToThe(FRONT).getValue());
                 result = searchIslandAction.apply();
                 assertEquals(json, result);
 
                 drone.acknowledgeEcho(new Echo("{ \"cost\": 1, \"extras\": { \"range\": 15, \"found\": \"GROUND\" }, \"status\": \"OK\" }"));
-
-                json = jsonFact.createJsonString("fly");
-                result = searchIslandAction.apply();
-                assertEquals(json, result);
-
-                int i = new Random().nextInt(2) + 1; //Rand between 1 and 3
-
-                //noinspection Duplicates
-                for (int j = 0; j < i; j++) {
-                    json = jsonFact.createJsonString("echo", "direction", drone.getOrientation().getToThe(getOpposite(dir)).getValue());
-                    result = searchIslandAction.apply();
-                    assertEquals(json, result);
-
-                    drone.acknowledgeEcho(new Echo(
-                            "{ \"cost\": 1, \"extras\": { \"range\": 15, \"found\": \"GROUND\" }, \"status\": \"OK\" }"));
-
-                    json = jsonFact.createJsonString("fly");
-                    result = searchIslandAction.apply();
-                    assertEquals(json, result);
-                }
-
-                json = jsonFact.createJsonString("echo", "direction", drone.getOrientation().getToThe(getOpposite(dir)).getValue());
-                result = searchIslandAction.apply();
-                assertEquals(json, result);
-
-                drone.acknowledgeEcho(new Echo(
-                        "{ \"cost\": 1, \"extras\": { \"range\": 50, \"found\": \"OUT_OF_RANGE\" }, \"status\": \"OK\" }"));
 
                 assertTrue(searchIslandAction.apply().isEmpty());
                 assertTrue(searchIslandAction.isFinished());
@@ -97,7 +66,6 @@ public class SearchIslandActionTest {
     }
 
     @Test
-    @Ignore
     public void apply_FacingBorder() {
         for (NSEW ori : NSEW.values()) {
             for (ZQSD dir : new ZQSD[]{LEFT, RIGHT}) {
@@ -119,38 +87,11 @@ public class SearchIslandActionTest {
                 String result = searchIslandAction.apply();
                 assertEquals(json, result);
 
-                json = jsonFact.createJsonString("echo", "direction", drone.getOrientation().getToThe(getOpposite(dir)).getValue());
+                json = jsonFact.createJsonString("echo", "direction", drone.getOrientation().getToThe(FRONT).getValue());
                 result = searchIslandAction.apply();
                 assertEquals(json, result);
 
                 drone.acknowledgeEcho(new Echo("{ \"cost\": 1, \"extras\": { \"range\": 15, \"found\": \"GROUND\" }, \"status\": \"OK\" }"));
-
-                json = jsonFact.createJsonString("fly");
-                result = searchIslandAction.apply();
-                assertEquals(json, result);
-
-                int i = new Random().nextInt(2) + 1; //Rand between 1 and 3
-
-                //noinspection Duplicates
-                for (int j = 0; j < i; j++) {
-                    json = jsonFact.createJsonString("echo", "direction", drone.getOrientation().getToThe(getOpposite(dir)).getValue());
-                    result = searchIslandAction.apply();
-                    assertEquals(json, result);
-
-                    drone.acknowledgeEcho(new Echo(
-                            "{ \"cost\": 1, \"extras\": { \"range\": 15, \"found\": \"GROUND\" }, \"status\": \"OK\" }"));
-
-                    json = jsonFact.createJsonString("fly");
-                    result = searchIslandAction.apply();
-                    assertEquals(json, result);
-                }
-
-                json = jsonFact.createJsonString("echo", "direction", drone.getOrientation().getToThe(getOpposite(dir)).getValue());
-                result = searchIslandAction.apply();
-                assertEquals(json, result);
-
-                drone.acknowledgeEcho(new Echo(
-                        "{ \"cost\": 1, \"extras\": { \"range\": 50, \"found\": \"OUT_OF_RANGE\" }, \"status\": \"OK\" }"));
 
                 assertTrue(searchIslandAction.apply().isEmpty());
                 assertTrue(searchIslandAction.isFinished());

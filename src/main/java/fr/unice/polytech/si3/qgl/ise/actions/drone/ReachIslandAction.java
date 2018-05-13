@@ -5,7 +5,8 @@ import fr.unice.polytech.si3.qgl.ise.actions.simple.FlyAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 
-import static fr.unice.polytech.si3.qgl.ise.actions.drone.ReachIslandAction.Step.*;
+import static fr.unice.polytech.si3.qgl.ise.actions.drone.ReachIslandAction.Step.ECHO_FRONT;
+import static fr.unice.polytech.si3.qgl.ise.actions.drone.ReachIslandAction.Step.FLY_TO_ISLAND;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 

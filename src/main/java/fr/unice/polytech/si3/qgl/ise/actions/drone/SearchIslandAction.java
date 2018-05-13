@@ -1,19 +1,16 @@
 package fr.unice.polytech.si3.qgl.ise.actions.drone;
 
 import fr.unice.polytech.si3.qgl.ise.actions.simple.EchoAction;
-import fr.unice.polytech.si3.qgl.ise.actions.simple.FlyAction;
 import fr.unice.polytech.si3.qgl.ise.actions.simple.HeadingAction;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.utilities.Margin;
 
 import static fr.unice.polytech.si3.qgl.ise.actions.drone.SearchIslandAction.Step.*;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.BORDER;
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
 
 public class SearchIslandAction extends DroneAction {
-    private final FlyAction flyAction;
     private final EchoAction echoAction;
     private final HeadingAction headingAction;
     private Step currentStep;
@@ -21,7 +18,6 @@ public class SearchIslandAction extends DroneAction {
     public SearchIslandAction(Drone drone) {
         super(drone);
         currentStep = CHOOSE_DIRECTION;
-        flyAction = new FlyAction(drone);
         echoAction = new EchoAction(drone);
         headingAction = new HeadingAction(drone);
     }
