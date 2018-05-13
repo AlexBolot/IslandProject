@@ -38,6 +38,7 @@ public class Forecaster {
     private static Biome biome(String name) {
         return bundle().getBiome(name);
     }
+    //endregion
 
     /**
      * Estimates the actual resources on the island
@@ -127,5 +128,4 @@ public class Forecaster {
             }
         }
     }
-    //endregion
 }

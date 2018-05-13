@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class CraftedContract implements Contract {
+public class CraftedContract {
     private final Integer quantity;
     private final CraftedResource resource;
     private final Map<RawResource, Double> rawQuantities;
@@ -55,10 +55,6 @@ public class CraftedContract implements Contract {
         return quantity;
     }
 
-    public int getRemainingQuantity() {
-        return remainingQuantity;
-    }
-
     public CraftedResource getResource() {
         return resource;
     }
@@ -71,8 +67,7 @@ public class CraftedContract implements Contract {
         return remainingRawQuantitiesMinusStock;
     }
 
-    @Override
-    public Map<RawResource, Double> getTotalResourcesToCollect() {
+    public Map<RawResource, Double> getRawQuantities() {
         return rawQuantities;
     }
 

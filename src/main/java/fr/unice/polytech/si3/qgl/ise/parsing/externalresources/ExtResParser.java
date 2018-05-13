@@ -16,8 +16,8 @@ import static org.apache.logging.log4j.LogManager.getLogger;
 public class ExtResParser {
 
     private static final Logger logger = getLogger(ExtResParser.class);
-    private boolean errorFlag = false;
     private final ExtResBundle bundle = new ExtResBundle();
+    private boolean errorFlag = false;
 
     public boolean raisedFlag() {
         return errorFlag;
@@ -111,9 +111,9 @@ public class ExtResParser {
 
     public static class ExtResBundle {
 
-        private List<RawResource> rawResources = new ArrayList<>();
-        private List<CraftedResource> craftedResources = new ArrayList<>();
-        private List<Biome> biomes = new ArrayList<>();
+        private final List<RawResource> rawResources = new ArrayList<>();
+        private final List<CraftedResource> craftedResources = new ArrayList<>();
+        private final List<Biome> biomes = new ArrayList<>();
 
         //region --------------- Getters and Setters ---------------
 

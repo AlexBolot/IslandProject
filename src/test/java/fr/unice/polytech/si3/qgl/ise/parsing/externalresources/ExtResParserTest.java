@@ -19,8 +19,8 @@ import static org.junit.Assert.*;
 public class ExtResParserTest {
 
     private final ArrayList<RawResource> rawResources = new ArrayList<>();
-    private ArrayList<CraftedResource> craftedResources = new ArrayList<>();
-    private ArrayList<Biome> biomes = new ArrayList<>();
+    private final ArrayList<CraftedResource> craftedResources = new ArrayList<>();
+    private final ArrayList<Biome> biomes = new ArrayList<>();
 
     private JSONObject mainJSON;
     private JSONArray rawResourcesJSON;
