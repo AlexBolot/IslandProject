@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static fr.unice.polytech.si3.qgl.ise.parsing.externalresources.ExtResSelector.bundle;
 import static org.apache.logging.log4j.LogManager.getLogger;
@@ -47,7 +48,6 @@ public class Forecaster {
      * @return a map with resources as keys and their respective amounts on the island as values
      */
     public Map<RawResource, Double> estimateResources(IslandMap map) {
-        fillStats();
         Map<RawResource, Double> foretoldQuantities = new HashMap<>();
 
         map.getMap().entrySet().stream().map(Map.Entry::getValue)
@@ -74,7 +74,6 @@ public class Forecaster {
      * @return an estimation of the number of points needed to finish the contract
      */
     public double estimateCost(CraftedContract contract) {
-        fillStats();
         return contract.getRemainingRawQuantitiesMinusStock().entrySet().stream()
                 .mapToDouble(entry -> entry.getValue() * resourcesData.get(entry.getKey())._2 * 3)
                 .sum();
@@ -87,7 +86,6 @@ public class Forecaster {
      * @return an estimation of the number of points needed to finish the contract
      */
     public double estimateCost(RawContract contract) {
-        fillStats();
         return contract.getRemainingQuantity() * resourcesData.get(contract.getResource())._2 * 3;
     }
 
@@ -95,37 +93,31 @@ public class Forecaster {
      * Fills the maps with generic island data from resources/forecaster-data.json
      */
     private void fillStats() {
-
-        String str;
-        StringBuilder builder = new StringBuilder();
+        String builder = "";
 
         try (InputStream is = Forecaster.class.getClassLoader().getResourceAsStream("forecaster-data.json")) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            while ((str = reader.readLine()) != null) {
-                builder.append(str).append("\n");
-            }
+            builder = reader.lines().map(str -> str + "\n").collect(Collectors.joining());
         } catch (IOException e) {
             logger.error("Problem while reading forecaster data: ", e);
         }
 
-        JSONObject data = new JSONObject(builder.toString());
+        JSONObject data = new JSONObject(builder);
 
         JSONObject jsonResourcesData = data.getJSONObject("resources-data");
         JSONObject jsonBiomesData = data.getJSONObject("biomes-data");
 
-        for (String resource : jsonResourcesData.keySet()) {
+        jsonResourcesData.keySet().forEach(resource -> {
             JSONObject resourceData = jsonResourcesData.getJSONObject(resource);
             int amount = resourceData.getInt("amount");
             double cost = resourceData.getDouble("cost");
             resourcesData.put(rawRes(resource), new Tuple2<>(amount, cost));
-        }
+        });
 
-        for (String biome : jsonBiomesData.keySet()) {
+        jsonBiomesData.keySet().forEach(biome -> {
             JSONObject biomeData = jsonBiomesData.getJSONObject(biome);
             biomesData.put(biome(biome), new HashMap<>());
-            for (String resource : biomeData.keySet()) {
-                biomesData.get(biome(biome)).put(rawRes(resource), biomeData.getDouble(resource));
-            }
-        }
+            biomeData.keySet().forEach(resource -> biomesData.get(biome(biome)).put(rawRes(resource), biomeData.getDouble(resource)));
+        });
     }
 }
