@@ -24,6 +24,10 @@ import java.util.stream.Collectors;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
 
+/**
+ * Drone entitity, coordinates actions in {@link fr.unice.polytech.si3.qgl.ise.actions.crew}
+ * and in {@link fr.unice.polytech.si3.qgl.ise.actions.loop}
+ */
 public class Crew {
 
     private static final Logger logger = getLogger(Explorer.class);
@@ -67,6 +71,11 @@ public class Crew {
         initActions();
     }
 
+    /**
+     * Main method, do the current step
+     *
+     * @return a JSON formatted String to do the action
+     */
     public String takeDecision() {
         String res;
 
@@ -85,6 +94,11 @@ public class Crew {
         return new StopAction().apply();
     }
 
+    /**
+     * Acknoledge the result of the previous action done
+     *
+     * @param results of the previous action
+     */
     public void acknowledgeResults(String results) {
         if (lastAction instanceof CrewAction) {
             ((CrewAction) lastAction).acknowledgeResults(results);
@@ -92,6 +106,12 @@ public class Crew {
         //else would be only for stop action <=> do nothing
     }
 
+    /**
+     * Add to inventory
+     *
+     * @param resource kind of resource
+     * @param amount   how much to add
+     */
     public void addToStock(RawResource resource, int amount) {
         if (stock.containsKey(resource)) amount += stock.get(resource);
         stock.put(resource, amount);
@@ -105,6 +125,12 @@ public class Crew {
                 .forEach(contract -> contract.getRawQuantities().forEach((rawResource, quantity) -> contract.updateRemainingQuantityMinusStock(resource, stock.get(resource))));
     }
 
+    /**
+     * Remove from inventory
+     *
+     * @param resource kind of resource
+     * @param amount   how much to remove
+     */
     public void removeFromStock(RawResource resource, int amount) {
         if (stock.containsKey(resource)) {
             int newStock = stock.get(resource) - amount;
@@ -112,11 +138,20 @@ public class Crew {
         }
     }
 
+    /**
+     * Add to crafted inventory
+     *
+     * @param resource kind of resource
+     * @param amount   how much to add
+     */
     public void addToCraftedStock(CraftedResource resource, int amount) {
         if (craftedStock.containsKey(resource)) amount += craftedStock.get(resource);
         craftedStock.put(resource, amount);
     }
 
+    /**
+     * Update the focused contract
+     */
     public void tryToFinishContracts() {
 
         rawContracts.removeIf(rawContract -> {
@@ -146,6 +181,9 @@ public class Crew {
         computeWantedResources();
     }
 
+    /**
+     * @return remaining ressource if we craft everything we have to and that we can
+     */
     public Map<RawResource, Double> tryCrafting() {
         for (CraftedContract craft : craftedContracts) {
             boolean test = true;
@@ -174,12 +212,22 @@ public class Crew {
         return null;
     }
 
+    /**
+     * Init the craw
+     *
+     * @param creekId id of the creek to land on
+     */
     public void land(String creekId) {
         if (!doNotEstimate) sortContractsAfterIslandData();
         this.isLanded = true;
         map.setShip(map.getCreeks().get(creekId));
     }
 
+    /**
+     * Sort contract below a certain amount of estimated budget
+     *
+     * @param remainingBudget max value
+     */
     public void sortContractsAfterCost(int remainingBudget) {
         rawContracts.stream()
                 .filter(contract -> forecaster.estimateCost(contract) > remainingBudget)

@@ -10,10 +10,19 @@ public abstract class CrewAction extends Action {
         this.crewToUpdate = crewToUpdate;
     }
 
+    @Override
     public abstract String apply();
 
+    /**
+     * Main function, to perform everything needed with the action result
+     *
+     * @return JSON formatted String to do the action
+     */
     public abstract String acknowledgeResults(String result);
 
+    /**
+     * @return the crew that perfom the action and need to be updated
+     */
     protected Crew getCrewToUpdate() {
         return crewToUpdate;
     }

@@ -27,6 +27,10 @@ import java.util.Map;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.BORDER;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 
+/**
+ * Drone entitity, coordinates actions in {@link fr.unice.polytech.si3.qgl.ise.actions.drone}
+ * and in {@link fr.unice.polytech.si3.qgl.ise.actions.loop}
+ */
 public class Drone {
     private static final int MOVEMENT_UNIT = 3;
     private final IslandMap map;
@@ -53,10 +57,16 @@ public class Drone {
         initSteps();
     }
 
+    /**
+     * @return the number of case the drone flies before scan
+     */
     public static int getMovementUnit() {
         return MOVEMENT_UNIT;
     }
 
+    /**
+     * Init the drone, init the steps that the drone will have to perform to do the job
+     */
     private void initSteps() {
         steps = new ArrayList<>();
 
@@ -66,6 +76,11 @@ public class Drone {
         steps.add(new ScanIslandLoopAction(this, new ScanLineActionStraight(this, 1)));
     }
 
+    /**
+     * Main method, execute the current action
+     *
+     * @return a String JSON formatted doing the right action
+     */
     public String takeDecision() {
 
         if (!isFlying) return new StopAction(this).apply();
@@ -82,6 +97,10 @@ public class Drone {
         return "";
     }
 
+    /**
+     * @param echo Echo action that has been done earlier
+     * @see Echo
+     */
     public void acknowledgeEcho(Echo echo) {
         Obstacle obstacle = echo.getObstacle();
         Integer range = echo.getRange();
@@ -92,6 +111,10 @@ public class Drone {
         if (obstacle == BORDER) margins.setGlobal(lastEcho, obstacle, range);
     }
 
+    /**
+     * @param scan Scan action that has been done earlier
+     * @see Scan
+     */
     public void acknowledgeScan(Scan scan) {
         if (!scan.getCreeks().isEmpty()) map.addCreeks(coordinates, scan.getCreeks());
         if (!scan.getEmergencySites().isEmpty()) map.addSite(coordinates, scan.getEmergencySites().get(0));

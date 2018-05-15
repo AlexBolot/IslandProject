@@ -13,6 +13,12 @@ public class ScanIslandLoopAction extends Action {
     private final ScanLineLoopAction scanLineLoopAction;
     private final PassIslandAction passIslandAction;
 
+    /**
+     * Used to scan the Island with how to do it in parameter
+     *
+     * @param drone            Drone to update
+     * @param scanLineStrategy strat to use to scan a line
+     */
     public ScanIslandLoopAction(Drone drone, ScanLineStrategy scanLineStrategy) {
         this.drone = drone;
         this.scanLineLoopAction = new ScanLineLoopAction(drone, scanLineStrategy);

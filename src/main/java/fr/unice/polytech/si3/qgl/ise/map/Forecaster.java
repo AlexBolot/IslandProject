@@ -20,6 +20,9 @@ import java.util.stream.Collectors;
 import static fr.unice.polytech.si3.qgl.ise.parsing.externalresources.ExtResSelector.bundle;
 import static org.apache.logging.log4j.LogManager.getLogger;
 
+/**
+ * Class to determine the amount of ressource of the island, and the cost of budget to do a contract
+ */
 public class Forecaster {
     private static final Logger logger = getLogger(Explorer.class);
     private final Map<RawResource, Tuple2<Integer, Double>> resourcesData;
