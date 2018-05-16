@@ -1,168 +1,123 @@
 package fr.unice.polytech.si3.qgl.ise.actions.loop;
 
-import fr.unice.polytech.si3.qgl.ise.actions.drone.GTurnAction;
-import fr.unice.polytech.si3.qgl.ise.actions.drone.PassIslandAction;
 import fr.unice.polytech.si3.qgl.ise.actions.drone.ScanLineActionStraight;
 import fr.unice.polytech.si3.qgl.ise.entities.Drone;
 import fr.unice.polytech.si3.qgl.ise.enums.DroneEnums;
 import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
 import fr.unice.polytech.si3.qgl.ise.parsing.Echo;
 import fr.unice.polytech.si3.qgl.ise.parsing.Scan;
+import org.json.JSONObject;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Random;
-
-import static fr.unice.polytech.si3.qgl.ise.actions.drone.ScanLineActionStraight.Strategy.FULL;
-import static fr.unice.polytech.si3.qgl.ise.actions.drone.TestingUtils.setMargins;
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Action.ECHO;
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.NSEW.NORTH;
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.*;
+import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 import static org.junit.Assert.assertEquals;
 
-@Ignore
 public class ScanIslandLoopActionTest {
-    private Drone drone;
-    private Drone drone2;
     private ScanIslandLoopAction scanIslandLoopAction;
-    private GTurnAction gTurnAction;
-    private ScanLineLoopAction scanLineLoopAction;
-    private PassIslandAction passIslandAction;
+    private Drone drone;
 
     @Before
-    public void setUp() {
-        drone = new Drone(new IslandMap(), NORTH);
-        setMargins(drone, 50);
-        scanIslandLoopAction = new ScanIslandLoopAction(drone, new ScanLineActionStraight(drone, FULL.getPace()));
-
-        drone2 = new Drone(new IslandMap(), NORTH);
-        setMargins(drone2, 50);
-        gTurnAction = new GTurnAction(drone2);
-        scanLineLoopAction = new ScanLineLoopAction(drone2, new ScanLineActionStraight(drone, FULL.getPace()));
-        passIslandAction = new PassIslandAction(drone2);
+    public void init() {
+        drone = new Drone(new IslandMap(), DroneEnums.NSEW.NORTH);
+        scanIslandLoopAction = new ScanIslandLoopAction(drone, new ScanLineActionStraight(drone, 1));
+        drone.setLastTurn(DroneEnums.ZQSD.RIGHT);
+        drone.setLastEcho(DroneEnums.ZQSD.RIGHT);
+        drone.acknowledgeEcho(new Echo("{ \"cost\": 1, \"extras\": { \"range\": 10, \"found\": \"OUT_OF_RANGE\" }, \"status\": \"OK\" }"));
+        drone.setLastEcho(DroneEnums.ZQSD.LEFT);
+        drone.acknowledgeEcho(new Echo("{ \"cost\": 1, \"extras\": { \"range\": 10, \"found\": \"OUT_OF_RANGE\" }, \"status\": \"OK\" }"));
+        drone.setLastEcho(DroneEnums.ZQSD.BACK);
+        drone.acknowledgeEcho(new Echo("{ \"cost\": 1, \"extras\": { \"range\": 10, \"found\": \"OUT_OF_RANGE\" }, \"status\": \"OK\" }"));
+        drone.setLastEcho(DroneEnums.ZQSD.FRONT);
+        drone.acknowledgeEcho(new Echo("{ \"cost\": 1, \"extras\": { \"range\": 10, \"found\": \"OUT_OF_RANGE\" }, \"status\": \"OK\" }"));
     }
 
     @Test
-    @Ignore
-    public void applyFirstShot() {
-        for (DroneEnums.NSEW ori : DroneEnums.NSEW.values()) {
-            for (DroneEnums.ZQSD dir : new DroneEnums.ZQSD[]{LEFT, RIGHT}) {
-                drone.setOrientation(ori);
-                drone.setLastEcho(dir);
-                drone.setLastTurn(getOpposite(dir));
-
-                drone2.setOrientation(ori);
-                drone2.setLastEcho(dir);
-                drone2.setLastTurn(getOpposite(dir));
-
-                Context context = new Context();
-
-                while (!scanLineLoopAction.isFinished()) {
-                    String applyRes = scanLineLoopAction.apply();
-                    if (applyRes.isEmpty()) break;
-                    assertEquals(applyRes, scanIslandLoopAction.apply());
-                    acknowledgeScanLine(context);
-                }
-
-                context.resetWidth();
-
-                while (!passIslandAction.isFinished()) {
-                    String applyRes = passIslandAction.apply();
-                    if (applyRes.isEmpty()) break;
-                    String apply = scanIslandLoopAction.apply();
-                    assertEquals(applyRes, scanIslandLoopAction.apply());
-                    acknowledgePassIsland(context);
-                }
-
-                setUp();
-
-                break;
-            }
-            break;
-        }
+    public void startByScanLineLoopAction() {
+        String res = scanIslandLoopAction.apply();
+        JSONObject json = new JSONObject(res);
+        assertEquals("scan", json.getString("action"));
+        res = scanIslandLoopAction.apply();
+        json = new JSONObject(res);
+        assertEquals("echo", json.getString("action"));
+        res = scanIslandLoopAction.apply();
+        json = new JSONObject(res);
+        assertEquals("fly", json.getString("action"));
     }
 
-    private void acknowledgeScanLine(Context context) {
-        switch (drone.getLastAction()) {
-            case SCAN:
-                if (context.islandWidth >= 0) {
-                    if (!context.creekFound) {
-                        scanCreek(drone, drone2);
-                        context.creekFound = true;
-                    } else scanGround(drone, drone2);
-                } else {
-                    scanOcean(drone, drone2);
-                }
-                break;
-            case FLY:
-                context.islandWidth--;
-                break;
-            case ECHO:
-                if (context.echoCount % 3 != 2 || context.islandHeight <= 0) echoBorder(drone, drone2);
-                else echoGround(drone, drone2);
-                context.echoCount++;
-                break;
-            case HEADING:
-                context.resetWidth();
-                context.islandHeight--;
-        }
+    @Test
+    public void afterScanLineStopsIfHasCreeks() {
+        simulateScanLineLoopAction();
+        drone.acknowledgeScan(new Scan("{\"cost\": 2, \"extras\": { \"biomes\": [\"BEACH\"], \"creeks\": [\"id\"], \"sites\": []}, \"status\": \"OK\"}"));
+        String res = scanIslandLoopAction.apply();
+        assertEquals("", res);
     }
 
-    private void acknowledgePassIsland(Context context) {
-        if (drone.getLastAction() == ECHO) {
-            if (context.islandWidth >= 0) {
-                echoGround(drone, drone2);
-                context.islandWidth--;
-            } else {
-                echoBorder(drone, drone2);
-            }
-        }
+    @Test
+    public void afterScanLineAboutTurnIfNoCreeks() {
+        simulateScanLineLoopAction();
+        String res = scanIslandLoopAction.apply();
+        JSONObject json = new JSONObject(res);
+        assertEquals("echo", json.getString("action"));
+        drone.setLastEcho(DroneEnums.ZQSD.FRONT);
+        drone.acknowledgeEcho(new Echo("{ \"cost\": 1, \"extras\": { \"range\": 10, \"found\": \"OUT_OF_RANGE\" }, \"status\": \"OK\" }"));
+        drone.setLastEcho(DroneEnums.ZQSD.LEFT);
+        drone.acknowledgeEcho(new Echo("{ \"cost\": 1, \"extras\": { \"range\": 10, \"found\": \"GROUND\" }, \"status\": \"OK\" }"));
+        res = scanIslandLoopAction.apply();
+        json = new JSONObject(res);
+        assertEquals("fly", json.getString("action"));
+        res = scanIslandLoopAction.apply();
+        json = new JSONObject(res);
+        assertEquals("echo", json.getString("action"));
+        drone.acknowledgeEcho(new Echo("{ \"cost\": 1, \"extras\": { \"range\": 10, \"found\": \"OUT_OF_RANGE\" }, \"status\": \"OK\" }"));
+        res = scanIslandLoopAction.apply();
+        json = new JSONObject(res);
+        assertEquals("fly", json.getString("action"));
+        res = scanIslandLoopAction.apply();
+        json = new JSONObject(res);
+        assertEquals("heading", json.getString("action"));
     }
 
-    private void echoBorder(Drone... drones) {
-        Arrays.stream(drones).forEach(drone -> drone.acknowledgeEcho(new Echo("{ \"cost\": 1, \"extras\": { \"range\": 40, \"found\": \"OUT_OF_RANGE\" }, \"status\": \"OK\" }")));
+    @Test
+    public void afterAboutTurnReset() {
+        simulateScanLineLoopAction();
+        simulateAboutTurn();
+
+        String res = scanIslandLoopAction.apply();
+        JSONObject json = new JSONObject(res);
+        assertEquals("echo", json.getString("action"));
     }
 
-    private void echoGround(Drone... drones) {
-        Arrays.stream(drones).forEach(drone -> drone.acknowledgeEcho(new Echo("{ \"cost\": 1, \"extras\": { \"range\": 1, \"found\": \"GROUND\" }, \"status\": \"OK\" }")));
+    private void simulateAboutTurn() {
+        scanIslandLoopAction.apply();
+        drone.setLastEcho(DroneEnums.ZQSD.FRONT);
+        drone.acknowledgeEcho(new Echo("{ \"cost\": 1, \"extras\": { \"range\": 10, \"found\": \"OUT_OF_RANGE\" }, \"status\": \"OK\" }"));
+        drone.setLastEcho(DroneEnums.ZQSD.LEFT);
+        drone.acknowledgeEcho(new Echo("{ \"cost\": 1, \"extras\": { \"range\": 10, \"found\": \"GROUND\" }, \"status\": \"OK\" }"));
+        scanIslandLoopAction.apply();
+        scanIslandLoopAction.apply();
+        drone.acknowledgeEcho(new Echo("{ \"cost\": 1, \"extras\": { \"range\": 10, \"found\": \"OUT_OF_RANGE\" }, \"status\": \"OK\" }"));
+        scanIslandLoopAction.apply();
+        scanIslandLoopAction.apply();
+        scanIslandLoopAction.apply();
+        scanIslandLoopAction.apply();
+        scanIslandLoopAction.apply();
+        scanIslandLoopAction.apply();
+        scanIslandLoopAction.apply();
+        drone.getMargins().setLocal(DroneEnums.ZQSD.FRONT, DroneEnums.Obstacle.GROUND, 0);
     }
 
-    private void scanOcean(Drone... drones) {
-        Arrays.stream(drones).forEach(drone -> drone.acknowledgeScan(new Scan("{\"cost\": 2, \"extras\": { \"biomes\": [ \"OCEAN\" ], \"creeks\": [], \"sites\": []}, \"status\": \"OK\"}")));
-    }
-
-    private void scanGround(Drone... drones) {
-        Arrays.stream(drones).forEach(drone -> drone.acknowledgeScan(new Scan("{\"cost\": 2, \"extras\": { \"biomes\": [ \"SHRUBLAND\", \"ALPINE\" ], \"creeks\": [], \"sites\": []}, \"status\": \"OK\"}")));
-    }
-
-    private void scanCreek(Drone... drones) {
-        Arrays.stream(drones).forEach(drone -> drone.acknowledgeScan(new Scan("{\"cost\": 2, \"extras\": { \"biomes\": [ \"SHRUBLAND\", \"ALPINE\" ], \"creeks\": [\"you-can-land-here\"], \"sites\": []}, \"status\": \"OK\"}")));
-    }
-
-    private class Context {
-        int echoCount = 0;
-        int islandWidth;
-        int islandHeight;
-        boolean creekFound = false;
-
-        Context() {
-            this.resetHeight();
-            this.resetWidth();
-        }
-
-        void resetHeight() {
-            islandHeight = new Random().nextInt(20) + 6;
-        }
-
-        void resetWidth() {
-            islandWidth = new Random().nextInt(5) + 5;
-        }
-
-        @Override
-        public String toString() {
-            return "Context{echoCount=" + echoCount + ", islandWidth=" + islandWidth + ", islandHeight=" + islandHeight + ", creekFound=" + creekFound + '}';
-        }
+    private void simulateScanLineLoopAction() {
+        //the following lines are here to simulate the scanLineLoopAction
+        scanIslandLoopAction.apply();
+        scanIslandLoopAction.apply();
+        scanIslandLoopAction.apply();
+        scanIslandLoopAction.apply();
+        scanIslandLoopAction.apply();
+        scanIslandLoopAction.apply();
+        scanIslandLoopAction.apply();
+        drone.setOrientation(DroneEnums.NSEW.SOUTH);
+        drone.setLastEcho(DroneEnums.ZQSD.FRONT);
+        drone.acknowledgeEcho(new Echo("{ \"cost\": 1, \"extras\": { \"range\": 0, \"found\": \"OUT_OF_RANGE\" }, \"status\": \"OK\" }"));
     }
 }
