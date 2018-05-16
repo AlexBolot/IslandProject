@@ -3,7 +3,7 @@
 
 ## État courant du projet
 
-  - Ticketing: _[3]_
+  - Ticketing: _[4]_
   - Versioning: _[5]_
   - Qualité Objet: _[4]_
   - Tests: _[4]_
@@ -87,3 +87,17 @@
  - Points négatifs
     - _Jira abandonné_
    
+### Semaine 19
+ - Points positifs
+    - _Code plus clean_
+ - Points négatifs
+    - _Moins d'investissement_
+ 
+ ### Semaine 20
+  - Points positifs
+     - _Suppression du code inutile_
+     - _Economie de budget_
+     - _Meilleur ticketing_
+  - Points négatifs
+     - _Manque d'optimisation par endroits_
+    
