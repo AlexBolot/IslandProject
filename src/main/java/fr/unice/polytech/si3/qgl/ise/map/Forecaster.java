@@ -21,7 +21,7 @@ import static fr.unice.polytech.si3.qgl.ise.parsing.externalresources.ExtResSele
 import static org.apache.logging.log4j.LogManager.getLogger;
 
 /**
- * Class to determine the amount of ressource of the island, and the cost of budget to do a contract
+ * Class to determine the amount of resource of the island, and the cost of budget to do a contract
  */
 public class Forecaster {
     private static final Logger logger = getLogger(Explorer.class);

@@ -18,7 +18,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Drone entitity, coordinates actions in {@link fr.unice.polytech.si3.qgl.ise.actions.crew}
+ * Drone entity, coordinates actions in {@link fr.unice.polytech.si3.qgl.ise.actions.crew}
  * and in {@link fr.unice.polytech.si3.qgl.ise.actions.loop}
  */
 public class Crew {
@@ -87,7 +87,7 @@ public class Crew {
     }
 
     /**
-     * Acknoledge the result of the previous action done
+     * Acknowledges the result of the previous action done
      *
      * @param results of the previous action
      */
@@ -99,7 +99,7 @@ public class Crew {
     }
 
     /**
-     * Add to inventory
+     * Adds to inventory
      *
      * @param resource kind of resource
      * @param amount   how much to add
@@ -174,7 +174,7 @@ public class Crew {
     }
 
     /**
-     * @return remaining ressource if we craft everything we have to and that we can
+     * @return remaining resource if we craft everything we have to and that we can
      */
     public Map<RawResource, Double> tryCrafting() {
         for (CraftedContract craft : craftedContracts) {
