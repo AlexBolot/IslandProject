@@ -16,10 +16,7 @@ import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.CraftedResource;
 import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.RawResource;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.apache.logging.log4j.LogManager.getLogger;
@@ -229,24 +226,44 @@ public class Crew {
      * @param remainingBudget max value
      */
     public void sortContractsAfterCost(int remainingBudget) {
-        rawContracts.stream()
-                .filter(contract -> forecaster.estimateCost(contract) > remainingBudget)
-                .forEach(contract -> logger.info("ABORT! " + contract));
+        Map<RawContract, Double> rawContractsCosts = new HashMap<>();
+        Map<CraftedContract, Double> craftedContractsCosts = new HashMap<>();
+        double entireCost = 0;
+
+        rawContracts.forEach(contract -> rawContractsCosts.put(contract, forecaster.estimateCost(contract)));
 
         abortedRawContracts.addAll(rawContracts.stream()
-                .filter(contract -> forecaster.estimateCost(contract) > remainingBudget)
+                .filter(contract -> rawContractsCosts.get(contract) > remainingBudget)
                 .collect(Collectors.toList()));
 
-        rawContracts.removeAll(abortedRawContracts);
-
-        craftedContracts.stream()
-                .filter(contract -> forecaster.estimateCost(contract) > remainingBudget)
-                .forEach(contract -> logger.info("ABORT! " + contract));
+        craftedContracts.forEach(contract -> craftedContractsCosts.put(contract, forecaster.estimateCost(contract)));
 
         abortedCraftedContracts.addAll(craftedContracts.stream()
-                .filter(contract -> forecaster.estimateCost(contract) > remainingBudget)
+                .filter(contract -> craftedContractsCosts.get(contract) > remainingBudget)
                 .collect(Collectors.toList()));
 
+        entireCost += rawContractsCosts.values().stream().mapToDouble(cost -> cost).sum();
+        entireCost += craftedContractsCosts.values().stream().mapToDouble(cost -> cost).sum();
+
+        while (entireCost > remainingBudget) {
+            Map.Entry<RawContract, Double> worstRawContract = rawContractsCosts.entrySet().stream()
+                    .max(Comparator.comparingDouble(Map.Entry::getValue))
+                    .orElse(null);
+
+            Map.Entry<CraftedContract, Double> worstCraftedContract = craftedContractsCosts.entrySet().stream()
+                    .max(Comparator.comparingDouble(Map.Entry::getValue))
+                    .orElse(null);
+
+            if (worstCraftedContract.getValue() > worstRawContract.getValue() * 2) {
+                abortedCraftedContracts.add(worstCraftedContract.getKey());
+                entireCost -= worstCraftedContract.getValue();
+            } else {
+                abortedRawContracts.add(worstRawContract.getKey());
+                entireCost -= worstRawContract.getValue();
+            }
+        }
+
+        rawContracts.removeAll(abortedRawContracts);
         craftedContracts.removeAll(abortedCraftedContracts);
     }
 
