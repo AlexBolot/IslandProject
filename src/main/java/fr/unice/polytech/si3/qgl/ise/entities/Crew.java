@@ -1,6 +1,5 @@
 package fr.unice.polytech.si3.qgl.ise.entities;
 
-import fr.unice.polytech.si3.qgl.ise.Explorer;
 import fr.unice.polytech.si3.qgl.ise.actions.Action;
 import fr.unice.polytech.si3.qgl.ise.actions.CrewAction;
 import fr.unice.polytech.si3.qgl.ise.actions.StopAction;
@@ -14,12 +13,9 @@ import fr.unice.polytech.si3.qgl.ise.map.IslandMap;
 import fr.unice.polytech.si3.qgl.ise.map.PathFinder;
 import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.CraftedResource;
 import fr.unice.polytech.si3.qgl.ise.parsing.externalresources.RawResource;
-import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static org.apache.logging.log4j.LogManager.getLogger;
 
 /**
  * Drone entitity, coordinates actions in {@link fr.unice.polytech.si3.qgl.ise.actions.crew}
@@ -27,7 +23,6 @@ import static org.apache.logging.log4j.LogManager.getLogger;
  */
 public class Crew {
 
-    private static final Logger logger = getLogger(Explorer.class);
     private final List<RawContract> rawContracts;
     private final List<CraftedContract> craftedContracts;
     private final Map<RawResource, Integer> stock;
@@ -221,9 +216,9 @@ public class Crew {
     }
 
     /**
-     * Sort contract below a certain amount of estimated budget
+     * Aborts contracts if their cost is higher than the remaining budget
      *
-     * @param remainingBudget max value
+     * @param remainingBudget : the number of points remaining
      */
     public void sortContractsAfterCost(int remainingBudget) {
         Map<RawContract, Double> rawContractsCosts = new HashMap<>();
@@ -253,6 +248,10 @@ public class Crew {
             Map.Entry<CraftedContract, Double> worstCraftedContract = craftedContractsCosts.entrySet().stream()
                     .max(Comparator.comparingDouble(Map.Entry::getValue))
                     .orElse(null);
+
+            if (worstCraftedContract == null || worstRawContract == null) {
+                throw new NullPointerException("Problem while aborting contract!");
+            }
 
             if (worstCraftedContract.getValue() > worstRawContract.getValue() * 2) {
                 abortedCraftedContracts.add(worstCraftedContract.getKey());
