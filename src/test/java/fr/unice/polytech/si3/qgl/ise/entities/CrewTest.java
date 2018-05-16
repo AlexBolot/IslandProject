@@ -99,4 +99,23 @@ public class CrewTest {
         assertEquals("The first action is not land", "land", json.getString("action"));
     }
 
+    @Test
+    public void contractSortTest() {
+        crew.getRawContracts().clear();
+        crew.getCraftedContracts().clear();
+
+        crew.getRawContracts().add(new RawContract(bundle().getRawRes("WOOD"), 1000));
+        crew.getRawContracts().add(new RawContract(bundle().getRawRes("QUARTZ"), 1000));
+
+        crew.getCraftedContracts().add(new CraftedContract(bundle().getCraftedRes("GLASS"), 100));
+        crew.getCraftedContracts().add(new CraftedContract(bundle().getCraftedRes("RUM"), 100));
+
+        crew.sortContractsAfterCost(10000);
+
+        assertTrue(crew.getRawContracts().contains(new RawContract(bundle().getRawRes("WOOD"), 1000)));
+        assertTrue(crew.getCraftedContracts().contains(new CraftedContract(bundle().getCraftedRes("GLASS"), 100)));
+        assertTrue(crew.getCraftedContracts().contains(new CraftedContract(bundle().getCraftedRes("RUM"), 100)));
+        assertFalse(crew.getRawContracts().contains(new RawContract(bundle().getRawRes("QUARTZ"), 1000)));
+    }
+
 }

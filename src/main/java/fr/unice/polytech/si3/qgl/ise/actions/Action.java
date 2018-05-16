@@ -4,7 +4,7 @@ public abstract class Action {
     private boolean isFinished = false;
 
     /**
-     * Allow you to do a kind of loop with this function as condition
+     * Allows you to do a kind of loop with this function as condition
      *
      * @return <code>true</code> if the action is done <code>false</code> otherwise
      */
@@ -13,7 +13,7 @@ public abstract class Action {
     }
 
     /**
-     * Use to reperform the action
+     * Used to reset the action
      */
     public void reset() {
         isFinished = false;
@@ -27,7 +27,7 @@ public abstract class Action {
     public abstract String apply();
 
     /**
-     * Finish the action
+     * Finishes the action
      */
     protected void finish() {
         isFinished = true;

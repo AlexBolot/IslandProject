@@ -21,7 +21,7 @@ public abstract class CrewAction extends Action {
     public abstract String acknowledgeResults(String result);
 
     /**
-     * @return the crew that perfom the action and need to be updated
+     * @return the crew that performs the action and need to be updated
      */
     protected Crew getCrewToUpdate() {
         return crewToUpdate;

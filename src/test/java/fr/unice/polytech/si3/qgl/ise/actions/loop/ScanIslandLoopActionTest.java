@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
-import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.ZQSD.FRONT;
 import static org.junit.Assert.assertEquals;
 
 public class ScanIslandLoopActionTest {

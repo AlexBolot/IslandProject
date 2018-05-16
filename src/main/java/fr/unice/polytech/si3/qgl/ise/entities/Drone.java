@@ -28,7 +28,7 @@ import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.BORDER;
 import static fr.unice.polytech.si3.qgl.ise.enums.DroneEnums.Obstacle.GROUND;
 
 /**
- * Drone entitity, coordinates actions in {@link fr.unice.polytech.si3.qgl.ise.actions.drone}
+ * Drone entity, coordinates actions in {@link fr.unice.polytech.si3.qgl.ise.actions.drone}
  * and in {@link fr.unice.polytech.si3.qgl.ise.actions.loop}
  */
 public class Drone {

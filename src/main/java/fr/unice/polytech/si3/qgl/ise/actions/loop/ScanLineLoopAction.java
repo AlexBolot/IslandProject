@@ -16,7 +16,7 @@ public class ScanLineLoopAction extends Action {
 
     /**
      * @param drone            Drone to update
-     * @param scanLineStrategy strat to use to scan a line
+     * @param scanLineStrategy strategy to use to scan a line
      */
     ScanLineLoopAction(Drone drone, ScanLineStrategy scanLineStrategy) {
         actions = new ArrayList<>(Arrays.asList(scanLineStrategy, new ChangeLineAction(drone)));

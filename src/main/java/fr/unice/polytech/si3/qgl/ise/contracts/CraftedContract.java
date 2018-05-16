@@ -75,4 +75,22 @@ public class CraftedContract {
     public String toString() {
         return quantity + " " + resource;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CraftedContract that = (CraftedContract) o;
+
+        if (!quantity.equals(that.quantity)) return false;
+        return resource.equals(that.resource);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = quantity.hashCode();
+        result = 31 * result + resource.hashCode();
+        return result;
+    }
 }
